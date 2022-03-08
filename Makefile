@@ -6,7 +6,7 @@
 #    By: njaros <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/01 15:17:57 by njaros            #+#    #+#              #
-#    Updated: 2022/03/08 16:31:45 by njaros           ###   ########lyon.fr    #
+#    Updated: 2022/03/08 17:00:47 by njaros           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME = minishell
 CC = gcc
-FLAGS = -Werror -Wextra -Wall -lreadline
+FLAGS = -Werror -Wextra -Wall
 
 ## LES CHEMINS ##
 
@@ -28,7 +28,8 @@ LIB =	libft/libft.a \
 
 ## LES SOURCES, OBJETS et INCLUDES ##
 
-LST_SRCS =	coquillette_utils.c
+LST_SRCS =	coquillette_utils1.c \
+			coquillette.c
 LST_OBJS = ${LST_SRCS:.c=.o}
 LST_INCLUDES =	coquillette.h \
 				libft.h
@@ -41,7 +42,7 @@ INCLUDES = $(addprefix ${PATH_INCLUDES}/,${LST_INCLUDES})
 all :				lib_libft ${LIB} ${NAME} Makefile
 
 ${NAME} :			${OBJS}
-					${CC} ${FLAGS} ${OBJS} ${LIB} -o $@
+					${CC} ${FLAGS} ${OBJS} ${LIB} -lreadline -o $@
 
 ${PATH_OBJS}/%.o:	${PATH_SRCS}/%.c ${INCLUDES} ${LIB} Makefile | ${PATH_OBJS}
 					${CC} ${FLAGS} -c $< -o $@ -I ${PATH_INCLUDES}

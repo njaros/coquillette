@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coquillette_utils1.c                               :+:      :+:    :+:   */
+/*   coquillette.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/08 16:20:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/08 16:46:37 by njaros           ###   ########lyon.fr   */
+/*   Created: 2022/03/08 16:47:13 by njaros            #+#    #+#             */
+/*   Updated: 2022/03/08 16:57:51 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-char	*rl_get(char *line_read)
+int	main(void)
 {
-	if (line_read)
-		free(line_read);
-	line_read = readline("coquillette0.1>");
-	if (line_read && *line_read)
-		add_history(line_read);
-	return (line_read);
+	char	*line_read;
+	line_read = NULL;
+
+	while (1)
+	{
+		line_read = rl_get(line_read);
+		ft_putendl_fd(line_read, 1);
+	}
+	return (0);
 }

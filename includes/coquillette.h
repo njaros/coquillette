@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:21:14 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/08 16:33:10 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/08 16:46:52 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
+
+char	*rl_get(char *line_read);
 
 #endif
