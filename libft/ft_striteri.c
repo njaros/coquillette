@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coquillette.h                                      :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/08 16:21:14 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/08 16:33:10 by njaros           ###   ########lyon.fr   */
+/*   Created: 2021/11/02 13:10:55 by njaros            #+#    #+#             */
+/*   Updated: 2021/11/05 17:03:18 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COQUILLETTE_H
-# define COQUILLETTE_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft.h"
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+{
+	unsigned int	i;
 
-#endif
+	if ((s != NULL) && ((*f) != NULL))
+	{
+		i = 0;
+		while (s[i])
+		{
+			(*f)(i, &s[i]);
+			i++;
+		}
+	}
+}
