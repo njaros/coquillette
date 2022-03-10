@@ -32,5 +32,6 @@ int main(int ac, char **av)
 	if (isatty(fd))
 		printf("nom du tty : %s\n", ttyname(fd));
 	printf("ttyslot affiche %d\n", ttyslot());
+	close(fd);
 	return (0);
 }
