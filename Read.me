@@ -1,0 +1,258 @@
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <signal.h>
+#include <sys/stat.h>
+#include <dirent.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <stdlib.h>
+#include <termios.h>
+
+-- char *readline (const char *prompt);
+
+readline will read a line from the terminal and return it, using
+prompt as a prompt.  If prompt is NULL or the empty string, no
+prompt is issued.  The line returned is allocated with malloc(3);
+the caller must free it when finished.  The line returned has the
+final newline removed, so only the text of the line remains.
+
+-- int rl_on_new_line (void)
+
+-- void rl_replace_line (const char *text, int clear_undo)
+
+-- void rl_redisplay (void)
+
+Change what's displayed on the screen to reflect the current
+contents of rl_line_buffer.
+
+-- void add_history (const char *string)
+
+-- int access(const char *pathname, int mode);
+
+access() vérifieles droits d'accès à un fichier.
+F_OK R_OK, W_OK et X_OK servent à tester respectivement, si le fichier
+existe, la lecture, l'écriture et l'exécution du fichier.
+
+L'appel renvoie 0 s'il réussit (toutes les requêtes sont autorisées),
+ou -1 s'il échoue (au moins une requête du mode est interdite), auquel
+cas errno contient le code d'erreur.  
+
+-- pid_t fork(void);
+
+fork()  crée  un nouveau processus en copiant le processus appelant (tout
+le code après la création du fork). Le nouveau processus, qu’on appelle fils
+(« child »), est une copie exacte du processus appelant, qu’on appelle pre
+ou parent. Le fils a son propre identifiant de processus unique.
+La mémoire n'est pas partagée avec le parent ??
+
+En cas de succès, le PID du fils est renvoyé au processus parent, et 0 est
+renvoyé au processus fils. ??
+
+-- pid_t wait(int *status);
+-- pid_t waitpid(pid_t pid, int *status, int options);
+
+All of these system calls are used to wait for state changes in a child
+of the calling process, and obtain information about the child whose state has
+changed.
+A state change is considered to be: the child terminated; the child was stopped
+by a signal; or the child was resumed by a signal. In the case of a terminated
+child, performing a wait allows the system to release the resources associated
+with the child; if a wait is not performed, then the terminated child remains
+in a "zombie" state.
+
+The wait() system call suspends execution of the calling process until one of its
+children terminates.
+The waitpid() system call suspends execution of the calling process until a child
+specified by pid argument has changed state.
+
+-- pid_t wait3(int *status, int options, struct rusage *rusage);
+-- pid_t wait4(pid_t pid, int *status, int options, struct rusage *rusage);
+
+Les appels système wait3() et wait4()  sont  similaires  à  waitpid(2),
+mais  retournent  également  des  informations  sur  l’utilisation  des
+ressources par le fils dans la structure pointée par rusage.
+
+L’inclusion de <sys/time.h> n’est plus obligatoire,  mais  améliore  la
+portabilité. (En fait, <sys/resource.h> définit la structure rusage qui
+contient des champs de type struct timeval, défini dans  <sys/time.h>).
+
+-- int kill(pid_t pid, int sig);   == send signal to a process
+
+-- char *getcwd(char *buf, size_t size);
+
+La fonction getcwd() copie le chemin d'accès absolu du répertoire de travail
+courant dans la chaîne pointée par buf, qui est de longueur size.
+
+-- int chdir(const char *path);
+
+chdir() changes the current working directory of the calling
+process to the directory specified in path.
+
+-- int stat(const char *restrict pathname, struct stat *restrict statbuf);
+-- int fstat(int fd, struct stat *statbuf);
+-- int lstat(const char *restrict pathname, struct stat *restrict statbuf);
+
+Ces fonctions renvoient des informations à propos d'un fichier. Aucune
+permission n'est nécessaire sur le fichier lui-même, mais vous devez ---
+dans le cas de stat() et lstat() --- avoir la permission d'exécution (parcours)
+pour tous les répertoires de path qui mènent au fichier.
+
+stat() récupère l'état du fichier pointé par path et remplit le tampon buf.
+lstat() donne l'état du lien symbolique lui-même plutôt que celui du fichier visé.
+fstat() est identique à stat(), sauf que le fichier ouvert est pointé par le descripteur fd.
+
+struct stat {
+    dev_t     st_dev;      /* ID du périphérique contenant le fichier */
+    ino_t     st_ino;      /* Numéro inœud */
+    mode_t    st_mode;     /* Protection */
+    nlink_t   st_nlink;    /* Nb liens matériels */
+    uid_t     st_uid;      /* UID propriétaire */
+    gid_t     st_gid;      /* GID propriétaire */
+    dev_t     st_rdev;     /* ID périphérique (si fichier spécial) */
+    off_t     st_size;     /* Taille totale en octets */
+    blksize_t st_blksize;  /* Taille de bloc pour E/S */
+    blkcnt_t  st_blocks;   /* Nombre de blocs alloués */
+    time_t    st_atime;    /* Heure dernier accès */
+    time_t    st_mtime;    /* Heure dernière modification */
+    time_t    st_ctime;    /* Heure dernier changement état */
+};
+
+-- int unlink(const char *pathname);  == delete a name and possibly the file it refers
+
+-- int execve(const char *fichier, char *const argv[], char *const envp[]);  
+
+execve() executes the program referred to by pathname.  This
+causes the program that is currently being run by the calling
+process to be replaced with a new program, with newly initialized
+stack, heap, and (initialized and uninitialized) data segments.
+
+pathname must be either a binary executable, or a script starting
+with a line of the form:
+
+#!interpreter [optional-arg]
+
+argv is an array of pointers to strings passed to the new program
+as its command-line arguments.  By convention, the first of these
+strings (i.e., argv[0]) should contain the filename associated
+with the file being executed.  The argv array must be terminated
+by a NULL pointer.  (Thus, in the new program, argv[argc] will be
+NULL.)
+
+envp is an array of pointers to strings, conventionally of the
+form key=value, which are passed as the environment of the new
+program. The envp array must be terminated by a NULL pointer.
+
+		int
+           main(int argc, char *argv[])
+           {
+               char *newargv[] = { NULL, "hello", "world", NULL };
+               char *newenviron[] = { NULL };
+
+               if (argc != 2) {
+                   fprintf(stderr, "Usage: %s <file-to-exec>\n", argv[0]);
+                   exit(EXIT_FAILURE);
+               }
+
+               newargv[0] = argv[1];
+
+               execve(argv[1], newargv, newenviron);
+               perror("execve");   /* execve() returns only on error */
+               exit(EXIT_FAILURE);
+           }
+
+-- int dup(int oldfd);
+-- int dup2(int oldfd, int newfd); ==  duplicate a file descriptor
+
+dup() utilise le plus petit numéro inutilisé pour le nouveau descripteur.
+After a successful return, the old and new file descriptors may
+be used interchangeably.  Since the two file descriptors refer to
+the same open file description, they share file offset and file
+status flags; for example, if the file offset is modified by
+using lseek(2) on one of the file descriptors, the offset is also
+changed for the other file descriptor.
+
+If the file descriptor newfd was previously open, it is closed
+before being reused; The steps of closing and reusing the file descriptor newfd are
+performed atomically.
+
+-- int pipe(int pipefd[2]);
+
+pipe() creates a pipe, a unidirectional data channel that can be
+used for interprocess communication.  The array pipefd is used to
+return two file descriptors referring to the ends of the pipe.
+pipefd[0] refers to the read end of the pipe.  pipefd[1] refers
+to the write end of the pipe.  Data written to the write end of
+the pipe is buffered by the kernel until it is read from the read
+end of the pipe.
+
+-- DIR *opendir(const char *name);
+-- int closedir(DIR *dirp);
+-- struct dirent *readdir(DIR *dirp);
+
+The opendir() function opens a directory stream corresponding to
+the directory name, and returns a pointer to the directory
+stream.  The stream is positioned at the first entry in the
+directory.
+
+A successful call to closedir() also closes the
+underlying file descriptor associated with dirp.
+
+The readdir() function returns a pointer to a dirent structure
+representing the next directory entry in the directory stream
+pointed to by dirp.  It returns NULL on reaching the end of the
+directory stream or if an error occurred.
+
+struct dirent {
+               ino_t          d_ino;       /* Inode number */
+               off_t          d_off;       /* Not an offset; see below */
+               unsigned short d_reclen;    /* Length of this record */
+               unsigned char  d_type;      /* Type of file; not supported
+                                              by all filesystem types */
+               char           d_name[256]; /* Null-terminated filename */
+           };
+
+-- char *strerror(int errnum);
+-- void perror(const char *s);
+
+returnedPID = fork();
+if (returnedPID < 0) /* error in the fork call*/
+        perror("oopsy, my fork call failed: ");
+
+which will print a line containing my string "oopsy, my fork call
+failed: " followed by a standard Unix error message corresponding
+to the value in errno, e.g., "Out of memory". If I can't figure out
+my problem from that message (about 70% of the time I can), at least
+I probably get some good key words and phrases I can search the web
+for more help with.
+
+strerror is similar to perror but just returns the actual string
+corresponding to the error number you feed it manually and then you
+have to print it yourself.  Here's how I've sometimes used it:
+
+if (fd == -1)
+	printf(" Damn: %s", strerror(someErrorCode) );
+
+-- int isatty(int fd);  == test whether a file descriptor refers to a terminal
+-- char *ttyname(int fd);  == return name of a terminal
+-- int ttyslot(void);   == find the slot of the current user's terminal in some file
+https://man7.org/linux/man-pages/man3/ttyslot.3.html
+
+-- int ioctl(int fd, unsigned long request, ...);
+
+-- char *getenv(const char *name);
+
+The getenv() function searches the environment list to find the
+environment variable name, and returns a pointer to the
+corresponding value string.
+
+-- int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
+-- int tcgetattr(int fd, struct termios *termios_p);
+https://man7.org/linux/man-pages/man3/tcsetattr.3p.html
+
