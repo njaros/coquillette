@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 12:55:34 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/10 13:05:15 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 13:42:41 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 int	get_fd_rdonly(char *entry)
 {
 	int	i;
+	int	fd;
 
-	i = 0;
-	while (entry[i])
+	i = -1;
+	while (entry[++i])
 	{
-		if (entry[i] <= '9' && entry[i] >= '0')
-			i++;
-		else
-			break ;
+		if (entry[i] < '0' && entry[i] > '9')
+			return (open(entry, O_RDONLY));
 	}
-	if (entry[i] == 0)
+	fd = open(entry, O_RDONLY);
+	if (fd < 0)
 		return (ft_atoi(entry));
 	else
-		return (open(entry, O_RDONLY));
+		return (fd);
 }

@@ -6,7 +6,9 @@ void	handler(int sig, siginfo_t *siginfo, void *ucontext)
 		return ;
 	if (sig == SIGINT)
 	{
-		ft_putstr_fd("\ncoquillette0.1>", 1);
+		rl_redisplay();
+		//ft_putstr_fd("\ncoquillette0.1>", 1);
+		//ft_putstr_fd(rl_line_buffer, 1);
 		return ;
 	}
 	(void) ucontext;

@@ -14,14 +14,28 @@
 # define COQUILLETTE_H
 
 # include <stdio.h>
-# include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/time.h>
+# include <sys/resource.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <errno.h>
+# include <string.h>
+# include <sys/ioctl.h>
+# include <termios.h>
+# include <fcntl.h>
 # include "libft.h"
 
 void	handler(int sig, siginfo_t *siginfo, void *ucontext);
 void	init_sigact(struct sigaction *act);
 char	*rl_get(char *line_read);
+
+// Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)
+
+int		get_fd_rdonly(char *entry);
 
 #endif

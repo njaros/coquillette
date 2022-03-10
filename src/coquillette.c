@@ -22,7 +22,7 @@ int	main(void)
 	while (1)
 	{
 		line_read = rl_get(line_read);
-		ft_putendl_fd(line_read, 1);
+		ft_putstr_fd(rl_line_buffer, 1);
 	}
 	return (0);
 }
