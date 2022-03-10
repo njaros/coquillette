@@ -11,6 +11,9 @@ int main(int argc, char *argv[])
     pid_t cpid;
     char buf;
 
+	pipefd[0] = get_fd(av[1]);
+	pipefd[1] = get_fd(av[2]);
+
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <string>\n", argv[0]);
         exit(EXIT_FAILURE);
