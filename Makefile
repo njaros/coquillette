@@ -14,7 +14,7 @@
 
 NAME = minishell
 CC = gcc
-FLAGS = -Werror -Wextra -Wall
+FLAGS = ##-Werror -Wextra -Wall
 
 ## LES CHEMINS ##
 
@@ -29,7 +29,8 @@ LIB =	libft/libft.a \
 ## LES SOURCES, OBJETS et INCLUDES ##
 
 LST_SRCS =	coquillette_utils1.c \
-			coquillette.c
+			coquillette.c \
+			traitement_signaux.c
 LST_OBJS = ${LST_SRCS:.c=.o}
 LST_INCLUDES =	coquillette.h \
 				libft.h
@@ -65,7 +66,7 @@ clean:
 
 fclean:				clean
 					make fclean -C ./libft
-					rm fdf
+					rm ${NAME}
 
 re:					fclean all
 

@@ -17,6 +17,11 @@ char	*rl_get(char *line_read)
 	if (line_read)
 		free(line_read);
 	line_read = readline("coquillette0.1>");
+	if (!line_read)
+	{
+		ft_putchar_fd('\n', 1);
+		exit(EXIT_SUCCESS);
+	}
 	if (line_read && *line_read)
 		add_history(line_read);
 	return (line_read);

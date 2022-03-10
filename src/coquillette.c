@@ -14,9 +14,11 @@
 
 int	main(void)
 {
-	char	*line_read;
-	line_read = NULL;
+	struct sigaction	act;
+	char				*line_read;
 
+	init_sigact(&act);
+	line_read = NULL;
 	while (1)
 	{
 		line_read = rl_get(line_read);

@@ -17,8 +17,11 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 # include "libft.h"
 
+void	handler(int sig, siginfo_t *siginfo, void *ucontext);
+void	init_sigact(struct sigaction *act);
 char	*rl_get(char *line_read);
 
 #endif
