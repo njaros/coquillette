@@ -32,6 +32,17 @@
 # include <fcntl.h>
 # include "libft.h"
 
+typedef struct s_pipe
+{
+    int     infile;
+    int     outfile;
+    char    **path;
+    char    **cmd1_arg;
+    char    *cmd1;
+    char    **cmd2_arg;
+    char    *cmd2;
+}               t_pipe;
+
 void	handler(int sig, siginfo_t *siginfo, void *ucontext);
 void	init_sigact(struct sigaction *act);
 char	*rl_get(char *line_read);
@@ -39,5 +50,15 @@ char	*rl_get(char *line_read);
 // Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)
 
 int		get_fd_rdonly(char *entry);
+
+//pipe
+void    init(t_pipe *pip, char **argv);
+void    child_one(t_pipe *pip, int *fd, char **envp);
+void    child_two(t_pipe *pip, int *fd, char **envp);
+char    *get_cmd(char *cmd, char **path);
+//
+void    feel_free(t_pipe *pip);
+void	ft_free(char **tab);
+void    error(char *msg);
 
 #endif
