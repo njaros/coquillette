@@ -19,7 +19,7 @@ char	*rl_get(char *line_read)
 	line_read = readline("coquillette0.1>");
 	if (!line_read)
 	{
-		ft_putchar_fd('\n', 1);
+		ft_putendl_fd("\033zexit", 1);
 		exit(EXIT_SUCCESS);
 	}
 	if (line_read && *line_read)

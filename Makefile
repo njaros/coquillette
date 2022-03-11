@@ -10,6 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
+## COMMANDES BASH
+
+PATH_RL = $(shell brew --prefix readline)
+
 ## LES INCONTOURNABLES ##
 
 NAME = minishell
@@ -39,15 +43,20 @@ SRC = $(addprefix ${PATH_SRCS}/,${LST_SRCS})
 OBJS = $(addprefix ${PATH_OBJS}/,${LST_OBJS})
 INCLUDES = $(addprefix ${PATH_INCLUDES}/,${LST_INCLUDES})
 
+## CHEMINS NON INCLUS DANS ENV
+
+READLINE_INC	=	-I $(PATH_RL)/include
+READLINE_LIB	=	-L $(PATH_RL)/lib
+
 ## LES REGLES DE COMPILATION DU PROGRAMME ##
 
 all :				lib_libft ${LIB} ${NAME} Makefile
 
 ${NAME} :			${OBJS}
-					${CC} ${FLAGS} ${OBJS} ${LIB} -lreadline -o $@
+					${CC} ${FLAGS} ${OBJS} $(READLINE_LIB) ${LIB} -lreadline -o $@
 
 ${PATH_OBJS}/%.o:	${PATH_SRCS}/%.c ${INCLUDES} ${LIB} Makefile | ${PATH_OBJS}
-					${CC} ${FLAGS} -c $< -o $@ -I ${PATH_INCLUDES}
+					${CC} ${FLAGS} $(READLINE_INC) -c $< -o $@ -I ${PATH_INCLUDES}
 
 ${PATH_OBJS}:
 					mkdir obj
@@ -67,7 +76,7 @@ clean:
 
 fclean:				clean
 					make fclean -C ./libft
-					rm ${NAME}
+					rm -f ${NAME}
 
 re:					fclean all
 
