@@ -3,17 +3,12 @@
 void	handler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	if (sig == SIGQUIT)
-		return ;
-	if (sig == SIGINT)
 	{
 		rl_redisplay();
-		//ft_putstr_fd("\ncoquillette0.1>", 1);
-		//ft_putstr_fd(rl_line_buffer, 1);
 		return ;
 	}
-	(void) ucontext;
-	ft_putendl_fd("\nquit", 1);
-	exit(EXIT_SUCCESS);
+	ft_putstr_fd("coquillette0.1>", 1);
+	rl_redisplay();
 }
 
 void	init_sigact(struct sigaction *act)
