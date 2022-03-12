@@ -14,6 +14,8 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 #include <termios.h>
+#include <curses.h>
+#include <term.h>
 
 -- char *readline (const char *prompt);
 
@@ -43,34 +45,6 @@ existe, la lecture, l'écriture et l'exécution du fichier.
 L'appel renvoie 0 s'il réussit (toutes les requêtes sont autorisées),
 ou -1 s'il échoue (au moins une requête du mode est interdite), auquel
 cas errno contient le code d'erreur.  
-
--- pid_t fork(void);
-
-fork()  crée  un nouveau processus en copiant le processus appelant (tout
-le code après la création du fork). Le nouveau processus, qu’on appelle fils
-(« child »), est une copie exacte du processus appelant, qu’on appelle pre
-ou parent. Le fils a son propre identifiant de processus unique.
-La mémoire n'est pas partagée avec le parent ??
-
-En cas de succès, le PID du fils est renvoyé au processus parent, et 0 est
-renvoyé au processus fils. ??
-
--- pid_t wait(int *status);
--- pid_t waitpid(pid_t pid, int *status, int options);
-
-All of these system calls are used to wait for state changes in a child
-of the calling process, and obtain information about the child whose state has
-changed.
-A state change is considered to be: the child terminated; the child was stopped
-by a signal; or the child was resumed by a signal. In the case of a terminated
-child, performing a wait allows the system to release the resources associated
-with the child; if a wait is not performed, then the terminated child remains
-in a "zombie" state.
-
-The wait() system call suspends execution of the calling process until one of its
-children terminates.
-The waitpid() system call suspends execution of the calling process until a child
-specified by pid argument has changed state.
 
 -- pid_t wait3(int *status, int options, struct rusage *rusage);
 -- pid_t wait4(pid_t pid, int *status, int options, struct rusage *rusage);
@@ -126,72 +100,6 @@ struct stat {
 
 -- int unlink(const char *pathname);  == delete a name and possibly the file it refers
 
--- int execve(const char *fichier, char *const argv[], char *const envp[]);  
-
-execve() executes the program referred to by pathname.  This
-causes the program that is currently being run by the calling
-process to be replaced with a new program, with newly initialized
-stack, heap, and (initialized and uninitialized) data segments.
-
-pathname must be either a binary executable, or a script starting
-with a line of the form:
-
-#!interpreter [optional-arg]
-
-argv is an array of pointers to strings passed to the new program
-as its command-line arguments.  By convention, the first of these
-strings (i.e., argv[0]) should contain the filename associated
-with the file being executed.  The argv array must be terminated
-by a NULL pointer.  (Thus, in the new program, argv[argc] will be
-NULL.)
-
-envp is an array of pointers to strings, conventionally of the
-form key=value, which are passed as the environment of the new
-program. The envp array must be terminated by a NULL pointer.
-
-		int
-           main(int argc, char *argv[])
-           {
-               char *newargv[] = { NULL, "hello", "world", NULL };
-               char *newenviron[] = { NULL };
-
-               if (argc != 2) {
-                   fprintf(stderr, "Usage: %s <file-to-exec>\n", argv[0]);
-                   exit(EXIT_FAILURE);
-               }
-
-               newargv[0] = argv[1];
-
-               execve(argv[1], newargv, newenviron);
-               perror("execve");   /* execve() returns only on error */
-               exit(EXIT_FAILURE);
-           }
-
--- int dup(int oldfd);
--- int dup2(int oldfd, int newfd); ==  duplicate a file descriptor
-
-dup() utilise le plus petit numéro inutilisé pour le nouveau descripteur.
-After a successful return, the old and new file descriptors may
-be used interchangeably.  Since the two file descriptors refer to
-the same open file description, they share file offset and file
-status flags; for example, if the file offset is modified by
-using lseek(2) on one of the file descriptors, the offset is also
-changed for the other file descriptor.
-
-If the file descriptor newfd was previously open, it is closed
-before being reused; The steps of closing and reusing the file descriptor newfd are
-performed atomically.
-
--- int pipe(int pipefd[2]);
-
-pipe() creates a pipe, a unidirectional data channel that can be
-used for interprocess communication.  The array pipefd is used to
-return two file descriptors referring to the ends of the pipe.
-pipefd[0] refers to the read end of the pipe.  pipefd[1] refers
-to the write end of the pipe.  Data written to the write end of
-the pipe is buffered by the kernel until it is read from the read
-end of the pipe.
-
 -- DIR *opendir(const char *name);
 -- int closedir(DIR *dirp);
 -- struct dirent *readdir(DIR *dirp);
@@ -244,7 +152,9 @@ if (fd == -1)
 -- int ttyslot(void);   == find the slot of the current user's terminal in some file
 https://man7.org/linux/man-pages/man3/ttyslot.3.html
 
--- int ioctl(int fd, unsigned long request, ...);
+-- int ioctl(int fd, unsigned long request, ...);  == Contrôler les périphériques
+#include <sys/ioctl.h>
+http://manpages.ubuntu.com/manpages/bionic/fr/man2/ioctl.2.html 
 
 -- char *getenv(const char *name);
 
@@ -256,3 +166,38 @@ corresponding value string.
 -- int tcgetattr(int fd, struct termios *termios_p);
 https://man7.org/linux/man-pages/man3/tcsetattr.3p.html
 
+-- int tgetent(char *bp, const char *name);
+https://zestedesavoir.com/tutoriels/1733/termcap-et-terminfo/ 
+Cette fonction prend en premier paramètre l’adresse d’un buffer dans
+lequel stocker les informations utiles au fonctionnement interne de
+Termcap et en second paramètre le nom / le type de votre terminal.
+Termcap a besoin de connaitre le type de terminal sur lequel j'exécute mon programme.
+
+-- int tgetflag(char *id);
+renvoie un booléen
+Cette fonction est utilisée pour vérifier les capacités d’un terminal,
+savoir s’il est capable de faire tel ou tel action.
+If the capability name is present in the terminal description,
+tgetflag returns 1; otherwise, it returns 0.
+
+-- int tgetnum(char *id);
+tgetnum permet de récupérer des informations numériques en rapport avec votre terminal.
+Comme par exemple le nombre de lignes et de colonnes.
+
+-- char *tgetstr(char *id, char **area);
+C’est elle qui permet de récupérer les fameux termcaps sous la forme d’une séquence
+d’échappement ! On peut par exemple récupérer le termcap « cl » (pour clean) qui
+permet de nettoyer (vider) un terminal.
+http://manpages.ubuntu.com/manpages/bionic/man5/termcap.5.html 
+
+-- char *tgoto(const char *cap, int col, int row);
+The special case of cursor motion is handled by tgoto.
+
+-- int tputs(const char *str, int affcnt, int (*putc)(int));
+tputs est la fonction qui marche de pair avec tgetstr, c’est elle qui va se charger
+d’exécuter le termcap que l’on vient de récupérer.
+Le premier argument de tputs correspond bien évidement au termcap à exécuter,
+le second au nombre de lignes affectées et le troisième à un pointeur de fonction
+pour afficher le contenu du termcap (putchar fera amplement l’affaire).
+https://www.gnu.org/software/termutils/manual/termcap-1.3/html_chapter/termcap_2.html
+https://www.gnu.org/software/termutils/manual/termcap-1.3/html_chapter/termcap_4.html#SEC23
