@@ -35,7 +35,9 @@ LIB =	libft/libft.a \
 LST_SRCS =	coquillette_utils1.c \
 			coquillette.c \
 			traitement_signaux.c \
-			libft_ajout1.c
+			libft_ajout1.c	\
+			pipe.c	\
+			pipe_utils.c
 LST_OBJS = ${LST_SRCS:.c=.o}
 LST_INCLUDES =	coquillette.h \
 				libft.h

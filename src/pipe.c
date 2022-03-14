@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_pipe.c                                        :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:09:26 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/10 16:09:26 by marvin           ###   ########.fr       */
+/*   Updated: 2022/03/14 11:34:12 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/coquillette.h"
+#include "coquillette.h"
 
 char    *get_cmd(char *cmd, char **path)
 {
@@ -78,7 +78,7 @@ void    init(t_pipe *pip, char **argv)
         error("access"); // à tester !!
 }
 
-int main(int argc, char *argv[], char **envp)
+int pipex(int argc, char *argv[], char **envp)
 {
     t_pipe  pip;
     int     fd[2];

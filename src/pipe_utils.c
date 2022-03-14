@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:53:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/11 15:53:32 by marvin           ###   ########.fr       */
+/*   Updated: 2022/03/14 11:26:53 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/coquillette.h"
+#include "coquillette.h"
 
 void    error(char *msg)
 {
-    perror("msg");
+    perror(msg);
     exit(EXIT_FAILURE);
 }
 

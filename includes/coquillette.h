@@ -52,6 +52,7 @@ char	*rl_get(char *line_read);
 int		get_fd_rdonly(char *entry);
 
 //pipe
+int     pipex(int argc, char *argv[], char **envp);
 void    init(t_pipe *pip, char **argv);
 void    child_one(t_pipe *pip, int *fd, char **envp);
 void    child_two(t_pipe *pip, int *fd, char **envp);

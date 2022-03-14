@@ -12,17 +12,36 @@
 
 #include "coquillette.h"
 
-int	main(void)
+int	main(int argc, char ** argv, char **envp)
 {
 	struct sigaction	act;
 	char				*line_read;
+	(void)argc;
+	char   				*env;
+	char				**path;
+	char				**cmd_arg;
+	char				*cmd;
+	pid_t				pid;
 
 	init_sigact(&act);
+	env = getenv("PATH");
+	path = ft_split(env, ':');
 	line_read = NULL;
 	while (1)
 	{
 		line_read = rl_get(line_read);
-		ft_putendl_fd(rl_line_buffer, 1);
+		cmd_arg = ft_split(line_read, ' ');
+		cmd = get_cmd(cmd_arg[0], path);
+		if (cmd == NULL)
+        	printf("%s: command not found\n", cmd_arg[0]);
+		else
+			pid = fork();
+			if (pid == -1)
+        		perror("fork");
+			if (pid == 0)
+				if (execve(cmd, cmd_arg, envp) == -1)
+       				perror("execve");
+			waitpid(pid, NULL, 0);
 	}
 	return (0);
 }
