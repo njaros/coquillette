@@ -32,6 +32,15 @@
 # include <fcntl.h>
 # include "libft.h"
 
+typedef struct pipex_data
+{
+	int		pipefd_in[2];
+	int		pipefd_out[2];
+	char	**envp;
+	char	**cmd1;
+	char	**cmd2;
+}	pipex_data;
+
 typedef struct s_pipe
 {
     int     infile;

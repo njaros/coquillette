@@ -22,8 +22,10 @@ int	main(int argc, char ** argv, char **envp)
 	char				**cmd_arg;
 	char				*cmd;
 	pid_t				pid;
+	pipex_data			data;
 
 	init_sigact(&act);
+	init_pipex_data(&data, envp);
 	env = getenv("PATH");
 	path = ft_split(env, ':');
 	line_read = NULL;
