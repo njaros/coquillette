@@ -12,6 +12,26 @@
 
 #include "coquillette.h"
 
+int	init_envp(t_env **env, char **envp)
+{
+	t_env	*tmp;
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		tmp = malloc(sizeof(t_env));
+		if (!tmp)
+			return (-1);
+		tmp->name = ft_substr(envp[0], 0, ft_strchr(envp[0], '=') - envp[0]);
+		tmp->value = ft_substr(ft_strchr(envp[0], '='), 0, ft_strlen(envp[0])); // faire attention au cas où il n'y aurait pas de valeur !!
+		tmp->next = NULL;
+		ft_lstadd_back(env, tmp); // attention arguments à transformer en t_env
+		free(tmp);
+		i++;
+	}
+}
+
 int	main(int argc, char ** argv, char **envp)
 {
 	struct sigaction	act;
