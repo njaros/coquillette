@@ -12,6 +12,18 @@
 
 #include "coquillette.h"
 
+int init_pipex_data(pipex_data *data, char **envp)
+{
+	data->envp = envp;
+	data->cmd1 = NULL;
+	data->cmd2 = NULL;
+	if (pipe(data->pipefd_in) == -1)
+		return (-1);
+	if (pipe(data->pipefd_out) == -1)
+		return (-1);
+	return (0);
+}
+
 char	*rl_get(char *line_read)
 {
 	if (line_read)

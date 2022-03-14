@@ -52,9 +52,15 @@ typedef struct s_pipe
     char    *cmd2;
 }               t_pipe;
 
+// Gestion initiales de l'entrée utilisateur
+
 void	handler(int sig, siginfo_t *siginfo, void *ucontext);
-void	init_sigact(struct sigaction *act);
 char	*rl_get(char *line_read);
+
+// Fonctions d'initialisation
+
+int 	init_pipex_data(pipex_data *data, char **envp);
+void	init_sigact(struct sigaction *act);
 
 // Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)
 
