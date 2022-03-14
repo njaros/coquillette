@@ -32,18 +32,23 @@ int	main(int argc, char ** argv, char **envp)
 	while (1)
 	{
 		line_read = rl_get(line_read);
-		cmd_arg = ft_split(line_read, ' ');
-		cmd = get_cmd(cmd_arg[0], path);
-		if (cmd == NULL)
-        	printf("%s: command not found\n", cmd_arg[0]);
+		if (contain_line(&line_read, &data))
+			pipex(data);
 		else
-			pid = fork();
-			if (pid == -1)
-        		perror("fork");
-			if (pid == 0)
-				if (execve(cmd, cmd_arg, envp) == -1)
-       				perror("execve");
-			waitpid(pid, NULL, 0);
+		{
+			cmd_arg = ft_split(line_read, ' ');
+			cmd = get_cmd(cmd_arg[0], path);
+			if (cmd == NULL)
+        		printf("%s: command not found\n", cmd_arg[0]);
+			else
+				pid = fork();
+				if (pid == -1)
+        			perror("fork");
+				if (pid == 0)
+					if (execve(cmd, cmd_arg, envp) == -1)
+       					perror("execve");
+				waitpid(pid, NULL, 0);
+		}
 	}
 	return (0);
 }
