@@ -6,11 +6,12 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 10:42:30 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/14 10:42:41 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/15 14:48:03 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/coquillette.h"
+
 
 void	builtins(char **cmd_arg)
 {
@@ -39,56 +40,73 @@ void	built_echo(char **cmd_arg)
 
 }
 
-void	build_env(t_env *env, int fd)
-{
-	while (env)
-	{
-		if (env->value) // vérifier s'il faut tout afficher sous bash ??
-		{
-			ft_putstr(env->name, fd);
-			ft_putstr(env->value, fd);
-			ft_putchar('\n', fd); // le fd peut etre différent de la sortie standard !!!!
-			//printf("%s=%s\n", env->name, env->value); // OU
-		}
-		env->next;
-	}
-}
-
-void	built_cd(char **cmd_arg)
+void	built_cd(char **cmd_arg, t_list *env)
 {
 	char	*home;
+	t_env	*tmp;
+	char	*pwd;
 
+	pwd = getcwd(NULL, 0);
+	home = getenv("HOME"); // vérifier à chaque appel de cette fonction que la varibale existe, sinon la créer ??
 	if (!cmd_arg[1])
-	{
-		home = getenv("HOME"); // vérifier à chaque appel de cette fonction que la varibale existe, sinon la créer ??
 		chdir(home);
-	}
 	else
 	{
-		if (chdir(cmd_arg[1]) == 1)
-			perror("dir");
-		else
-		// modifier le pwd et le oldpwd
+		if (!ft_strncmp(cmd_arg[1], "~", 1))
+			chdir(home);
+		else if (chdir(cmd_arg[1]) == -1)
+			perror("cd");
+	}
+	while (env)
+	{
+		tmp = env->content;
+		if (!ft_strncmp(tmp->name, "PWD", 3))
+			tmp->value = getcwd(NULL, 0);
+		if (!ft_strncmp(tmp->name, "OLDPWD", 3))
+			tmp->value = pwd;
+		env = env->next;
 	}
 }
 
-void	built_pwd(void)
+void	built_pwd(int fd)
 {
-	char	pwd[256]; // max path len ?
+	char	*pwd;
 
-	if (getcwd(pwd, sizeof(pwd) == NULL) // ou pwd = getcwd(NULL, 0);
-		perror("getcwd() error");
-	else
-		printf("%s\n", pwd);
+	// if (getcwd(pwd, sizeof(pwd) == NULL)
+	// 	perror("getcwd() error");
+	pwd = getcwd(NULL, 0);
+	ft_putstr_fd(pwd, fd);
+	ft_putchar_fd('\n', fd);
 }
 
-void	built_exit(char **cmd_arg)
+void	built_env(t_list *env, int fd)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env->content;
+		if (tmp->value)
+		{
+			ft_putstr_fd(tmp->name, fd);
+			ft_putstr_fd(tmp->value, fd);
+			ft_putchar_fd('\n', fd); // le fd peut etre différent de la sortie standard !!!!
+		}
+		env = env->next;
+	}
+}
+
+void	built_exit(char **cmd_arg, int fd)
 {
 	int	i;
 
 	if (!cmd_arg[1])
+	{
+		ft_putstr_fd("exit", fd);
+		ft_putchar_fd('\n', fd);
 		exit(code_erreur); // code erreur enregsitré dans struct globale + free
-	else
+	}
+	else // verifier aussi sir le nb est compris entre 0 et ..., si c'est un code erreur
 	{
 		i = 0;
 		while(cmd_arg[1][i])
@@ -98,6 +116,8 @@ void	built_exit(char **cmd_arg)
 			else
 				return ;
 		}
+		ft_putstr_fd("exit", fd);
+		ft_putchar_fd('\n', fd);
 		exit(ft_atoi(cmd_arg[1])); // + free
 	}
-}	
+}
