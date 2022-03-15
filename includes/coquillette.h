@@ -36,7 +36,6 @@ typedef struct s_env
 {
     char    *name;
     char    *value;
-    void    *next;
 }               t_env;
 
 typedef struct pipex_data
@@ -84,6 +83,7 @@ char    *get_cmd(char *cmd, char **path);
 //
 void    feel_free(t_pipe *pip);
 void	ft_free(char **tab);
-int		error(int err);
+void	error(char *msg);
+int		error2(int err);
 
 #endif

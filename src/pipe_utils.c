@@ -3,19 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:53:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/15 08:58:50 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/15 12:18:14 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-int	error(int err)
+int	error2(int err)
 {
 	strerror(errno);
 	return (err);
+}
+
+void	error(char *msg)
+{
+	perror(msg);
+	exit(EXIT_FAILURE);
 }
 
 void	ft_free(char **tab)
