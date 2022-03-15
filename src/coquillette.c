@@ -42,8 +42,10 @@ int	main(int argc, char ** argv, char **envp)
 	char				**cmd_arg;
 	char				*cmd;
 	pid_t				pid;
+	int					begin;
 	pipex_data			data;
 
+	begin = 1;
 	init_sigact(&act);
 	init_pipex_data(&data, envp);
 	env = getenv("PATH");
@@ -52,10 +54,11 @@ int	main(int argc, char ** argv, char **envp)
 	while (1)
 	{
 		line_read = rl_get(line_read);
-		while (contain_pipe(line_read))
+		while (line_read)
 		{
-			parsing_line(&line_read, &data);
+			parsing_line(line_read, &data, &begin);
 			execpipe(data);
+			line_read = next_pipe(line_read, &data);
 		}
 		else
 		{

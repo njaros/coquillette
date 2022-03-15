@@ -43,8 +43,10 @@ typedef struct pipex_data
 {
 	int		pipefd_in[2];
 	int		pipefd_out[2];
+	// = n si le prochain pipe est à la position line_read[n]
+	// = 0 s'il n'y a pas ou plus d'autre pipe
+	long	next_pipe_pos;
 	char	**envp;
-	char	**cmd_path;
 	char	**cmd;
 }	pipex_data;
 

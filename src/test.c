@@ -25,13 +25,6 @@ int	get_fd_rdonly(char *entry)
 
 int main(int ac, char **av)
 {
-	int	fd;
-
-	fd = get_fd_rdonly(av[1]);
-	printf("le fd est : %d\n", fd);
-	if (isatty(fd))
-		printf("nom du tty : %s\n", ttyname(fd));
-	printf("ttyslot affiche %d\n", ttyslot());
-	close(fd);
-	return (0);
+	int fd1 = open(av[1], O_WRONLY, O_TRUNC);
+	close(fd1);
 }
