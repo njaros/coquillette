@@ -44,8 +44,8 @@ typedef struct pipex_data
 	int		pipefd_in[2];
 	int		pipefd_out[2];
 	char	**envp;
-	char	**cmd1;
-	char	**cmd2;
+	char	**cmd_path;
+	char	**cmd;
 }	pipex_data;
 
 typedef struct s_pipe
@@ -82,6 +82,6 @@ char    *get_cmd(char *cmd, char **path);
 //
 void    feel_free(t_pipe *pip);
 void	ft_free(char **tab);
-void    error(char *msg);
+int		error(int err);
 
 #endif

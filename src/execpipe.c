@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*   execpipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 15:53:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/15 08:58:50 by njaros           ###   ########lyon.fr   */
+/*   Created: 2022/03/15 08:43:38 by njaros            #+#    #+#             */
+/*   Updated: 2022/03/15 09:42:26 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-int	error(int err)
+int	execpipe(pipex_data *data)
 {
-	strerror(errno);
-	return (err);
-}
+	pid_t	fork_pid;
 
-void	ft_free(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-}
-
-void    feel_free(t_pipe *pip)
-{
-    free(pip->cmd1);
-    free(pip->cmd2);
-    ft_free(pip->cmd1_arg);
-    ft_free(pip->cmd2_arg);
-    ft_free(pip->path);
+	fork_pid = fork();
+	if (fork_pid == -1)
+		return (error(-1));
+	if (fork_pid == 0)
+	{
+		if (dup2(data->pipefd_in[0], STDIN_FILENO) == -1)
+			return (error(-1));
+		if (dup2(data->pipefd_out[1], STDOUT_FILENO) == -1)
+			return (error(-1));
+		close(data->pipefd_out[0]);
+		close(data->pipefd_in[1]);
+		if (execve(data->cmd_path, data->cmd, data->envp) == -1)
+			return (error(-1));
+	}
+	
 }

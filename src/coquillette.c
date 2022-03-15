@@ -52,8 +52,11 @@ int	main(int argc, char ** argv, char **envp)
 	while (1)
 	{
 		line_read = rl_get(line_read);
-		if (contain_line(&line_read, &data))
-			pipex(data);
+		while (contain_pipe(line_read))
+		{
+			parsing_line(&line_read, &data);
+			execpipe(data);
+		}
 		else
 		{
 			cmd_arg = ft_split(line_read, ' ');

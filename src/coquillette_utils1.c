@@ -15,12 +15,8 @@
 int init_pipex_data(pipex_data *data, char **envp)
 {
 	data->envp = envp;
-	data->cmd1 = NULL;
-	data->cmd2 = NULL;
-	if (pipe(data->pipefd_in) == -1)
-		return (-1);
-	if (pipe(data->pipefd_out) == -1)
-		return (-1);
+	data->cmd = NULL;
+	data->cmd_path = NULL;
 	return (0);
 }
 
@@ -31,7 +27,7 @@ char	*rl_get(char *line_read)
 	line_read = readline("coquillette0.1>");
 	if (!line_read)
 	{
-		ft_putendl_fd("\033zexit", 1);
+		ft_putendl_fd("\nexit", 1);
 		exit(EXIT_SUCCESS);
 	}
 	if (line_read && *line_read)
