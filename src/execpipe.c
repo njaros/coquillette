@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 08:43:38 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/15 15:37:27 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/15 16:32:15 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,49 @@ int	ft_switch(int n)
 	return (1);
 }
 
+char	*found_cmd(char *entry)
+{
+	char	*env;
+	char	*cmd;
+	char	**path_tab;
+	int		i;
+
+	i = -1;
+	while (entry[++i])
+		if (entry[i] == '/')
+			return (entry);
+	env = getenv("PATH");
+	free(env);
+	path_tab = ft_split(env, ':');
+	cmd = get_cmd(entry, path_tab);
+	ft_free(path_tab);
+	free(entry);
+	return (cmd);
+}
+
 int	parsing_line(char *line, pipex_data *data, int *begin)
 {
 	int		i;
+	int		in_dquote;
 	int		in_quote;
 	char	*who_s_cmd;
 	int		who_s_fd_rd;
 	int		who_s_fd_wr;
 
 	in_quote = 0;
+	in_dquote = 0;
 	i = -1;
-	while (line[++i] && !(line[i] == ' ' && in_quote == 1))
+	while (line[++i] == ' ')
+		;
+	while (line[++i] && !(line[i] == ' ' && in_dquote == 0))
 	{
-		if (line[i] == 34) // 34 = "
+		if (line[i] == 34 && !in_quote) // 34 = "
+			in_dquote = ft_switch(in_dquote);
+		if (line[i] == 39 && !in_dquote)
 			in_quote = ft_switch(in_quote);
 	}
 	if (line[i] == ' ')
-		who_s_cmd = found_cmd(ft_substr(line, 0, i), data->envp);
+		data->cmd = found_cmd(ft_substr(line, 0, i));
 }
 
 char	*next_pipe(char *line, pipex_data *data)

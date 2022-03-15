@@ -60,15 +60,13 @@ int	main(int argc, char ** argv, char **envp)
 
 	begin = 1;
 	init_sigact(&act);
-	init_pipex_data(&data, envp);
-	// init_sigact(&act);
-	// init_pipex_data(&data, envp);
 	env_list = init_envp(envp);
 	if (!env_list)
 		return (-1);
 	env = getenv("PATH");
 	path = ft_split(env, ':');
 	line_read = NULL;
+	init_pipex_data(&data, envp);
 	while (1)
 	{
 		line_read = rl_get(line_read);
@@ -78,7 +76,7 @@ int	main(int argc, char ** argv, char **envp)
 			execpipe(data);
 			line_read = next_pipe(line_read, &data);
 		}
-		else
+		/*else
 		{
 			cmd_arg = ft_split(line_read, ' ');
 			cmd = get_cmd(cmd_arg[0], path);
@@ -92,7 +90,7 @@ int	main(int argc, char ** argv, char **envp)
 					if (execve(cmd, cmd_arg, envp) == -1)
 						perror("execve");
 				waitpid(pid, NULL, 0);
-		// }
+		}*/
 	}
 	return (0);
 }

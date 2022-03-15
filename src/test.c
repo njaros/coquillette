@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 int	get_fd_rdonly(char *entry)
 {
@@ -25,6 +26,9 @@ int	get_fd_rdonly(char *entry)
 
 int main(int ac, char **av)
 {
-	int fd1 = open(av[1], O_WRONLY, O_TRUNC);
-	close(fd1);
+	int	i;
+
+	while (av[++i])
+		;
+	printf("%s", getenv("PWD"));
 }
