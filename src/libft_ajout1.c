@@ -32,3 +32,10 @@ int	get_fd_rdonly(char *entry)
 	else
 		return (fd);
 }
+
+int	ft_switch(int n)
+{
+	if (n)
+		return (0);
+	return (1);
+}
