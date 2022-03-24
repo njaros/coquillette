@@ -39,3 +39,31 @@ int	ft_switch(int n)
 		return (0);
 	return (1);
 }
+
+// ft_lsttake prend retire un maillon d'une liste, puis met le next de ce maillon à NULL, puis retourne ce maillon
+// le pointeur de la liste qui a perdu son maillon passe au next, attention à la perte de données
+
+int	ft_metachar(int c)
+{
+	if (c >= 32 && c <= 47)
+		return (1);
+	if (c >= 58 && c <= 64)
+		return (1);
+	if (c >= 91 && c <= 94 || c == 96)
+		return (1);
+	if (c >= 123 && c <= 125)
+		return (1);
+	return (0);
+}
+
+t_list	*ft_lsttake(t_list **alst)
+{
+	t_list	*token;
+
+	if (!*alst)
+		return NULL;
+	token = *alst;
+	*alst = (*alst)->next;
+	token->next = NULL;
+	return (token);
+}
