@@ -6,29 +6,44 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 10:42:30 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/15 14:48:03 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/24 11:18:25 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/coquillette.h"
 
+int	ft_strcmp(char *s1, char *s2)
+{
+    int	i;
+
+    i = 0;
+    while (s1[i] || s2[i])
+    {
+        if (!(s1[i] == s2[i]))
+        {
+            return (s1[i] - s2[i]);
+        }
+        i++;
+    }
+    return (0);
+}
 
 void	builtins(char **cmd_arg)
 {
-	if (!ft_strncmp(cmd_arg[0], "echo", 4))
+	if (!ft_strcmp(cmd_arg[0], "echo"))
 		built_echo
-	else if (!ft_strncmp(cmd_arg[0], "cd", 2))
-		built_cd(cmd_arg);
-	else if (!ft_strncmp(cmd_arg[0], "pwd", 3))
-		built_pwd();
-	else if (!ft_strncmp(cmd_arg[0], "export", 6))
+	else if (!ft_strcmp(cmd_arg[0], "cd"))
+		built_cd(cmd_arg, env);
+	else if (!ft_strcmp(cmd_arg[0], "pwd"))
+		built_pwd(fd);
+	else if (!ft_strcmp(cmd_arg[0], "export"))
 		built_export
-	else if (!ft_strncmp(cmd_arg[0], "unset", 5))
+	else if (!ft_strcmp(cmd_arg[0], "unset"))
 		built_unset
-	else if (!ft_strncmp(cmd_arg[0], "env", 3))
+	else if (!ft_strcmp(cmd_arg[0], "env"))
 		built_env(env, fd);
-	else if (!ft_strncmp(cmd_arg[0], "exit", 4))
-		built_exit(cmd_arg);
+	else if (!ft_strcmp(cmd_arg[0], "exit"))
+		built_exit(cmd_arg, fd);
 }
 
 void	built_echo(char **cmd_arg)
@@ -52,7 +67,7 @@ void	built_cd(char **cmd_arg, t_list *env)
 		chdir(home);
 	else
 	{
-		if (!ft_strncmp(cmd_arg[1], "~", 1))
+		if (!ft_strcmp(cmd_arg[1], "~"))
 			chdir(home);
 		else if (chdir(cmd_arg[1]) == -1)
 			perror("cd");
@@ -60,9 +75,9 @@ void	built_cd(char **cmd_arg, t_list *env)
 	while (env)
 	{
 		tmp = env->content;
-		if (!ft_strncmp(tmp->name, "PWD", 3))
+		if (!ft_strcmp(tmp->name, "PWD"))
 			tmp->value = getcwd(NULL, 0);
-		if (!ft_strncmp(tmp->name, "OLDPWD", 3))
+		if (!ft_strcmp(tmp->name, "OLDPWD"))
 			tmp->value = pwd;
 		env = env->next;
 	}
