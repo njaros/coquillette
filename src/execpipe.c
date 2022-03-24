@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execpipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 08:43:38 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/17 10:46:41 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/24 15:05:39 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ char	*found_cmd(char *entry)
 		if (entry[i] == '/')
 			return (entry);
 	env = getenv("PATH");
-	free(env);
 	path_tab = ft_split(env, ':');
+	free(env);
 	cmd = get_cmd(entry, path_tab);
 	ft_free(path_tab);
 	free(entry);

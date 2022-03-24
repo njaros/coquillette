@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 10:42:30 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/24 11:18:25 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/24 15:03:37 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	builtins(char **cmd_arg)
 	else if (!ft_strcmp(cmd_arg[0], "pwd"))
 		built_pwd(fd);
 	else if (!ft_strcmp(cmd_arg[0], "export"))
-		built_export
+		built_export(cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "unset"))
 		built_unset
 	else if (!ft_strcmp(cmd_arg[0], "env"))
@@ -46,14 +46,51 @@ void	builtins(char **cmd_arg)
 		built_exit(cmd_arg, fd);
 }
 
-void	built_echo(char **cmd_arg)
+void	built_echo(char **cmd_arg, int fd)
 {
+	int	n;
 
-	if (!ft_strncmp(cmd_arg[1], "-n", 2)) // modifier varaibale option
-	//	affichage sans \n + checker si c'est bien un n après le tiret...
-
-
+	n = 0;
+	if (!ft_strncmp(cmd_arg[1], "-n", 2))
+		n = 1;
+	else
+		ft_putstr_fd(cmd_arg[1], fd);
+	if (n == 0)
+		ft_putchar_fd('\n', fd);
 }
+
+void	built_export(char **cmd_arg, t_list *env)
+{
+	t_env	*tmp;
+	t_list	*new;
+	int		ok;
+
+	ok = 0;
+	while (env)
+	{
+		tmp = env->content;
+		if (!ft_strncmp(cmd_arg[1], tmp->name, ft_strlen(tmp->name)))
+		{
+			tmp->value = ft_substr(ft_strchr(cmd_arg[1], '='), 1, ft_strlen(cmd_arg[1]));
+			ok = 1;
+		}
+		env = env->next;
+	}
+	if (!ok)
+	{
+		new = ft_lstnew(create_struct(cmd_arg[1]));
+		if (!new)
+			return (NULL);
+		ft_lstadd_back(&env, new);
+	}
+}
+
+void	built_unset()
+{
+	
+}
+
+
 
 void	built_cd(char **cmd_arg, t_list *env)
 {
