@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 int	get_fd_rdonly(char *entry)
 {
@@ -25,13 +26,9 @@ int	get_fd_rdonly(char *entry)
 
 int main(int ac, char **av)
 {
-	int	fd;
+	int	i;
 
-	fd = get_fd_rdonly(av[1]);
-	printf("le fd est : %d\n", fd);
-	if (isatty(fd))
-		printf("nom du tty : %s\n", ttyname(fd));
-	printf("ttyslot affiche %d\n", ttyslot());
-	close(fd);
-	return (0);
+	while (av[++i])
+		;
+	printf("%s", getenv("PWD"));
 }

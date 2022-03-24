@@ -32,6 +32,14 @@
 # include <fcntl.h>
 # include "libft.h"
 
+// Toutes les structures utilisées par coquillette
+
+typedef struct s_dol
+{
+	char	*str;
+	int		size;
+}	t_dol;
+
 typedef struct s_env
 {
     char    *name;
@@ -42,9 +50,12 @@ typedef struct pipex_data
 {
 	int		pipefd_in[2];
 	int		pipefd_out[2];
+	// = n si le prochain pipe est à la position line_read[n]
+	// = 0 s'il n'y a pas ou plus d'autre pipe
+	long	next_pipe_pos;
 	char	**envp;
-	char	**cmd_path;
-	char	**cmd;
+	char	*path;
+	char	**argv;
 }	pipex_data;
 
 typedef struct s_pipe
