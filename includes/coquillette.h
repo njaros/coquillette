@@ -82,6 +82,16 @@ void	init_sigact(struct sigaction *act);
 // Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)
 
 int		get_fd_rdonly(char *entry);
+int		ft_metachar(int c);
+int		ft_switch(int n);
+t_list	*ft_lsttake(t_list **alst);
+
+// ICI ON PARSE
+
+char	*quotage(char *str, int *dquote, int *quote);
+char	*check_quote_end(char *str);
+char	*replace_dollz(char *str, int *i, int end);
+char	*dollar_searcher(char *str);
 
 //pipe
 int     pipex(int argc, char *argv[], char **envp);

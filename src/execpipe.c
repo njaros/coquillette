@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execpipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 08:43:38 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/24 15:05:39 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/24 16:53:15 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	is_spechar(char c)
 
 int	parsing_line(char *line, pipex_data *data, int *begin)
 {
-	int		i;
+	/*int		i;
 	int		in_dquote;
 	int		in_quote;
 
@@ -70,7 +70,8 @@ int	parsing_line(char *line, pipex_data *data, int *begin)
 		}
 		if (line[i] == ' ' || line[i])
 			data->path = found_cmd(ft_substr(line, 0, i));
-	}
+	}*/
+	return (0);
 }
 
 char	*next_pipe(char *line, pipex_data *data)

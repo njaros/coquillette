@@ -49,7 +49,7 @@ int	ft_metachar(int c)
 		return (1);
 	if (c >= 58 && c <= 64)
 		return (1);
-	if (c >= 91 && c <= 94 || c == 96)
+	if ((c >= 91 && c <= 94) || c == 96)
 		return (1);
 	if (c >= 123 && c <= 125)
 		return (1);

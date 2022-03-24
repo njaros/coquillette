@@ -51,7 +51,7 @@ int	main(int argc, char ** argv, char **envp)
 	(void)argc;
 	char   				*env;
 	char				**path;
-	char				**cmd_arg;
+	//char				**cmd_arg;
 	char				*cmd;
 	pid_t				pid;
 	int					begin;
@@ -59,42 +59,45 @@ int	main(int argc, char ** argv, char **envp)
 	t_list				*env_list;
 
 	begin = 1;
-	// init_sigact(&act);
-	env_list = init_envp(envp);
-	if (!env_list)
-		return (-1);
+	init_sigact(&act);
+	//env_list = init_envp(envp);
+	//if (!env_list)
+	//	return (-1);
 	env = getenv("PATH");
 	path = ft_split(env, ':');
-	cmd_arg = malloc(sizeof(char **) * 2);
-	cmd_arg[0] = ft_strdup("export");
-	cmd_arg[1] = ft_strdup("USER=blop");
-	built_export(cmd_arg, env_list);
-	// line_read = NULL;
-	// init_pipex_data(&data, envp);
-	// while (1)
-	// {
-	// 	line_read = dollar_searcher(rl_get(line_read));
-	// 	while (line_read)
-	// 	{
-	// 		parsing_line(line_read, &data, &begin);
-	// 		execpipe(data);
-	// 		line_read = next_pipe(line_read, &data);
-	// 	}
-	// 	/*else
-	// 	{
-	// 		cmd_arg = ft_split(line_read, ' ');
-	// 		cmd = get_cmd(cmd_arg[0], path);
-	// 		if (cmd == NULL)
-	// 			printf("%s: command not found\n", cmd_arg[0]);
-	// 		else
-	// 			pid = fork();
-	// 			if (pid == -1)
-	// 				perror("fork");
-	// 			if (pid == 0)
-	// 				if (execve(cmd, cmd_arg, envp) == -1)
-	// 					perror("execve");
-	// 			waitpid(pid, NULL, 0);
-	// 	}*/
-	// }
+	//cmd_arg = malloc(sizeof(char **) * 2);
+	//cmd_arg[0] = ft_strdup("export");
+	//cmd_arg[1] = ft_strdup("USER=blop");
+	//built_export(cmd_arg, env_list);
+	line_read = NULL;
+	init_pipex_data(&data, envp);
+	while (1)
+	{
+		line_read = dollar_searcher(rl_get(line_read));
+		while (line_read)
+		{
+			printf("%s\n", line_read);
+			free(line_read);
+			line_read = NULL;
+			//parsing_line(line_read, &data, &begin);
+			//execpipe(data);
+			//line_read = next_pipe(line_read, &data);
+		}
+		/*else
+		{
+			cmd_arg = ft_split(line_read, ' ');
+			cmd = get_cmd(cmd_arg[0], path);
+			if (cmd == NULL)
+				printf("%s: command not found\n", cmd_arg[0]);
+			else
+				pid = fork();
+				if (pid == -1)
+					perror("fork");
+				if (pid == 0)
+					if (execve(cmd, cmd_arg, envp) == -1)
+						perror("execve");
+				waitpid(pid, NULL, 0);
+		}*/
+	}
 	return (0);
 }

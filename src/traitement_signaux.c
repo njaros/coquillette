@@ -7,7 +7,7 @@ void	handler(int sig, siginfo_t *siginfo, void *ucontext)
 		rl_redisplay();
 		return ;
 	}
-	ft_putstr_fd("coquillette0.1>", 1);
+	ft_putstr_fd("\ncoquillette0.1>", 1);
 	rl_redisplay();
 }
 
