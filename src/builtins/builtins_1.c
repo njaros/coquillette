@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 10:42:30 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/24 15:03:37 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/25 11:16:07 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,19 @@ void	builtins(char **cmd_arg)
 
 void	built_echo(char **cmd_arg, int fd)
 {
-	int	n;
+	int		n;
+	int		i;
+	char	*new;
 
 	n = 0;
-	if (!ft_strncmp(cmd_arg[1], "-n", 2))
+	i = 1;
+	if (!ft_strncmp(cmd_arg[i], "-n", 2))
+	{
 		n = 1;
-	else
-		ft_putstr_fd(cmd_arg[1], fd);
+		i++;
+	}
+	new = dollar_searcher(cmd_arg[i]);
+	ft_putstr_fd(new, fd);
 	if (n == 0)
 		ft_putchar_fd('\n', fd);
 }
@@ -85,12 +91,44 @@ void	built_export(char **cmd_arg, t_list *env)
 	}
 }
 
-void	built_unset()
+void	built_unset(char **cmd_arg, t_list *env) // méthode faignasse
 {
-	
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env->content;
+		if (!ft_strncmp(cmd_arg[1], tmp->name, ft_strlen(tmp->name)))
+		{
+			free(tmp->value);
+			tmp->value = NULL;
+			return ;
+		}
+		env = env->next;
+	}
 }
 
+void	built_unset_v2(char **cmd_arg, t_list *env)
+{
+	t_env	*tmp;
+	t_list	*previous;
+	t_list	*current;
 
+	previous = env;
+	while (env)
+	{
+		current = env;
+		tmp = current->content;
+		if (!ft_strncmp(cmd_arg[1], tmp->name, ft_strlen(tmp->name)))
+		{
+			previous->next = current->next;
+			free(current);
+			current = NULL;
+		}
+		previous = current;
+		env = env->next;
+	}
+}
 
 void	built_cd(char **cmd_arg, t_list *env)
 {
@@ -141,6 +179,7 @@ void	built_env(t_list *env, int fd)
 		if (tmp->value)
 		{
 			ft_putstr_fd(tmp->name, fd);
+			ft_putchar_fd('=', fd);
 			ft_putstr_fd(tmp->value, fd);
 			ft_putchar_fd('\n', fd); // le fd peut etre différent de la sortie standard !!!!
 		}

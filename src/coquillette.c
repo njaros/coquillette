@@ -51,7 +51,7 @@ int	main(int argc, char ** argv, char **envp)
 	(void)argc;
 	char   				*env;
 	char				**path;
-	//char				**cmd_arg;
+	char				**cmd_arg;
 	char				*cmd;
 	pid_t				pid;
 	int					begin;
@@ -60,15 +60,11 @@ int	main(int argc, char ** argv, char **envp)
 
 	begin = 1;
 	init_sigact(&act);
-	//env_list = init_envp(envp);
-	//if (!env_list)
-	//	return (-1);
+	env_list = init_envp(envp);
+	if (!env_list)
+		return (-1);
 	env = getenv("PATH");
 	path = ft_split(env, ':');
-	//cmd_arg = malloc(sizeof(char **) * 2);
-	//cmd_arg[0] = ft_strdup("export");
-	//cmd_arg[1] = ft_strdup("USER=blop");
-	//built_export(cmd_arg, env_list);
 	line_read = NULL;
 	init_pipex_data(&data, envp);
 	while (1)

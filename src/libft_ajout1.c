@@ -67,3 +67,4 @@ t_list	*ft_lsttake(t_list **alst)
 	token->next = NULL;
 	return (token);
 }
+
