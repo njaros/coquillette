@@ -14,6 +14,7 @@
 
 int init_pipex_data(pipex_data *data, char **envp)
 {
+	data->last_return = 0;
 	data->envp = envp;
 	data->path = NULL;
 	data->argv = NULL;

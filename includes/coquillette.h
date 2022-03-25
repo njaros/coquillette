@@ -48,6 +48,7 @@ typedef struct s_env
 
 typedef struct pipex_data
 {
+	int		last_return;
 	int		pipefd_in[2];
 	int		pipefd_out[2];
 	// = n si le prochain pipe est à la position line_read[n]
@@ -91,7 +92,7 @@ t_list	*ft_lsttake(t_list **alst);
 char	*quotage(char *str, int *dquote, int *quote);
 char	*check_quote_end(char *str);
 char	*replace_dollz(char *str, int *i, int end);
-char	*dollar_searcher(char *str);
+char	*dollar_searcher(char *str, pipex_data data);
 
 //pipe
 int     pipex(int argc, char *argv[], char **envp);

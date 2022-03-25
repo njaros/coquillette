@@ -60,7 +60,7 @@ char	*check_quote_end(char *str)
 char	*replace_dollz(char *str, int *i, int end)
 {
 	char	*replaced;
-	char	*sub1;
+	char	*sub1; 
 	char	*sub2;
 	char	*no_dollz;
 
@@ -81,27 +81,52 @@ char	*replace_dollz(char *str, int *i, int end)
 	return (replaced);
 }
 
-char	*dollar_searcher(char *str)
+char	*pid_or_lastret(char *str, int *i, int ret)
+{
+	char	*number;
+	char	*sub;
+	char	*tmp;
+
+	if (str[*i + 1] == '$')
+		number = ft_itoa(getpid());
+	else
+		number = ft_itoa(ret);
+	sub = ft_substr(str, 0, *i);
+	tmp = ft_strjoin(sub, number);
+	free(sub);
+	sub = ft_substr(str, *i + 2, ft_strlen(str));
+	*i += ft_strlen(number) - 1;
+	free(number);
+	number = ft_strjoin(tmp, sub);
+	free(str);
+	free(tmp);
+	free(sub);
+	return (number);
+}
+
+char	*dollar_searcher(char *str, pipex_data data)
 {
 	int		i;
 	int		end;
 	int		quote;
-	char	*dollar;
 
 	quote = 0;
 	i = -1;
-	if (!str)
-		return (NULL);
 	while (str[++i])
 	{
 		if (str[i] == 39)
 			quote = ft_switch(quote);
-		if (str[i] == '$' && !quote)
+		if (str[i] == '$' && !quote && str[i + 1] && str[i + 1] != ' ')
 		{
-			end = i + 1;
-			while (str[end] && !ft_metachar(str[end]))
-				end++;
-			str = replace_dollz(str, &i, end);
+			if (str[i + 1] == '?' || str[i + 1] == '$')
+				str = pid_or_lastret(str, &i, data.last_return);
+			else
+			{
+				end = i + 1;
+				while (str[end] && !ft_metachar(str[end]))
+					end++;
+				str = replace_dollz(str, &i, end);
+			}
 		}
 	}
 	return (str);
