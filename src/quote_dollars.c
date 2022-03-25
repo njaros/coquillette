@@ -67,12 +67,12 @@ char	*replace_dollz(char *str, int *i, int end)
 	if (*i == 0)
 		sub1 = ft_strdup("");
 	else
-		sub1 = ft_substr(str, 0, *i - 1);
+		sub1 = ft_substr(str, 0, *i);
 	sub2 = ft_substr(str, *i + 1, end - (*i + 1));
 	no_dollz = ft_strjoin(sub1, getenv(sub2));
 	free(sub1);
 	sub1 = ft_substr(str, end, ft_strlen(str));
-	*i += ft_strlen(getenv(sub2) - 1);
+	i += ft_strlen(getenv(sub2));
 	free(sub2);
 	replaced = ft_strjoin(no_dollz, sub1);
 	free(no_dollz);
