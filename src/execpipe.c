@@ -49,7 +49,7 @@ int	is_spechar(char c)
 
 int	parsing_line(char *line, pipex_data *data, int *begin)
 {
-	/*int		i;
+	int		i;
 	int		in_dquote;
 	int		in_quote;
 
@@ -70,7 +70,7 @@ int	parsing_line(char *line, pipex_data *data, int *begin)
 		}
 		if (line[i] == ' ' || line[i])
 			data->path = found_cmd(ft_substr(line, 0, i));
-	}*/
+	}
 	return (0);
 }
 

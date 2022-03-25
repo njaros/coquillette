@@ -114,8 +114,8 @@ char	*dollar_searcher(char *str, pipex_data data)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == 39)
-			quote = ft_switch(quote);
+		if (str[i] == 39 || str[i] == 34)
+			quote = ft_quote_switch(quote, str[i]);
 		if (str[i] == '$' && !quote && str[i + 1] && str[i + 1] != ' ')
 		{
 			if (str[i + 1] == '?' || str[i + 1] == '$')

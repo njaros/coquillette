@@ -35,6 +35,7 @@ LIB =	libft/libft.a \
 LST_SRCS =	coquillette_utils1.c \
 			coquillette.c \
 			quote_dollars.c \
+			quote_dollars2.c \
 			execpipe.c \
 			traitement_signaux.c \
 			libft_ajout1.c	\
