@@ -22,20 +22,15 @@ void	built_echo(char **cmd_arg, int fd)
 	i = 1;
 	if (cmd_arg[i][0] == '-' && cmd_arg[i][1] == 'n')
 	{
-		if (cmd_arg[i][1] == 'n')
-			nl = 0;
-		else
-		{
-			ft_putendl_fd("echo : invalid option", 2);
-			return ;
-		}
+		nl = 0;
 		i++;
 	}
 	while (cmd_arg[i])
 	{
 		//new = dollar_searcher(cmd_arg[i]);
 		ft_putstr_fd(cmd_arg[i], fd);
-		ft_putchar_fd(' ', fd);
+		if (cmd_arg[i + 1])
+			ft_putchar_fd(' ', fd);
 		//free(new);
 		i++;
 	}

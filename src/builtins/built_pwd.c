@@ -19,7 +19,8 @@ void	built_pwd(char **cmd_arg, int fd)
 	if (cmd_arg[1] != NULL)
 	{
 		ft_putendl_fd("pwd : too many arguments", 2);
-		//cmd_ret = 1;
+		//cmd_ret = 1; 
+		// return à chaque erreur ?!
 	}
 	if (!getcwd(pwd, MAXPATHLEN))
 	{

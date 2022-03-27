@@ -73,7 +73,7 @@ void	built_export(char **cmd_arg, t_list *env, int fd)
 		print_export(env, fd);
 	while (cmd_arg[i])
 	{
-		if (!ft_strrchr(cmd_arg[i], '='))
+		if (!ft_strrchr(cmd_arg[i], '=')) // tester ce qu'il se passe si on a un = dès la premiere lettre..., possibilité qu'il y ai des chiffres ?!
 		{
 			ft_putendl_fd("variable is not valid", 2);
 			//cmd_ret = 1;

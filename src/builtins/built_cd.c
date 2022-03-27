@@ -26,7 +26,7 @@ void	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 	}
 	else
 	{
-		if (var->value)
+		if (var->value) // pas focrément utile...
 			free(var->value);
 		var->value = path;
 	}

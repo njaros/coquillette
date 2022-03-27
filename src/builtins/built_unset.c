@@ -48,3 +48,4 @@ void	built_unset(char **cmd_arg, t_list *env)
 	}
 }
 // attention tester d'unset deux variables l'une après l'autre, si y en a pas une qui est ignorée...
+// tester avec find_env_var et fonction Nicolas pour enlever un maillon !
