@@ -12,38 +12,6 @@
 
 #include "coquillette.h"
 
-t_env	*create_struct(char *envp)
-{
-	t_env	*blop;
-
-	blop = NULL;
-	blop = malloc(sizeof(t_env));
-	if (!blop)
-		return (NULL);
-	blop->name = ft_substr(envp, 0, ft_strchr(envp, '=') - envp);
-	blop->value = ft_substr(ft_strchr(envp, '='), 1, ft_strlen(envp));
-	return (blop);
-}
-
-t_list	*init_envp(char **envp)
-{
-	t_list	*env;
-	t_list	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = NULL;
-	while (envp[i])
-	{
-		tmp = ft_lstnew(create_struct(envp[i]));
-		if (!tmp)
-			return (NULL);
-		ft_lstadd_back(&env, tmp);
-		i++;
-	}
-	return (env);
-}
-
 int	main(int argc, char ** argv, char **envp)
 {
 	struct sigaction	act;

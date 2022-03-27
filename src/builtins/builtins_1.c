@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 10:42:30 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/25 11:16:07 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/25 11:26:43 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_strcmp(char *s1, char *s2)
 void	builtins(char **cmd_arg)
 {
 	if (!ft_strcmp(cmd_arg[0], "echo"))
-		built_echo
+		built_echo(cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "cd"))
 		built_cd(cmd_arg, env);
 	else if (!ft_strcmp(cmd_arg[0], "pwd"))
@@ -39,7 +39,7 @@ void	builtins(char **cmd_arg)
 	else if (!ft_strcmp(cmd_arg[0], "export"))
 		built_export(cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "unset"))
-		built_unset
+		built_unset(cmd_arg, env);
 	else if (!ft_strcmp(cmd_arg[0], "env"))
 		built_env(env, fd);
 	else if (!ft_strcmp(cmd_arg[0], "exit"))

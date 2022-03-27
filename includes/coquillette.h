@@ -54,7 +54,7 @@ typedef struct pipex_data
 	// = 0 s'il n'y a pas ou plus d'autre pipe
 	long	next_pipe_pos;
 	char	**envp;
-	char	*path;
+	char	**path;
 	char	**argv;
 }	pipex_data;
 
