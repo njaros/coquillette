@@ -1,44 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*   built_pwd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 15:53:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/27 12:49:45 by ccartet          ###   ########.fr       */
+/*   Created: 2022/03/27 14:09:38 by ccartet           #+#    #+#             */
+/*   Updated: 2022/03/27 17:56:48 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "builtins.h"
 
-int	error2(int err)
+void	built_pwd(char **cmd_arg, int fd)
 {
-	strerror(errno);
-	return (err);
-}
+	char	pwd[MAXPATHLEN];
 
-void	error(char *msg)
-{
-	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_free(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-}
-
-void    feel_free(t_pipe *pip)
-{
-    free(pip->cmd1);
-    free(pip->cmd2);
-    ft_free(pip->cmd1_arg);
-    ft_free(pip->cmd2_arg);
-    ft_free(pip->path);
+	if (cmd_arg[1] != NULL)
+	{
+		ft_putendl_fd("pwd : too many arguments", 2);
+		//cmd_ret = 1;
+	}
+	if (!getcwd(pwd, MAXPATHLEN))
+	{
+		ft_putendl_fd("getcwd() error", 2);
+		//cmd_ret = errno;
+	}
+	ft_putendl_fd(pwd, fd);
 }

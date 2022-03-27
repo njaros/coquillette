@@ -1,44 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*   built_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 15:53:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/27 12:49:45 by ccartet          ###   ########.fr       */
+/*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
+/*   Updated: 2022/03/27 17:58:31 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "builtins.h"
 
-int	error2(int err)
+void	built_env(t_list *env, char **cmd_arg, int fd)
 {
-	strerror(errno);
-	return (err);
-}
+	t_env	*tmp;
 
-void	error(char *msg)
-{
-	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_free(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-}
-
-void    feel_free(t_pipe *pip)
-{
-    free(pip->cmd1);
-    free(pip->cmd2);
-    ft_free(pip->cmd1_arg);
-    ft_free(pip->cmd2_arg);
-    ft_free(pip->path);
+	if (cmd_arg[1] != NULL)
+	{
+		ft_putendl_fd("env : too many arguments", 2);
+		//cmd_ret = 1;
+		return ;
+	}
+	while (env)
+	{
+		tmp = env->content;
+		if (tmp->value)
+		{
+			ft_putstr_fd(tmp->name, fd);
+			ft_putchar_fd('=', fd);
+			ft_putendl_fd(tmp->value, fd);
+		}
+		env = env->next;
+	}
 }

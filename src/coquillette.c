@@ -37,7 +37,7 @@ int	main(int argc, char ** argv, char **envp)
 	init_pipex_data(&data, envp);
 	while (1)
 	{
-		line_read = dollar_searcher(rl_get(line_read));
+		line_read = dollar_searcher(rl_get(line_read), data);
 		while (line_read)
 		{
 			printf("%s\n", line_read);

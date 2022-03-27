@@ -12,15 +12,33 @@
 
 #include "coquillette.h"
 
+t_env	*find_env_var(t_list *env, char *to_search)
+{
+	t_env	*var;
+	
+	var = NULL;
+	while (env)
+	{
+		var = env->content;
+		if (!ft_strcmp(var->name, to_search))
+			break ;
+		env = env->next;
+	}
+	return (var);
+}
+
 int init_pipex_data(pipex_data *data, char **envp)
 {
 	char	*env;
 	
 	data->envp = envp;
+	env = getenv("PATH");
 	data->path = ft_split(env, ':');
+	free(env);
 	data->argv = NULL;
 	return (0);
 }
+
 char	*rl_get(char *line_read)
 {
 	if (line_read)
@@ -37,7 +55,7 @@ char	*rl_get(char *line_read)
 	return (line_read);
 }
 
-t_env	*create_struct(char *envp)
+t_env	*create_struct(char *env)
 {
 	t_env	*blop;
 
@@ -45,8 +63,9 @@ t_env	*create_struct(char *envp)
 	blop = malloc(sizeof(t_env));
 	if (!blop)
 		return (NULL);
-	blop->name = ft_substr(envp, 0, ft_strchr(envp, '=') - envp);
-	blop->value = ft_substr(ft_strchr(envp, '='), 1, ft_strlen(envp));
+	blop->name = ft_substr(env, 0, ft_strchr(env, '=') - env);
+	//printf("%s\n", blop->name); voir pour laisser le = dans le name !!!
+	blop->value = ft_substr(ft_strchr(env, '='), 1, ft_strlen(env));
 	return (blop);
 }
 

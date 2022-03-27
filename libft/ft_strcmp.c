@@ -1,44 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 15:53:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/03/27 12:49:45 by ccartet          ###   ########.fr       */
+/*   Created: 2022/03/27 12:12:36 by ccartet           #+#    #+#             */
+/*   Updated: 2022/03/27 12:12:55 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "libft.h"
 
-int	error2(int err)
+int	ft_strcmp(char *s1, char *s2)
 {
-	strerror(errno);
-	return (err);
-}
+    int	i;
 
-void	error(char *msg)
-{
-	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_free(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-}
-
-void    feel_free(t_pipe *pip)
-{
-    free(pip->cmd1);
-    free(pip->cmd2);
-    ft_free(pip->cmd1_arg);
-    ft_free(pip->cmd2_arg);
-    ft_free(pip->path);
+    i = 0;
+    while (s1[i] || s2[i])
+    {
+        if (!(s1[i] == s2[i]))
+        {
+            return (s1[i] - s2[i]);
+        }
+        i++;
+    }
+    return (0);
 }

@@ -20,34 +20,31 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <sys/types.h>
+# include <sys/param.h>
 # include <sys/wait.h>
 # include <sys/time.h>
 # include <sys/resource.h>
+# include <sys/ioctl.h>
 # include <sys/stat.h>
 # include <dirent.h>
 # include <errno.h>
 # include <string.h>
-# include <sys/ioctl.h>
 # include <termios.h>
 # include <fcntl.h>
 # include "libft.h"
 
 // Toutes les structures utilisées par coquillette
 
-typedef struct s_dol
-{
-	char	*str;
-	int		size;
-}	t_dol;
-
 typedef struct s_env
 {
     char    *name;
     char    *value;
+	int		rank;
 }               t_env;
 
 typedef struct pipex_data
 {
+	int		last_return;
 	int		pipefd_in[2];
 	int		pipefd_out[2];
 	// = n si le prochain pipe est à la position line_read[n]
@@ -91,7 +88,8 @@ t_list	*ft_lsttake(t_list **alst);
 char	*quotage(char *str, int *dquote, int *quote);
 char	*check_quote_end(char *str);
 char	*replace_dollz(char *str, int *i, int end);
-char	*dollar_searcher(char *str);
+int		ft_quote_switch(int quote, char c);
+char	*dollar_searcher(char *str, pipex_data data);
 
 //pipe
 int     pipex(int argc, char *argv[], char **envp);
@@ -104,5 +102,29 @@ void    feel_free(t_pipe *pip);
 void	ft_free(char **tab);
 void	error(char *msg);
 int		error2(int err);
+
+//coquilette_utils1
+t_env	*find_env_var(t_list *env, char *to_search);
+t_list	*init_envp(char **envp);
+t_env	*create_struct(char *envp);
+
+//builtins
+void	built_cd(char **cmd_arg, t_list *env);
+void	to_home(void);
+void	change_pdw_oldpwd(char *oldpwd, t_list *env);
+void	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
+//
+void	built_echo(char **cmd_arg, int fd);
+//
+void	built_env(t_list *env, int fd);
+//
+void	built_exit(char **cmd_arg);
+//
+void	built_export(char **cmd_arg, t_list *env, int fd);
+void	print_export(t_list *env, int fd);
+//
+void	built_pwd(char **cmd_arg, int fd);
+//
+void	built_unset(char **cmd_arg, t_list *env);
 
 #endif
