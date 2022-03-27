@@ -48,35 +48,38 @@ void	builtins(char **cmd_arg)
 
 void	built_echo(char **cmd_arg, int fd)
 {
-	int		n;
+	int		nl;
 	int		i;
 	char	*new;
 
-	n = 0;
+	nl = 1;
 	i = 1;
-	if (!ft_strncmp(cmd_arg[i], "-n", 2))
+	if (!ft_strncmp(cmd_arg[i], "-n", 2)) // vérifier si après - on a bien un n
 	{
-		n = 1;
+		n = 0;
 		i++;
 	}
 	new = dollar_searcher(cmd_arg[i]);
 	ft_putstr_fd(new, fd);
-	if (n == 0)
+	if (nl)
 		ft_putchar_fd('\n', fd);
-}
-
+} // vérifier si echo s'arrete bien quand il y a un espace, qu'est ce qu'il fait s'il y a un \n
+// sinon while avec putchar espace
 void	built_export(char **cmd_arg, t_list *env)
 {
 	t_env	*tmp;
 	t_list	*new;
 	int		ok;
-
+ // vérifier si l'arguement entré est valable, s'il y a un =, que fait export NAME (sans =, sans rien après) ?
+	// attention possibilité de créer plusieurs variables en même temps !!
 	ok = 0;
-	while (env)
+	while (env) // créer fonction qui recherche la variable d'environnement !!
 	{
 		tmp = env->content;
 		if (!ft_strncmp(cmd_arg[1], tmp->name, ft_strlen(tmp->name)))
 		{
+			if (tmp->value)
+				free(tmp->value);
 			tmp->value = ft_substr(ft_strchr(cmd_arg[1], '='), 1, ft_strlen(cmd_arg[1]));
 			ok = 1;
 		}
@@ -89,7 +92,7 @@ void	built_export(char **cmd_arg, t_list *env)
 			return (NULL);
 		ft_lstadd_back(&env, new);
 	}
-}
+} // que fait export tout court ?!
 
 void	built_unset(char **cmd_arg, t_list *env) // méthode faignasse
 {
@@ -113,7 +116,7 @@ void	built_unset_v2(char **cmd_arg, t_list *env)
 	t_env	*tmp;
 	t_list	*previous;
 	t_list	*current;
-
+// vérifier si l'argument est un mot, espace ?
 	previous = env;
 	while (env)
 	{
@@ -122,22 +125,24 @@ void	built_unset_v2(char **cmd_arg, t_list *env)
 		if (!ft_strncmp(cmd_arg[1], tmp->name, ft_strlen(tmp->name)))
 		{
 			previous->next = current->next;
+			free(current->name);
+			free(current->value);
 			free(current);
 			current = NULL;
 		}
 		previous = current;
 		env = env->next;
 	}
-}
+} // attention, possibilité de supprimer plusieurs variables en même temps !!
 
 void	built_cd(char **cmd_arg, t_list *env)
 {
 	char	*home;
 	t_env	*tmp;
 	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	home = getenv("HOME"); // vérifier à chaque appel de cette fonction que la varibale existe, sinon la créer ??
+ // créer une fonction qui va chercher lune varaiable spécifique dans ma liste chainée env : find_env_var(struct, nom de la variable)
+	pwd = getcwd(NULL, 0); // vérifier retour de getcwd => getcwd(cwd, MAXPATHLEN) ?
+	home = getenv("HOME"); // vérifier si home existe, et si elle n'existe pas message d'erreur, tester lancemenet shell avec env -i, cd : home not set
 	if (!cmd_arg[1])
 		chdir(home);
 	else
@@ -150,18 +155,18 @@ void	built_cd(char **cmd_arg, t_list *env)
 	while (env)
 	{
 		tmp = env->content;
-		if (!ft_strcmp(tmp->name, "PWD"))
+		if (!ft_strcmp(tmp->name, "PWD")) // vérifier si pwd existe, si oui free l'ancienne valeur
 			tmp->value = getcwd(NULL, 0);
 		if (!ft_strcmp(tmp->name, "OLDPWD"))
 			tmp->value = pwd;
 		env = env->next;
-	}
+	} // attention à stocker les erreurs de chaque appel de fonction !
 }
 
 void	built_pwd(int fd)
 {
 	char	*pwd;
-
+ // vérifier s'il y a trop d'arguments
 	// if (getcwd(pwd, sizeof(pwd) == NULL)
 	// 	perror("getcwd() error");
 	pwd = getcwd(NULL, 0);
@@ -172,7 +177,7 @@ void	built_pwd(int fd)
 void	built_env(t_list *env, int fd)
 {
 	t_env	*tmp;
-
+// vérifier qu'il n'y pas trop d'arguments sinon "too many arguments"
 	while (env)
 	{
 		tmp = env->content;
@@ -180,8 +185,7 @@ void	built_env(t_list *env, int fd)
 		{
 			ft_putstr_fd(tmp->name, fd);
 			ft_putchar_fd('=', fd);
-			ft_putstr_fd(tmp->value, fd);
-			ft_putchar_fd('\n', fd); // le fd peut etre différent de la sortie standard !!!!
+			ft_putendl_fd(tmp->value, fd);
 		}
 		env = env->next;
 	}
@@ -193,9 +197,9 @@ void	built_exit(char **cmd_arg, int fd)
 
 	if (!cmd_arg[1])
 	{
-		ft_putstr_fd("exit", fd);
-		ft_putchar_fd('\n', fd);
-		exit(code_erreur); // code erreur enregsitré dans struct globale + free
+		ft_putendl_fd("exit", 2);
+		// fonction feel_free
+		exit(cmd_ret); // code erreur enregsitré dans struct globale + free
 	}
 	else // verifier aussi sir le nb est compris entre 0 et ..., si c'est un code erreur
 	{
@@ -205,10 +209,9 @@ void	built_exit(char **cmd_arg, int fd)
 			if (ft_isdigit(cmd_arg[1][i]))
 				i++;
 			else
-				return ;
+				return ; // "numeric argument required" et "exit" avec code erreur 255 ? ou trop d'arguments
 		}
-		ft_putstr_fd("exit", fd);
-		ft_putchar_fd('\n', fd);
-		exit(ft_atoi(cmd_arg[1])); // + free
+		ft_putendl_fd("exit", 2);
+		exit(ft_atoi(cmd_arg[1])); // + fonction feel_free
 	}
 }
