@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:20:47 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 14:49:03 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 16:55:01 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*rl_get(char *line_read)
 {
 	if (line_read)
 		free(line_read);
-	line_read = readline("coquillette0.1>");
+	line_read = readline("\e[34mcoquillette0.1>\e[0m");
 	if (!line_read)
 	{
 		ft_putendl_fd("exit", 1);
@@ -73,6 +73,7 @@ t_list	*init_envp(char **envp)
 
 	i = 0;
 	tmp = NULL;
+	env = NULL;
 	while (envp[i])
 	{
 		tmp = ft_lstnew(create_struct(envp[i]));
@@ -107,6 +108,7 @@ int	main(int argc, char ** argv, char **envp)
 	t_list	*env_list;
 	char	*line_read;
 	char	**cmd_arg;
+	int		i;
 
 	line_read = NULL;
 	env_list = init_envp(envp);
@@ -115,16 +117,14 @@ int	main(int argc, char ** argv, char **envp)
 	while (1)
 	{
 		line_read = rl_get(line_read);
-		while (line_read)
-		{
-			printf("%s\n", line_read);
-			free(line_read);
-			line_read = NULL;
-		}
 		cmd_arg = ft_split(line_read, ' ');
 		builtins(cmd_arg, env_list, 1);
-		while (*cmd_arg++)
-			free(*cmd_arg);
+		i = 0;
+		while (cmd_arg[i])
+		{
+			free(cmd_arg[i]);
+			i++;
+		}
 		free(cmd_arg);
 	}
 	return (0);

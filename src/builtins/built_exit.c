@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 14:29:53 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 15:27:47 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	built_exit(char **cmd_arg)
 {
 	int	i;
 
-	if (cmd_arg[2])
-	{
-		ft_putendl_fd("exit : too many arguments", 2);
-		g_cmd_ret = 1;
-	}
 	if (cmd_arg[1])
 	{
+		if (cmd_arg[2] != NULL)
+		{
+			ft_putendl_fd("exit : too many arguments", 2);
+			g_cmd_ret = 1;
+		}
 		i = 0;
 		while (cmd_arg[1][i])
 		{

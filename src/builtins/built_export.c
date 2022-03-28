@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 14:35:24 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 16:59:18 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	print_export(t_list *env, int size, int fd)
 
 	tmp = NULL;
 	i = 0;
-	while (i < size)
+	while (i <= size)
 	{
 		env_tmp = env;
 		while (env_tmp)

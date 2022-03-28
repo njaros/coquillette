@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 14:29:24 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 16:47:42 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 	else
 	{
 		free(var->value);
-		var->value = path;
+		var->value = ft_strdup(path);
 	}
 	return (0);
 }
@@ -49,8 +49,6 @@ int	change_pwd_oldpwd(char *oldpwd, t_list *env)
 	var_name = ft_strjoin("OLDPWD=", oldpwd);
 	replace_or_create(env, tmp, var_name, oldpwd);
 	free(var_name);
-	free(pwd);
-	free(oldpwd);
 	return (0);
 }
 
@@ -72,23 +70,33 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 	
 	g_cmd_ret = 0;
 	tmp = NULL;
-	if (cmd_arg[2] != NULL)
-		return (print_err("cd : too many arguments", 1));
 	if (!getcwd(oldpwd, MAXPATHLEN))
 		return (print_err("getcwd() error", errno));
 	if (!cmd_arg[1])
+	{
 		if (to_home() != 0)
 			return (1);
-	if (cmd_arg[1][0] == '-')
-	{
-		tmp = find_env_var(env, "OLDPWD");
-		ft_putendl_fd(tmp->value, fd);
-		g_cmd_ret = chdir(tmp->value);
 	}
 	else
-		g_cmd_ret = chdir(cmd_arg[1]);
-	if (g_cmd_ret == -1)
-	 	return (print_err("cd problem", 1));
+	{
+		if (cmd_arg[2] != NULL)
+			return (print_err("cd : too many arguments", 1));
+		if (cmd_arg[1][0] == '~')
+		{
+			if (to_home() != 0)
+				return (1);
+		}
+		else if (cmd_arg[1][0] == '-')
+		{
+			tmp = find_env_var(env, "OLDPWD");
+			ft_putendl_fd(tmp->value, fd);
+			g_cmd_ret = chdir(tmp->value);
+		}
+		else
+			g_cmd_ret = chdir(cmd_arg[1]);
+		if (g_cmd_ret == -1)
+			return (print_err("No such file or directory", 1));
+	}
 	if (change_pwd_oldpwd(oldpwd, env) != 0)
 		return (1);
 	return (0);

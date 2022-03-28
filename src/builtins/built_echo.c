@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 11:45:06 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 15:36:36 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@ void	built_echo(char **cmd_arg, int fd)
 	int		i;
 	char	*new;
 
+	
 	nl = 1;
 	i = 1;
-	if (cmd_arg[i][0] == '-' && cmd_arg[i][1] == 'n')
-	{
-		nl = 0;
-		i++;
-	}
 	while (cmd_arg[i])
 	{
-		//new = dollar_searcher(cmd_arg[i]);
-		ft_putstr_fd(cmd_arg[i], fd);
-		if (cmd_arg[i + 1])
-			ft_putchar_fd(' ', fd);
-		//free(new);
+		if (cmd_arg[i][0] == '-' && cmd_arg[i][1] == 'n')
+			nl = 0;
+		else
+		{
+			//new = dollar_searcher(cmd_arg[i]);
+			ft_putstr_fd(cmd_arg[i], fd);
+			if (cmd_arg[i + 1])
+				ft_putchar_fd(' ', fd);
+			//free(new);
+		}
 		i++;
 	}
 	if (nl)

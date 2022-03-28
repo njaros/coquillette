@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:12:36 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 12:12:55 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 15:16:43 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ int	ft_strcmp(char *s1, char *s2)
     while (s1[i] || s2[i])
     {
         if (!(s1[i] == s2[i]))
-        {
             return (s1[i] - s2[i]);
-        }
         i++;
     }
     return (0);
