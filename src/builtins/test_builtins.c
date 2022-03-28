@@ -6,11 +6,18 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:20:47 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 18:05:50 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 11:07:45 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+int	print_err(char *str, int err)
+[
+	ft_putendl_fd(str, 2);
+	g_cmd_ret = err;
+	return (1);
+]
 
 char	*rl_get(char *line_read)
 {
@@ -81,7 +88,7 @@ void	builtins(char **cmd_arg, t_list *env, int fd)
 	if (!ft_strcmp(cmd_arg[0], "echo"))
 		built_echo(cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "cd"))
-		built_cd(cmd_arg, env);
+		built_cd(cmd_arg, env, fd);
 	else if (!ft_strcmp(cmd_arg[0], "pwd"))
 		built_pwd(cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "export"))
@@ -115,6 +122,7 @@ int	main(int argc, char ** argv, char **envp)
 		}
 		cmd_arg = ft_split(line_read, ' ');
 		builtins(cmd_arg, env_list, 1);
+		free(cmd_arg);
 	}
 	return (0);
 }

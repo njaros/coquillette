@@ -6,25 +6,21 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:09:38 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 17:56:48 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 11:24:32 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	built_pwd(char **cmd_arg, int fd)
+int	built_pwd(char **cmd_arg, int fd)
 {
 	char	pwd[MAXPATHLEN];
 
+	g_cmd_ret = 0;
 	if (cmd_arg[1] != NULL)
-	{
-		ft_putendl_fd("pwd : too many arguments", 2);
-		//cmd_ret = 1;
-	}
+		return (print_err("pwd : too many arguments", 1));
 	if (!getcwd(pwd, MAXPATHLEN))
-	{
-		ft_putendl_fd("getcwd() error", 2);
-		//cmd_ret = errno;
-	}
+		return (print_err("getcwd() error", errno));
 	ft_putendl_fd(pwd, fd);
+	return (0);
 }

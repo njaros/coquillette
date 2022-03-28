@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 18:01:20 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 11:21:46 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	built_exit(char **cmd_arg)
 {
 	int	i;
 
+	g_cmd_ret = 0;
 	if (!cmd_arg[1])
 	{
 		ft_putendl_fd("exit", 2);
@@ -52,4 +53,3 @@ void	built_exit(char **cmd_arg)
 		exit(ft_atoi(cmd_arg[1]));
 	}
 }
-// 1 - Catchall for general errors

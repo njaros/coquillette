@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 18:02:15 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 11:34:57 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,14 @@ void	built_unset(char **cmd_arg, t_list *env)
 	}
 }
 // attention tester d'unset deux variables l'une après l'autre, si y en a pas une qui est ignorée...
+
+void	built_unset_v2(char **cmd_arg, t_list *env)
+{
+	t_env	*tmp;
+	int		i;
+	
+	i = 1;
+	while (cmd_arg[i])
+	tmp = find_env_var(env, to_search);
+	
+}

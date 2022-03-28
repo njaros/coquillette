@@ -6,22 +6,19 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 17:58:31 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 11:12:46 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	built_env(t_list *env, char **cmd_arg, int fd)
+int	built_env(t_list *env, char **cmd_arg, int fd)
 {
 	t_env	*tmp;
 
+	g_cmd_ret = 0;
 	if (cmd_arg[1] != NULL)
-	{
-		ft_putendl_fd("env : too many arguments", 2);
-		//cmd_ret = 1;
-		return ;
-	}
+		return (print_err("env : too many arguments", 1));
 	while (env)
 	{
 		tmp = env->content;
@@ -33,4 +30,5 @@ void	built_env(t_list *env, char **cmd_arg, int fd)
 		}
 		env = env->next;
 	}
+	return (0);
 }

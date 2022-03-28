@@ -6,35 +6,35 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 18:01:38 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 10:14:37 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-// int	init_rank(char **envp, int i)
-// {
-// 	int	rank;
-// 	int	a;
+int	init_rank(char **envp, int i)
+{
+	int	rank;
+	int	a;
 
-// 	rank = 1;
-// 	a = 0;
-// 	while (envp[a])
-// 	{
-// 		if (envp[i][0] > envp[a][0])
-// 			rank++;
-// 		a++;
-// 	}
-// 	return (rank);
-// }
+	rank = 1;
+	a = 0;
+	while (envp[a])
+	{
+		if (envp[i][0] > envp[a][0])
+			rank++;
+		a++;
+	}
+	return (rank);
+}
 
-// int	*sort_env(t_list *env) // transformer ma liste chainée en tableau trié
-// {
-// 	t_env	*tmp;
-// 	int		*tab; // comment savoir la taille de ma liste ?
+int	*sort_env(t_list *env) // transformer ma liste chainée en tableau trié
+{
+	t_env	*tmp;
+	int		*tab; // comment savoir la taille de ma liste ?
 
-// 	// en cours...
-// }
+	// en cours...
+}
 
 void	print_export(t_list *env, int fd)
 {

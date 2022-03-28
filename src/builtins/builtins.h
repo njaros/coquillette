@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:38:46 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/27 18:06:25 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 10:19:22 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_env
     char    *value;
 	int		rank;
 }               t_env;
+
+int	g_cmd_ret = 0;
 
 //builtins
 void	builtins(char **cmd_arg, t_list *env, int fd);
