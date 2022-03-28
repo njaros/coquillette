@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 11:21:46 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 14:29:53 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,12 @@ void	built_exit(char **cmd_arg)
 {
 	int	i;
 
-	g_cmd_ret = 0;
-	if (!cmd_arg[1])
-	{
-		ft_putendl_fd("exit", 2);
-		// fonction feel_free
-	//	exit(cmd_ret); // code erreur enregsitré dans struct globale
-	}
 	if (cmd_arg[2])
 	{
 		ft_putendl_fd("exit : too many arguments", 2);
-	//	cmd_ret = 1;
+		g_cmd_ret = 1;
 	}
-	else
+	if (cmd_arg[1])
 	{
 		i = 0;
 		while (cmd_arg[1][i])
@@ -36,20 +29,19 @@ void	built_exit(char **cmd_arg)
 			if (!ft_isdigit(cmd_arg[1][i]))
 			{
 				ft_putendl_fd("numeric argument required", 2);
-				//cmd_ret = 1;
-				exit(128); // Invalid argument to exit
+				g_cmd_ret = 255;
+				break ;
 			}
-			if (ft_atoi(cmd_arg[1]) < 0 || ft_atoi(cmd_arg[1]) > 255)
-			{
-				ft_putendl_fd("enter error code", 2);
-				//cmd_ret = 1;
-				exit(255); // Exit status out of range
-			}
-			else
-				i++;
+			i++;
 		}
-		ft_putendl_fd("exit", 2);
-		// fonction feel_free
-		exit(ft_atoi(cmd_arg[1]));
+		if (g_cmd_ret != 255)
+			g_cmd_ret = ft_atoi(cmd_arg[1]);
 	}
+	// fonction feel_free
+	ft_putendl_fd("exit", 2);
+	exit(g_cmd_ret);
 }
+
+// créer une fonctio qui vérifie la validité du nombre entré => atoi overflow ? sinon 255, seulement un - ou un +
+// pas de + ou - tout seul...
+// - ou + avec un espace avant le nb et - 42 devient 42 ?!

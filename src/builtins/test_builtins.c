@@ -6,18 +6,18 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:20:47 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 11:07:45 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 14:49:03 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 int	print_err(char *str, int err)
-[
+{
 	ft_putendl_fd(str, 2);
 	g_cmd_ret = err;
 	return (1);
-]
+}
 
 char	*rl_get(char *line_read)
 {
@@ -61,6 +61,7 @@ t_env	*create_struct(char *env)
 	blop->name = ft_substr(env, 0, ft_strchr(env, '=') - env);
 	//printf("%s\n", blop->name); voir pour laisser le = dans le name !!!
 	blop->value = ft_substr(ft_strchr(env, '='), 1, ft_strlen(env));
+	blop->rank = 0;
 	return (blop);
 }
 
@@ -122,6 +123,8 @@ int	main(int argc, char ** argv, char **envp)
 		}
 		cmd_arg = ft_split(line_read, ' ');
 		builtins(cmd_arg, env_list, 1);
+		while (*cmd_arg++)
+			free(*cmd_arg);
 		free(cmd_arg);
 	}
 	return (0);

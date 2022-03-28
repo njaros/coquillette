@@ -6,78 +6,98 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 10:14:37 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 14:35:24 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	init_rank(char **envp, int i)
-{
-	int	rank;
-	int	a;
-
-	rank = 1;
-	a = 0;
-	while (envp[a])
-	{
-		if (envp[i][0] > envp[a][0])
-			rank++;
-		a++;
-	}
-	return (rank);
-}
-
-int	*sort_env(t_list *env) // transformer ma liste chainée en tableau trié
+void	init_rank(t_list *env, int *size)
 {
 	t_env	*tmp;
-	int		*tab; // comment savoir la taille de ma liste ?
+	t_env	*actuel;
+	t_list	*next;
+	t_list	*env_bis;
+	int		index;
 
-	// en cours...
-}
-
-void	print_export(t_list *env, int fd)
-{
-	t_env	*tmp;
-
-	tmp = NULL;
+	env_bis = env;
 	while (env)
 	{
-		tmp = env->content;
-		if (tmp->value)
+		index = 1;
+		actuel = env->content;
+		next = env_bis;
+		while (next)
 		{
-			ft_putstr_fd("declare -x ", fd);
-			ft_putstr_fd(tmp->name, fd);
-			if (tmp->value)
-			{
-				ft_putstr_fd("=\"", fd);
-				ft_putstr_fd(tmp->value, fd);
-				ft_putchar_fd('\"', fd);
-			}
-			ft_putchar_fd('\n', fd);
+			tmp = next->content;
+			if (ft_strcmp(actuel->name, tmp->name) > 0)
+				index++;
+			next = next->next;
 		}
+		actuel->rank = index;
 		env = env->next;
+		*size += 1;
 	}
 }
-// attention trier par ordre alphabétique !!
 
-void	built_export(char **cmd_arg, t_list *env, int fd)
+void	print_export(t_list *env, int size, int fd)
+{
+	t_env	*tmp;
+	t_list	*env_tmp;
+	int		i;
+
+	tmp = NULL;
+	i = 0;
+	while (i < size)
+	{
+		env_tmp = env;
+		while (env_tmp)
+		{
+			tmp = env_tmp->content;
+			if (tmp->rank == i && tmp->value)
+			{
+				ft_putstr_fd("declare -x ", fd);
+				ft_putstr_fd(tmp->name, fd);
+				if (tmp->value)
+				{
+					ft_putstr_fd("=\"", fd);
+					ft_putstr_fd(tmp->value, fd);
+					ft_putchar_fd('\"', fd);
+				}
+				ft_putchar_fd('\n', fd);
+				break ;
+			}
+			env_tmp = env_tmp->next;
+		}
+		i++;
+	}
+}
+
+int	built_export(char **cmd_arg, t_list *env, int fd)
 {
 	int		i;
 	t_env	*tmp;
 	char	*to_search;
 	char	*value;
+	int		size;
+	int		a;
 
 	i = 1;
+	size = 0;
+	g_cmd_ret = 0;
 	if (!cmd_arg[1])
-		print_export(env, fd);
+	{
+		init_rank(env, &size);
+		print_export(env, size, fd);
+	}
 	while (cmd_arg[i])
 	{
-		if (!ft_strrchr(cmd_arg[i], '='))
+		if (!ft_strrchr(cmd_arg[i], '=') || cmd_arg[i][0] == '=')
+			return (print_err("not a valid identifier", 1));
+		a = -1;
+		while (cmd_arg[i][a++])
 		{
-			ft_putendl_fd("variable is not valid", 2);
-			//cmd_ret = 1;
-			return ;
+			if (!ft_isdigit(cmd_arg[i][a]))
+				return (print_err("not a valid identifier", 1));
 		}
 		to_search = ft_substr(cmd_arg[i], 0, ft_strchr(cmd_arg[i], '=') - cmd_arg[i]);
 		tmp = find_env_var(env, to_search);
@@ -86,5 +106,6 @@ void	built_export(char **cmd_arg, t_list *env, int fd)
 		replace_or_create(env, tmp, cmd_arg[i], value);
 		i++;
 	}
+	return (0);
 }
 // attention ! tester export NAME=, et ensuite env, je dois voir cette nouvelle variable apparaitre

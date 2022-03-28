@@ -6,13 +6,13 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 11:09:20 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/28 14:29:24 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
+int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 {
 	t_list	*new;
 
@@ -26,10 +26,10 @@ void	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 	}
 	else
 	{
-		if (var->value)
-			free(var->value);
+		free(var->value);
 		var->value = path;
 	}
+	return (0);
 }
 
 int	change_pwd_oldpwd(char *oldpwd, t_list *env)
