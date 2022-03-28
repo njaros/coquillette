@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/28 16:36:30 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/28 17:08:48 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,16 @@ char	*analyse(char *str, int *i, int lg)
 {
 	char	*content;
 	int		j;
+	int		quote;
 
+	quote = 0;
 	content = malloc(lg + 1);
 	if (!content)
 		return (NULL);
 	ft_bzero(content, lg + 1);
 	j = -1;
-	while (str[*i] && !(str[*i] == ' ' && )
+	while (str[*i] && !(ft_tokenchar(str[*i]) && quote))
+	{}
 }
 
 t_list	*mise_en_liste(char *str)
