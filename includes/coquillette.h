@@ -51,7 +51,7 @@ typedef struct pipex_data
 	// = 0 s'il n'y a pas ou plus d'autre pipe
 	long	next_pipe_pos;
 	char	**envp;
-	char	**path;
+	char	*path;
 	char	**argv;
 }	pipex_data;
 
@@ -79,6 +79,7 @@ void	init_sigact(struct sigaction *act);
 // Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)
 
 int		get_fd_rdonly(char *entry);
+int		ft_tokenchar(int c);
 int		ft_metachar(int c);
 int		ft_switch(int n);
 t_list	*ft_lsttake(t_list **alst);

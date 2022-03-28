@@ -31,10 +31,10 @@ int init_pipex_data(pipex_data *data, char **envp)
 {
 	char	*env;
 	
+	data->last_return = 0;
 	data->envp = envp;
 	env = getenv("PATH");
-	data->path = ft_split(env, ':');
-	free(env);
+	data->path = NULL;
 	data->argv = NULL;
 	return (0);
 }

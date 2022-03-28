@@ -28,11 +28,11 @@ int	main(int argc, char ** argv, char **envp)
 
 	begin = 1;
 	init_sigact(&act);
-	env_list = init_envp(envp);
-	if (!env_list)
-		return (-1);
-	env = getenv("PATH");
-	path = ft_split(env, ':');
+	//env_list = init_envp(envp);
+	//if (!env_list)
+	//	return (-1);
+	//env = getenv("PATH");
+	//path = ft_split(env, ':');
 	line_read = NULL;
 	init_pipex_data(&data, envp);
 	while (1)

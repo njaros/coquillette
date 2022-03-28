@@ -56,6 +56,19 @@ int	ft_metachar(int c)
 	return (0);
 }
 
+int	ft_tokenchar(int c)
+{
+	if (c == '\n')
+		return (1);
+	if (c == ';')
+		return (1);
+	if (c == '&')
+		return (1);
+	if (c == '|')
+		return (1);
+	return (0);
+}
+
 t_list	*ft_lsttake(t_list **alst)
 {
 	t_list	*token;

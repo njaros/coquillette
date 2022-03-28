@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:26:54 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/24 17:11:11 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/28 10:29:54 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*replace_dollz(char *str, int *i, int end)
 	no_dollz = ft_strjoin(sub1, getenv(sub2));
 	free(sub1);
 	sub1 = ft_substr(str, end, ft_strlen(str));
-	i += ft_strlen(getenv(sub2));
+	*i += ft_strlen(getenv(sub2)) - 1;
 	free(sub2);
 	replaced = ft_strjoin(no_dollz, sub1);
 	free(no_dollz);
