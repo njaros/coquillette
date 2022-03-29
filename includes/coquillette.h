@@ -90,7 +90,7 @@ char	*quotage(char *str, int *dquote, int *quote);
 char	*check_quote_end(char *str);
 char	*replace_dollz(char *str, int *i, int end);
 int		ft_quote_switch(int quote, char c);
-char	*dollar_searcher(char *str, pipex_data data);
+char	*dollar_searcher(char *str);
 
 //pipe
 int     pipex(int argc, char *argv[], char **envp);

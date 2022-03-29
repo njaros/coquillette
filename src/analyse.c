@@ -6,11 +6,31 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/28 17:08:48 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/29 15:24:14 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
+
+char	*last_return(char *str, int *i, int ret)
+{
+	char	*number;
+	char	*sub;
+	char	*tmp;
+
+	number = ft_itoa(ret);
+	sub = ft_substr(str, 0, *i);
+	tmp = ft_strjoin(sub, number);
+	free(sub);
+	sub = ft_substr(str, *i + 2, ft_strlen(str));
+	*i += ft_strlen(number) - 1;
+	free(number);
+	number = ft_strjoin(tmp, sub);
+	free(str);
+	free(tmp);
+	free(sub);
+	return (number);
+}
 
 int	quote_detector(char c, int *in_quote)
 {
@@ -45,10 +65,10 @@ char	*analyse(char *str, int *i, int lg)
 	int		quote;
 
 	quote = 0;
-	content = malloc(lg + 1);
+	content = malloc(lg + 2); // +2 car il est possible qu'un $? devienne 127 (ou autre)
 	if (!content)
 		return (NULL);
-	ft_bzero(content, lg + 1);
+	ft_bzero(content, lg + 2); // Valgrind va râler...
 	j = -1;
 	while (str[*i] && !(ft_tokenchar(str[*i]) && quote))
 	{}

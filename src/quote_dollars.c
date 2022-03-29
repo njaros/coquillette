@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:26:54 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/28 10:29:54 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/29 16:35:40 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*quotage(char *str, int *dquote, int *quote)
 		if (add[i] == 34 && !*quote)
 			*dquote = ft_switch(*dquote);
 		if (add[i] == 39 && !*dquote)
-			*quote = ft_switch(*quote);		
+			*quote = ft_switch(*quote);
 	}
 	join = ft_strjoin("\n", add);
 	free(add);
@@ -44,16 +44,12 @@ char	*check_quote_end(char *str)
 
 	quote = 0;
 	dquote = 0;
+	str = cherche_merde(str, &quote, &dquote);
 	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == 34 && !quote)
-			dquote = ft_switch(dquote);
-		if (str[i] == 39 && !dquote)
-			quote = ft_switch(quote);
-	}
-	while (dquote || quote)
+	while (str && (dquote || quote))
 		str = quotage(str, &dquote, &quote);
+	if (str)
+		str = pipage(str);
 	return (str);
 }
 
@@ -81,7 +77,7 @@ char	*replace_dollz(char *str, int *i, int end)
 	return (replaced);
 }
 
-char	*pid_or_lastret(char *str, int *i, int ret)
+char	*pid_dollz(char *str, int *i)
 {
 	char	*number;
 	char	*sub;
@@ -90,7 +86,7 @@ char	*pid_or_lastret(char *str, int *i, int ret)
 	if (str[*i + 1] == '$')
 		number = ft_itoa(getpid());
 	else
-		number = ft_itoa(ret);
+		return (str);
 	sub = ft_substr(str, 0, *i);
 	tmp = ft_strjoin(sub, number);
 	free(sub);
@@ -104,7 +100,7 @@ char	*pid_or_lastret(char *str, int *i, int ret)
 	return (number);
 }
 
-char	*dollar_searcher(char *str, pipex_data data)
+char	*dollar_searcher(char *str)
 {
 	int		i;
 	int		end;
@@ -119,7 +115,7 @@ char	*dollar_searcher(char *str, pipex_data data)
 		if (str[i] == '$' && !quote && str[i + 1] && str[i + 1] != ' ')
 		{
 			if (str[i + 1] == '?' || str[i + 1] == '$')
-				str = pid_or_lastret(str, &i, data.last_return);
+				str = pid_dollz(str, &i);
 			else
 			{
 				end = i + 1;
