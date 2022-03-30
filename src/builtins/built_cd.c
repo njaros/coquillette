@@ -6,13 +6,13 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 16:47:42 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/30 11:21:00 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
+int	replace_or_create(t_list **env, t_env *var, char *var_name, char *path)
 {
 	t_list	*new;
 
@@ -22,7 +22,7 @@ int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 		new = ft_lstnew(create_struct(var_name));
 		if (!new)
 			return (print_err("lst problem", 1));
-		ft_lstadd_back(&env, new);
+		ft_lstadd_back(env, new);
 	}
 	else
 	{
@@ -32,7 +32,7 @@ int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 	return (0);
 }
 
-int	change_pwd_oldpwd(char *oldpwd, t_list *env)
+int	change_pwd_oldpwd(char *oldpwd, t_list **env)
 {
 	t_env	*tmp;
 	t_list	*new;
@@ -41,11 +41,11 @@ int	change_pwd_oldpwd(char *oldpwd, t_list *env)
 
 	if (!getcwd(pwd, MAXPATHLEN))
 		return (print_err("getcwd() error", errno));
-	tmp = find_env_var(env, "PWD");
+	tmp = find_env_var(*env, "PWD");
 	var_name = ft_strjoin("PWD=", pwd);
 	replace_or_create(env, tmp, var_name, pwd);
 	free(var_name);
-	tmp = find_env_var(env, "OLDPWD");
+	tmp = find_env_var(*env, "OLDPWD");
 	var_name = ft_strjoin("OLDPWD=", oldpwd);
 	replace_or_create(env, tmp, var_name, oldpwd);
 	free(var_name);
@@ -63,7 +63,7 @@ int	to_home(void)
 	return (0);
 }
 
-int	built_cd(char **cmd_arg, t_list *env, int fd)
+int	built_cd(char **cmd_arg, t_list **env, int fd)
 {
 	char	oldpwd[MAXPATHLEN];
 	t_env	*tmp;
@@ -88,7 +88,7 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 		}
 		else if (cmd_arg[1][0] == '-')
 		{
-			tmp = find_env_var(env, "OLDPWD");
+			tmp = find_env_var(*env, "OLDPWD");
 			ft_putendl_fd(tmp->value, fd);
 			g_cmd_ret = chdir(tmp->value);
 		}

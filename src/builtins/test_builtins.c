@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:20:47 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 16:55:01 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/30 11:22:30 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ t_env	*find_env_var(t_list *env, char *to_search)
 	{
 		var = env->content;
 		if (!ft_strcmp(var->name, to_search))
-			break ;
+			return (var);
 		env = env->next;
 	}
-	return (var);
+	return (NULL);
 }
 
 t_env	*create_struct(char *env)
@@ -85,7 +85,7 @@ t_list	*init_envp(char **envp)
 	return (env);
 }
 
-void	builtins(char **cmd_arg, t_list *env, int fd)
+void	builtins(char **cmd_arg, t_list **env, int fd)
 {
 	if (!ft_strcmp(cmd_arg[0], "echo"))
 		built_echo(cmd_arg, fd);
@@ -98,7 +98,7 @@ void	builtins(char **cmd_arg, t_list *env, int fd)
 	else if (!ft_strcmp(cmd_arg[0], "unset"))
 		built_unset(cmd_arg, env);
 	else if (!ft_strcmp(cmd_arg[0], "env"))
-		built_env(env, cmd_arg, fd);
+		built_env(*env, cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "exit"))
 		built_exit(cmd_arg);
 }
@@ -118,7 +118,7 @@ int	main(int argc, char ** argv, char **envp)
 	{
 		line_read = rl_get(line_read);
 		cmd_arg = ft_split(line_read, ' ');
-		builtins(cmd_arg, env_list, 1);
+		builtins(cmd_arg, &env_list, 1);
 		i = 0;
 		while (cmd_arg[i])
 		{

@@ -6,13 +6,13 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 14:25:40 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/30 10:56:23 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	built_unset(char **cmd_arg, t_list *env)
+void	built_unset(char **cmd_arg, t_list **env)
 {
 	t_env	*tmp;
 	t_list	*previous;
@@ -21,10 +21,10 @@ void	built_unset(char **cmd_arg, t_list *env)
 	int		i;
 
 	out = 0;
-	previous = env;
-	while (env)
+	previous = *env;
+	while (*env)
 	{
-		current = env;
+		current = *env;
 		tmp = current->content;
 		i = 0;
 		while (cmd_arg[i++])
@@ -44,7 +44,7 @@ void	built_unset(char **cmd_arg, t_list *env)
 			current = NULL;
 		}
 		previous = current;
-		env = env->next;
+		*env = (*env)->next;
 	}
 }
 // attention tester d'unset deux variables l'une après l'autre, si y en a pas une qui est ignorée...
