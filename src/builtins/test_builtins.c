@@ -6,11 +6,60 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:20:47 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/30 11:22:30 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/30 15:09:02 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+long	ft_atol(const char *str)
+{
+	int		num;
+	int		i;
+	long	resultat;
+
+	num = 1;
+	i = 0;
+	resultat = 0;
+	if (str[i] == '\0')
+		return (0);
+	while (str[i] && (str[i] == 32 || (str[i] >= 9 && str[i] <= 13)))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			num = -num;
+		i++;
+	}
+	while (str[i] >= 48 && str[i] <= 57)
+	{
+		resultat = resultat * 10 + (str[i] - '0');
+		i++;
+	}
+	return (resultat * num);
+}	
+
+char	*ft_strmchr(char *s, char *charset)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (s[i])
+	{
+		j = 0;
+		while (charset[j])
+		{
+			if (s[i] == charset[j])
+				return (&s[i]);
+			j++;
+		}
+		i++;
+	}
+	if (s[i] == charset[j])
+		return (&s[i]);
+	return (0);
+}
 
 int	print_err(char *str, int err)
 {
@@ -58,8 +107,11 @@ t_env	*create_struct(char *env)
 	blop = malloc(sizeof(t_env));
 	if (!blop)
 		return (NULL);
-	blop->name = ft_substr(env, 0, ft_strchr(env, '=') - env);
-	//printf("%s\n", blop->name); voir pour laisser le = dans le name !!!
+	blop->name = ft_substr(env, 0, ft_strmchr(env, "=+") - env);
+	if (ft_strrchr(env, '='))
+		blop->eg = '=';
+	else
+		blop->eg = 'c';
 	blop->value = ft_substr(ft_strchr(env, '='), 1, ft_strlen(env));
 	blop->rank = 0;
 	return (blop);
@@ -85,7 +137,7 @@ t_list	*init_envp(char **envp)
 	return (env);
 }
 
-void	builtins(char **cmd_arg, t_list **env, int fd)
+void	builtins(char **cmd_arg, t_list *env, int fd)
 {
 	if (!ft_strcmp(cmd_arg[0], "echo"))
 		built_echo(cmd_arg, fd);
@@ -98,7 +150,7 @@ void	builtins(char **cmd_arg, t_list **env, int fd)
 	else if (!ft_strcmp(cmd_arg[0], "unset"))
 		built_unset(cmd_arg, env);
 	else if (!ft_strcmp(cmd_arg[0], "env"))
-		built_env(*env, cmd_arg, fd);
+		built_env(env, cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "exit"))
 		built_exit(cmd_arg);
 }
@@ -118,7 +170,7 @@ int	main(int argc, char ** argv, char **envp)
 	{
 		line_read = rl_get(line_read);
 		cmd_arg = ft_split(line_read, ' ');
-		builtins(cmd_arg, &env_list, 1);
+		builtins(cmd_arg, env_list, 1);
 		i = 0;
 		while (cmd_arg[i])
 		{
