@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execpipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 08:43:38 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/28 16:07:17 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/30 15:23:13 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,36 +112,4 @@ int	execpipe(pipex_data *data)
 	waitpid(fork_pid, NULL, 0);
 	return (err);
 }
-/*void	exec()
-{
 
-}
-void	test_multipipe()
-{
-	int		pip_nb;
-	t_pipe	pip;
-	int		fd[2];
-	int		tmp_fd;
-	pid_t	fork_pid;
-
-	pip_nb = 2; // recuperer le nb de pipe => parsing
-	while (pip_nb > 0)
-	{
-		if (pipe(fd) == -1)
-      		error("pipe");
-		fork_pid = fork(); // ou builtins
-			error("fork");
-		if (fork_pid == 0)
-		{
-			if (dup2(pip->infile, STDIN_FILENO) == -1)
-       			error("dup");
-    		close(fd[0]);
-    		if (dup2(fd[1], STDOUT_FILENO) == -1)
-        		error("dup");
-    		close(pip->infile);
-    		if (execve(pip->cmd1, pip->cmd1_arg, envp) == -1)
-        		error("execve");
-		}
-		pip_nb--;
-	}
-}*/

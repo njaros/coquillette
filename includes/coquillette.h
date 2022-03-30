@@ -108,23 +108,5 @@ t_env	*find_env_var(t_list *env, char *to_search);
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
 
-//builtins
-void	built_cd(char **cmd_arg, t_list *env);
-void	to_home(void);
-void	change_pdw_oldpwd(char *oldpwd, t_list *env);
-void	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
-//
-void	built_echo(char **cmd_arg, int fd);
-//
-void	built_env(t_list *env, int fd);
-//
-void	built_exit(char **cmd_arg);
-//
-void	built_export(char **cmd_arg, t_list *env, int fd);
-void	print_export(t_list *env, int fd);
-//
-void	built_pwd(char **cmd_arg, int fd);
-//
-void	built_unset(char **cmd_arg, t_list *env);
 
 #endif
