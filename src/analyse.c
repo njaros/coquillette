@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/29 15:24:14 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/30 11:12:17 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	quote_detector(char c, int *in_quote)
 	return (0);
 }
 
-char	*analyse(char *str, int *i, int lg)
+char	*analyse(char *str, int *i, t_data *data)
 {
 	char	*content;
 	int		j;
@@ -74,7 +74,7 @@ char	*analyse(char *str, int *i, int lg)
 	{}
 }
 
-t_list	*mise_en_liste(char *str)
+/*t_list	*mise_en_liste(char *str)
 {
 	int		i;
 	t_list	*lst;
@@ -101,3 +101,4 @@ t_list	*mise_en_liste(char *str)
 	}
 	return (lst);
 }
+*/

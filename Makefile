@@ -36,10 +36,11 @@ LST_SRCS =	coquillette_utils1.c \
 			coquillette.c \
 			quote_dollars.c \
 			quote_dollars2.c \
+			quote_dollars3.c \
 			execpipe.c \
 			traitement_signaux.c \
-			libft_ajout1.c	\
-			pipe.c	\
+			libft_ajout1.c \
+			pipe.c \
 			pipe_utils.c
 LST_OBJS = ${LST_SRCS:.c=.o}
 LST_INCLUDES =	coquillette.h \

@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:26:54 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/29 16:35:40 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/30 10:33:55 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char	*dollar_searcher(char *str)
 
 	quote = 0;
 	i = -1;
-	while (str[++i])
+	while (str && str[++i])
 	{
 		if (str[i] == 39 || str[i] == 34)
 			quote = ft_quote_switch(quote, str[i]);

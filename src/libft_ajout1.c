@@ -58,7 +58,7 @@ int	ft_metachar(int c)
 
 int	ft_tokenchar(int c)
 {
-	if (c == '\n')
+	if (c == '\n' || c == '\0')
 		return (1);
 	if (c == ';')
 		return (1);

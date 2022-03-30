@@ -42,18 +42,13 @@ typedef struct s_env
 	int		rank;
 }               t_env;
 
-typedef struct pipex_data
+typedef struct s_data
 {
 	int		last_return;
-	int		pipefd_in[2];
-	int		pipefd_out[2];
-	// = n si le prochain pipe est à la position line_read[n]
-	// = 0 s'il n'y a pas ou plus d'autre pipe
-	long	next_pipe_pos;
-	char	**envp;
-	char	*path;
+	int		in;
+	int		out;
 	char	**argv;
-}	pipex_data;
+}	t_data;
 
 typedef struct s_pipe
 {
@@ -87,10 +82,14 @@ t_list	*ft_lsttake(t_list **alst);
 // ICI ON PARSE
 
 char	*quotage(char *str, int *dquote, int *quote);
+char	*pipage(char *str);
 char	*check_quote_end(char *str);
 char	*replace_dollz(char *str, int *i, int end);
 int		ft_quote_switch(int quote, char c);
 char	*dollar_searcher(char *str);
+int		double_token_char(char *str, int *quote, int *dquote, int *i);
+char	*cherche_merde(char *str, int *quote, int *dquote);
+void	le_coupable_est(char *c);
 
 //pipe
 int     pipex(int argc, char *argv[], char **envp);
