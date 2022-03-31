@@ -90,6 +90,19 @@ char	*dollar_searcher(char *str);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
 char	*cherche_merde(char *str, int *quote, int *dquote);
 void	le_coupable_est(char *c);
+int		analyse(char *str, int *i, t_data *data);
+int		ajout_block(t_data **pouet, int *i, int *ptr, char *str);
+char	*dollz_what(char *str, t_data *data);
+char	*last_return(char *str, int *i, int ret);
+int		chevronnage(t_list **pouet, t_data *data);
+int		chevron_manager(t_list **pouet, t_list *prev, t_data *data);
+int		manip_chevron_str(char **str);
+void	file_to_open(char *file, int chev, t_data *data);
+void	reorder_lst(t_list **lst, t_list *prev, int context);
+void	analyse_error_message(char *str, int context);
+int		analyse_sep(char c);
+void	quote_switcher(int *quote, int *dquote, char c);
+int		organiser(t_list **pouet, int *i, char *str, t_data *data);
 
 //pipe
 int     pipex(int argc, char *argv[], char **envp);
@@ -100,6 +113,7 @@ char    *get_cmd(char *cmd, char **path);
 //
 void    feel_free(t_pipe *pip);
 void	ft_free(char **tab);
+int		free_lst_analyse(t_list **to_free);
 void	error(char *msg);
 int		error2(int err);
 

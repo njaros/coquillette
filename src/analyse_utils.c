@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:40:11 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 16:18:30 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 17:02:13 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,22 @@ void	analyse_error_message(char *str, int context)
 
 void	reorder_lst(t_list **lst, t_list *prev, int context)
 {
-	if (context == 1)
+	t_list	*temp;
+	temp = *lst;
+
+	if (prev)
 	{
-		
+		if (context == 1)
+			prev->next = (*lst)->next;
+		if (context == 2)
+			prev->next = (*lst)->next->next;
+	}
+	*lst = (*lst)->next;
+	ft_lstdelone(temp, free);
+	if (context == 2)
+	{
+		temp = *lst;
+		*lst = (*lst)->next;
+		ft_lstdelone(temp, free);
 	}
 }

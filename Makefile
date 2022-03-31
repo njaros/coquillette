@@ -37,6 +37,11 @@ LST_SRCS =	coquillette_utils1.c \
 			quote_dollars.c \
 			quote_dollars2.c \
 			quote_dollars3.c \
+			analyse.c \
+			analyse2.c \
+			analyse_utils.c \
+			chevron.c \
+			freeeuse.c \
 			execpipe.c \
 			traitement_signaux.c \
 			libft_ajout1.c \

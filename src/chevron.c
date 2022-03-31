@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 15:56:33 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 16:43:40 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,13 @@ int	chevronnage(t_list **pouet, t_data *data)
 	first = NULL;
 	prev = NULL;
 	while (*pouet)
-	{
 		if (!chevron_manager(pouet, prev, data))
 		{
 			if (first = NULL)
 				first = *pouet;
 			lg++;
 			prev = *pouet;
+			*pouet = (*pouet)->next;
 		}
-		*pouet = (*pouet)->next;
-	}
 	return (lg);
 }

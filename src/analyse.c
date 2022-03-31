@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 16:05:35 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 17:23:02 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,5 @@ int	analyse(char *str, int *i, t_data *data)
 				return (free_lst_analyse(&pouet));
 		*i += 1;
 	}
-	return (organiser(&pouet, *i, str, data));
+	return (organiser(&pouet, i, str, data));
 }
