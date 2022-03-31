@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:20:47 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/30 15:09:02 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 14:18:48 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	builtins(char **cmd_arg, t_list *env, int fd)
 	else if (!ft_strcmp(cmd_arg[0], "env"))
 		built_env(env, cmd_arg, fd);
 	else if (!ft_strcmp(cmd_arg[0], "exit"))
-		built_exit(cmd_arg);
+		built_exit(cmd_arg, env);
 }
 
 int	main(int argc, char ** argv, char **envp)

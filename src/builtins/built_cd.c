@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/30 13:49:21 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 13:51:55 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 {
 	char	oldpwd[MAXPATHLEN];
 	t_env	*tmp;
+	int		i;
 	
+	i = 0;
 	g_cmd_ret = 0;
 	tmp = NULL;
 	if (!getcwd(oldpwd, MAXPATHLEN))
@@ -92,21 +94,22 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 	{
 		if (cmd_arg[2] != NULL)
 			return (print_err("cd : too many arguments", 1));
-		if (cmd_arg[1][0] == '-')
+		if (cmd_arg[1][i] == '-')
 		{
-			tmp = find_env_var(env, "OLDPWD");
+			tmp = find_env_var(env, "OLDPWD"); // faire attention à la possibilité qu'il n'y ai pas de variable OLDPWD !!
 			ft_putendl_fd(tmp->value, fd);
 			g_cmd_ret = chdir(tmp->value);
 		}
 		else
 		{
-			if (cmd_arg[1][0] == '~')
+			if (cmd_arg[1][i] == '~')
 			{
 				if (to_home() != 0)
 					return (1);
+				i = 2;
 			}
-			if (cmd_arg[1][1])
-				g_cmd_ret = chdir(&cmd_arg[1][2]);
+			if (cmd_arg[1][i])
+				g_cmd_ret = chdir(&cmd_arg[1][i]);
 			if (g_cmd_ret == -1)
 				return (print_err("No such file or directory", 1));
 		}
