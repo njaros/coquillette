@@ -64,7 +64,10 @@ t_env	*create_struct(char *env)
 	if (!blop)
 		return (NULL);
 	blop->name = ft_substr(env, 0, ft_strchr(env, '=') - env);
-	//printf("%s\n", blop->name); voir pour laisser le = dans le name !!!
+	if (ft_strrchr(env, '='))
+		blop->eg = '=';
+	else
+		blop->eg = 'c';
 	blop->value = ft_substr(ft_strchr(env, '='), 1, ft_strlen(env));
 	return (blop);
 }

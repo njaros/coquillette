@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/28 11:12:46 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/30 11:55:58 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	built_env(t_list *env, char **cmd_arg, int fd)
 	while (env)
 	{
 		tmp = env->content;
-		if (tmp->value)
+		if (tmp->eg == '=')
 		{
 			ft_putstr_fd(tmp->name, fd);
 			ft_putchar_fd('=', fd);
