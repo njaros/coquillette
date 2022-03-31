@@ -68,7 +68,7 @@ char	*rl_get(char *line_read);
 
 // Fonctions d'initialisation
 
-int 	init_pipex_data(pipex_data *data, char **envp);
+int 	init_pipex_data(t_data *data, char **envp);
 void	init_sigact(struct sigaction *act);
 
 // Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)

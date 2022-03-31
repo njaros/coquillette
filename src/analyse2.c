@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freeteuse.c                                        :+:      :+:    :+:   */
+/*   analyse2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/30 12:00:25 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 09:34:22 by njaros           ###   ########lyon.fr   */
+/*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
+/*   Updated: 2022/03/31 13:52:56 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-void	*free_lst_analyse(t_list **to_free)
+char	*organiser(t_list **pouet, int i, char *str, t_data *data)
 {
-	ft_lstclear(to_free, free);
-	return (NULL);
+	t_list	*first;
+	int		lg;
+
+	lg = chevronnage(pouet, data);
+	first = *pouet;
+	
 }

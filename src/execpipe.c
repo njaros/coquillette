@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execpipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 08:43:38 by njaros            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/03/30 11:57:42 by njaros           ###   ########lyon.fr   */
-=======
-/*   Updated: 2022/03/30 15:23:13 by ccartet          ###   ########.fr       */
->>>>>>> ec333adce60d4aaf4d9e31b01bf1a6522cee4ed1
+/*   Updated: 2022/03/31 09:29:02 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +88,6 @@ int	execpipe(t_data *data)
 	waitpid(fork_pid, NULL, 0);
 	return (err);
 }
-<<<<<<< HEAD
 void	exec()
 {
 
@@ -104,6 +99,4 @@ void	test_multipipe()
 	int		fd[2];
 	int		tmp_fd;
 	pid_t	fork_pid;
-=======
->>>>>>> ec333adce60d4aaf4d9e31b01bf1a6522cee4ed1
 

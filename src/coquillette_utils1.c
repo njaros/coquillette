@@ -27,14 +27,13 @@ t_env	*find_env_var(t_list *env, char *to_search)
 	return (var);
 }
 
-int init_pipex_data(pipex_data *data, char **envp)
+int init_pipex_data(t_data *data, char **envp)
 {
 	char	*env;
 	
 	data->last_return = 0;
-	data->envp = envp;
-	env = getenv("PATH");
-	data->path = NULL;
+	data->in = -1;
+	data->out = -1;
 	data->argv = NULL;
 	return (0);
 }

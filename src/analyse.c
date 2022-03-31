@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/30 12:02:10 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 16:05:35 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,50 @@ char	*last_return(char *str, int *i, int ret)
 	return (number);
 }
 
-void	quote_switcher(int *quote, int *dquote, char c)
+char	*dollz_what(char *str, t_data *data)
 {
-	if (c == 34 && !*quote)
-		*dquote = ft_switch(*dquote);
-	if (c == 39 && !*dquote)
-		*quote = ft_switch(*quote);
+	int	quote;
+	int	dquote;
+	int	i;
+
+	quote = 0;
+	dquote = 0;
+	i = -1;
+	while (str[++i] && str[i] != '|')
+	{
+		quote_switcher(&quote, &dquote, str[i]);
+		if (str[i] == '$' && !quote && !dquote)
+		{
+			str = last_return(str, &i, data->last_return);
+			if (!str)
+				return (NULL);
+		}
+	}
+	return (str);
 }
 
-int	ajout_block(t_data *pouet, int i, int *ptr, char *str)
+int	ajout_block(t_data **pouet, int *i, int *ptr, char *str)
 {
 	char	*sub;
+	char	*new;
 
-	sub = ft_substr(str, *ptr, i - *ptr);
+	sub = ft_substr(str, *ptr, *i - *ptr);
 	if (!sub)
 		return (0);
-	*ptr = i + 1;
+	while (str[*i] == ' ')
+		*i += 1;
+	*ptr = *i;
+	new = ft_lstnew(sub);
+	if (!new)
+	{
+		free(sub);
+		return (0);
+	}
+	ft_lstadd_back(pouet, new);
+	return (1);
 }
 
-char	*analyse(char *str, int *i, t_data *data)
+int	analyse(char *str, int *i, t_data *data)
 {
 	t_list	*pouet;
 	int		ptr;
@@ -59,15 +84,20 @@ char	*analyse(char *str, int *i, t_data *data)
 
 	quote = 0;
 	dquote = 0;
-	ptr = *i;
 	pouet = NULL;
-	while (str[*i] && str[*i] != '|')
+	str = dollz_what(str, data);
+	if (!str)
+		return (0);
+	while (str[*i] == ' ')
+		*i += 1;
+	ptr = *i;
+	while (str[*i] && !(str[*i] == '|' && !quote && !dquote))
 	{
 		quote_switcher(&quote, &dquote, str[*i]);
-		if (str[*i] == ' ' && !quote && !dquote)
+		if (analyse_sep(str[*i]) && !quote && !dquote)
 			if (!ajout_block(&pouet, *i, &ptr, str))
 				return (free_lst_analyse(&pouet));
 		*i += 1;
 	}
-	return (organiser(&pouet, *i, data));
+	return (organiser(&pouet, *i, str, data));
 }
