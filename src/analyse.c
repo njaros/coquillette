@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/30 11:12:17 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/30 12:02:10 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,73 +32,42 @@ char	*last_return(char *str, int *i, int ret)
 	return (number);
 }
 
-int	quote_detector(char c, int *in_quote)
+void	quote_switcher(int *quote, int *dquote, char c)
 {
-	static int	quote = 0;
-	static int	dquote = 0;
+	if (c == 34 && !*quote)
+		*dquote = ft_switch(*dquote);
+	if (c == 39 && !*dquote)
+		*quote = ft_switch(*quote);
+}
 
-	if (!quote && c == 34)
-	{
-		dquote = ft_switch(dquote);
-		if (dquote == 1)
-			*in_quote = 1;
-		else
-			*in_quote = 0;
-		return (1);
-	}
-	if (!dquote && c == 39)
-	{
-		quote = ft_switch(quote);
-		if (dquote == 1)
-			*in_quote = 1;
-		else
-			*in_quote = 0;
-		return (1);
-	}
-	return (0);
+int	ajout_block(t_data *pouet, int i, int *ptr, char *str)
+{
+	char	*sub;
+
+	sub = ft_substr(str, *ptr, i - *ptr);
+	if (!sub)
+		return (0);
+	*ptr = i + 1;
 }
 
 char	*analyse(char *str, int *i, t_data *data)
 {
-	char	*content;
-	int		j;
+	t_list	*pouet;
+	int		ptr;
 	int		quote;
+	int		dquote;
 
 	quote = 0;
-	content = malloc(lg + 2); // +2 car il est possible qu'un $? devienne 127 (ou autre)
-	if (!content)
-		return (NULL);
-	ft_bzero(content, lg + 2); // Valgrind va râler...
-	j = -1;
-	while (str[*i] && !(ft_tokenchar(str[*i]) && quote))
-	{}
-}
-
-/*t_list	*mise_en_liste(char *str)
-{
-	int		i;
-	t_list	*lst;
-	t_list	*secure;
-	char	*content;
-	
-	i = -1;
-	while (str[++i] == ' ')
-		;
-	while (str[i] && str[i] != '|')
+	dquote = 0;
+	ptr = *i;
+	pouet = NULL;
+	while (str[*i] && str[*i] != '|')
 	{
-		content = analyse(&str[i], &i, ft_strlen(&str[i]));
-		secure = ft_lstnew(content);
-		if (!secure || !content)
-		{
-			ft_lstclear(&lst, free);
-			ft_lstdelone(secure, free);
-			free(content);
-			return(NULL);
-		}
-		ft_lstadd_back(&lst, secure);
-		while (str[i] == ' ')
-			i++;
+		quote_switcher(&quote, &dquote, str[*i]);
+		if (str[*i] == ' ' && !quote && !dquote)
+			if (!ajout_block(&pouet, *i, &ptr, str))
+				return (free_lst_analyse(&pouet));
+		*i += 1;
 	}
-	return (lst);
+	return (organiser(&pouet, *i, data));
 }
-*/

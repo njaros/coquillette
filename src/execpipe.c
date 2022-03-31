@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 08:43:38 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/28 16:07:17 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/30 11:57:42 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,33 +45,7 @@ int	is_spechar(char c)
 		return (1);
 	return (0);
 }
-
-int	parsing_line(char *line, pipex_data *data, int *begin)
-{
-	int		i;
-	int		in_dquote;
-	int		in_quote;
-
-	in_quote = 0;
-	in_dquote = 0;
-	i = -1;
-	while (line[++i])
-	{
-		while (line[i] == ' ')
-			i++;
-		while (line[i] && !(is_spechar(line[i]) && !in_dquote && !in_quote))
-		{
-			if (line[i] == 34 && !in_quote) // 34 = "
-				in_dquote = ft_switch(in_dquote);
-			if (line[i] == 39 && !in_dquote) // 39 = ' 
-				in_quote = ft_switch(in_quote);
-		}
-		if (line[i] == ' ' || line[i])
-			data->path = found_cmd(ft_substr(line, 0, i));
-	}
-	return (0);
-}
-
+/*
 char	*next_pipe(char *line, pipex_data *data)
 {
 	char	*next_cmd;
@@ -88,7 +62,9 @@ char	*next_pipe(char *line, pipex_data *data)
 		return (NULL);
 	return (next_cmd);
 }
-int	execpipe(pipex_data *data)
+
+
+int	execpipe(t_data *data)
 {
 	pid_t	fork_pid;
 	int		err;
@@ -112,7 +88,7 @@ int	execpipe(pipex_data *data)
 	waitpid(fork_pid, NULL, 0);
 	return (err);
 }
-/*void	exec()
+void	exec()
 {
 
 }
