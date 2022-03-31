@@ -6,24 +6,59 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 16:43:26 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:59:12 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-typedef struct s_tpipe
+char	*found_cmd(char *entry)
 {
-    int     infile;
-    int     outfile;
-    char    **cmd_arg;
-	char	*cmd_path;
-	int		pipe;
-}               t_tpipe;
+	char	*env;
+	char	*cmd;
+	char	**path_tab;
+	int		i;
+	i = -1;
+	while (entry[++i])
+		if (entry[i] == '/')
+			return (entry);
+	env = getenv("PATH");
+	path_tab = ft_split(env, ':');
+	cmd = get_cmd(entry, path_tab);
+	ft_free(path_tab);
+	free(entry);
+	return (cmd);
+}
 
-int	loop_pipe(t_tpipe *data, int *fd_in, int pipefd[2])
+char **transform_list(t_list *env)
+{
+	char	**envp;
+	int		size;
+	int		i;
+	t_env	*tmp;
+	char	*first;
+	
+	size = ft_lstsize(env);
+	envp = malloc(sizeof(char *) * (size + 1));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	while (env)
+	{
+		tmp = env->content;
+		first = ft_strjoin(tmp->name, "=");
+		envp[i] = ft_strjoin(first, tmp->value);
+		free(first);
+		i++;
+		env = env->next;
+	}
+	return (envp);
+}
+
+int	loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env)
 {
 	pid_t	f_pid;
+	char	**envp;
 	
 	f_pid = fork();
 	if (f_pid == -1)
@@ -37,7 +72,9 @@ int	loop_pipe(t_tpipe *data, int *fd_in, int pipefd[2])
 		if (data->out == -1) // sauf derniere cmd
 			data->out = pipefd[1];
 		dup2(data->out, STDOUT_FILENO);
-		execve(data->cmd_path, data->cmd_arg, env);
+		envp = transform_list(env);
+		execve(data->cmd_path, data->argv, envp);
+		ft_free(envp);
 	}
 	close(data->out);
 	close(data->in);
@@ -45,10 +82,10 @@ int	loop_pipe(t_tpipe *data, int *fd_in, int pipefd[2])
 	return (pipefd[0]);
 }
 
-void	test_exec(char *line_read, t_list *env, char **path)
+void	test_exec(char *line_read, t_list *env)
 {
 	int		i;
-	t_tpipe	data;
+	t_data	data;
 	int		pipefd[2];
 	pid_t	f_pid;
 	int		tmp_fd;
@@ -59,26 +96,26 @@ void	test_exec(char *line_read, t_list *env, char **path)
 	{
 		if (pipe(pipefd) == -1)
 			error("pipe");
-		if (check_built(data.cmd_arg[0])) // vérifier si la cmd est un builtin
-			builtins(data.cmd_arg, env, data.out);
+		// if (check_built(data.cmd_arg[0])) // vérifier si la cmd est un builtin
+		// 	builtins(data.cmd_arg, env, data.out);
 		else
 		{
-			data.cmd_path = found_cmd(data.cmd_arg[0]);
+			data.cmd_path = found_cmd(data.argv[0]);
 			if (!data.cmd_path) // vérifier que la commande existe
-				printf("%s: command not found\n", data.cmd_arg[0]);
+				printf("%s: command not found\n", data.argv[0]);
 			else
-				tmp_fd = loop_pipe(&data, tmp_fd, pipefd);
+				tmp_fd = loop_pipe(&data, tmp_fd, pipefd, env);
 		}
 	}
 	// dernier passage, on sort de la boucle car plus besoin de créer de nouveau pipe !
-	if (check_built(data.cmd_arg[0])) // vérifier si la cmd est un builtin
-		builtins(data.cmd_arg, env, data.out);
-	else
-	{
-		data.cmd_path = found_cmd(data.cmd_arg[0]);
+	// if (check_built(data.argv[0])) // vérifier si la cmd est un builtin
+	// 	builtins(data.argv, env, data.out);
+	// else
+	// {
+		data.cmd_path = found_cmd(data.argv[0]);
 		if (!data.cmd_path) // vérifier que la commande existe
-			printf("%s: command not found\n", data.cmd_arg[0]);
+			printf("%s: command not found\n", data.argv[0]);
 		else
-		loop_pipe(&data, tmp_fd, pipefd);
-	}
+			loop_pipe(&data, tmp_fd, pipefd, env);
+	// }
 }

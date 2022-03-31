@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 17:23:02 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 17:41:42 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ char	*dollz_what(char *str, t_data *data)
 	return (str);
 }
 
-int	ajout_block(t_data **pouet, int *i, int *ptr, char *str)
+int	ajout_block(t_list **pouet, int *i, int *ptr, char *str)
 {
 	char	*sub;
-	char	*new;
+	t_list	*new;
 
 	sub = ft_substr(str, *ptr, *i - *ptr);
 	if (!sub)
@@ -95,7 +95,7 @@ int	analyse(char *str, int *i, t_data *data)
 	{
 		quote_switcher(&quote, &dquote, str[*i]);
 		if (analyse_sep(str[*i]) && !quote && !dquote)
-			if (!ajout_block(&pouet, *i, &ptr, str))
+			if (!ajout_block(&pouet, i, &ptr, str))
 				return (free_lst_analyse(&pouet));
 		*i += 1;
 	}

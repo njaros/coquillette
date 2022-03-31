@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 14:42:44 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:28:50 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 			free(var->value);
 			var->value = ft_strdup(tmp);
 			free(tmp);
+			return (0);
 		}
-		else
-		{
-			free(var->value);
-			var->value = ft_strdup(path);
-		}
+		free(var->value);
+		var->value = ft_strdup(path);
 	}
 	return (0);
 }
@@ -79,7 +77,7 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 	char	oldpwd[MAXPATHLEN];
 	t_env	*tmp;
 	int		i;
-	
+
 	i = 0;
 	g_cmd_ret = 0;
 	tmp = NULL;

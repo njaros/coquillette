@@ -38,6 +38,7 @@
 typedef struct s_env
 {
     char    *name;
+    char    eg;
     char    *value;
 	int		rank;
 }               t_env;
@@ -48,7 +49,8 @@ typedef struct s_data
 	int		in;
 	int		out;
 	char	**argv;
-}	t_data;
+    char	*cmd_path;
+}	            t_data;
 
 typedef struct s_pipe
 {
@@ -91,7 +93,7 @@ int		double_token_char(char *str, int *quote, int *dquote, int *i);
 char	*cherche_merde(char *str, int *quote, int *dquote);
 void	le_coupable_est(char *c);
 int		analyse(char *str, int *i, t_data *data);
-int		ajout_block(t_data **pouet, int *i, int *ptr, char *str);
+int		ajout_block(t_list **pouet, int *i, int *ptr, char *str);
 char	*dollz_what(char *str, t_data *data);
 char	*last_return(char *str, int *i, int ret);
 int		chevronnage(t_list **pouet, t_data *data);
@@ -122,5 +124,9 @@ t_env	*find_env_var(t_list *env, char *to_search);
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
 
+// multipipe
+void	test_exec(char *line_read, t_list *env);
+int	    loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env);
+char	*found_cmd(char *entry);
 
 #endif

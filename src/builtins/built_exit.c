@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 14:47:41 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:03:45 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_arg(char *arg)
 	sign = 0;
 	while (arg[i])
 	{
-		if (!ft_isdigit(arg[i])) && arg[i] != '-' && arg[i] != '+' && arg[i] != ' ')
+		if (!ft_isdigit(arg[i]) && arg[i] != '-' && arg[i] != '+' && arg[i] != ' ')
 			return (1);
 		if (arg[i] == '-' || arg[i] == '+')
 			sign = 1;

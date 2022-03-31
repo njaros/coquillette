@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 16:43:40 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 17:43:27 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	chevronnage(t_list **pouet, t_data *data)
 	while (*pouet)
 		if (!chevron_manager(pouet, prev, data))
 		{
-			if (first = NULL)
+			if (first == NULL)
 				first = *pouet;
 			lg++;
 			prev = *pouet;

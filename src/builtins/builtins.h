@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:38:46 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/30 15:10:35 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:04:21 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	built_echo(char **cmd_arg, int fd);
 //
 int	    built_env(t_list *env, char **cmd_arg, int fd);
 //
-void	built_exit(char **cmd_arg);
+void	built_exit(char **cmd_arg, t_list *env);
 int	    check_arg(char *arg);
 //
 int	    built_export(char **cmd_arg, t_list *env, int fd);
