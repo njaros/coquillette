@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/30 15:13:09 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 14:34:34 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,36 @@
 int	check_arg(char *arg)
 {
 	int	i;
+	int	sign;
 
 	i = 0;
+	sign = 0;
 	while (arg[i])
 	{
-		if (!ft_isdigit(arg[i]) && arg[i] != '-' && arg[i] != '+')
+		if (!ft_isdigit(arg[i])) && arg[i] != '-' && arg[i] != '+' && arg[i] != ' ')
 			return (1);
-		if (arg[i + 1] == '-' || arg[i + 1] == '+')
+		if (arg[i] == '-' || arg[i] == '+')
+			sign = 1;
+		if (sign == 1 && (arg[i + 1] == '-' || arg[i + 1] == '+'))
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void	built_exit(char **cmd_arg)
+void	built_exit(char **cmd_arg, t_list *env)
 {
+	char	*level;
+	int		lvl;
+	t_env	*tmp;
+	
 	g_cmd_ret = 0;
+	level = getenv("SHLVL");
+	lvl = ft_atoi(level);
+	lvl--;
+	level = ft_itoa(lvl);
+	tmp = find_env_var(env, "SHLVL");
+	replace_or_create(env, tmp, "SHLVL", oldpwd);
 	if (cmd_arg[1])
 	{
 		if (cmd_arg[2] != NULL)
