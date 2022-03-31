@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 14:34:34 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 14:47:41 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,18 @@ void	built_exit(char **cmd_arg, t_list *env)
 	char	*level;
 	int		lvl;
 	t_env	*tmp;
+	char	*var_name;
 	
 	g_cmd_ret = 0;
-	level = getenv("SHLVL");
-	lvl = ft_atoi(level);
+	level = getenv("SHLVL"); // modification du level shell, attention que ce passe-t-il s'il n'y a pas de variable SHLVL ?
+	lvl = ft_atoi(level); // créer une sous-fonction
 	lvl--;
 	level = ft_itoa(lvl);
 	tmp = find_env_var(env, "SHLVL");
-	replace_or_create(env, tmp, "SHLVL", oldpwd);
+	var_name = ft_strjoin("SHLVL=", level);
+	replace_or_create(env, tmp, var_name, level);
+	free(level);
+	free(var_name);
 	if (cmd_arg[1])
 	{
 		if (cmd_arg[2] != NULL)
