@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 17:41:42 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/04 14:19:47 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int	ajout_block(t_list **pouet, int *i, int *ptr, char *str)
 		return (0);
 	}
 	ft_lstadd_back(pouet, new);
+	while (analyse_sep(str, i, 0))
+		*i += 1;
 	return (1);
 }
 
@@ -88,16 +90,17 @@ int	analyse(char *str, int *i, t_data *data)
 	str = dollz_what(str, data);
 	if (!str)
 		return (0);
-	while (str[*i] == ' ')
-		*i += 1;
-	ptr = *i;
+	init_analyse(str, i, &ptr);
 	while (str[*i] && !(str[*i] == '|' && !quote && !dquote))
 	{
 		quote_switcher(&quote, &dquote, str[*i]);
-		if (analyse_sep(str[*i]) && !quote && !dquote)
+		if ((analyse_sep(str, i, 1) && !quote && !dquote))
+		{
 			if (!ajout_block(&pouet, i, &ptr, str))
 				return (free_lst_analyse(&pouet));
-		*i += 1;
+		}
+		else
+			*i += 1;
 	}
 	return (organiser(&pouet, i, str, data));
 }

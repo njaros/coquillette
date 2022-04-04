@@ -82,7 +82,7 @@ int		ft_switch(int n);
 t_list	*ft_lsttake(t_list **alst);
 
 // ICI ON PARSE
-
+void	debug_blocs(t_list *lst); // Debbugger
 char	*quotage(char *str, int *dquote, int *quote);
 char	*pipage(char *str);
 char	*check_quote_end(char *str);
@@ -90,6 +90,7 @@ char	*replace_dollz(char *str, int *i, int end);
 int		ft_quote_switch(int quote, char c);
 char	*dollar_searcher(char *str);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
+int		alone_pipe(char *str, int *i);
 char	*cherche_merde(char *str, int *quote, int *dquote);
 void	le_coupable_est(char *c);
 int		analyse(char *str, int *i, t_data *data);
@@ -100,9 +101,10 @@ int		chevronnage(t_list **pouet, t_data *data);
 int		chevron_manager(t_list **pouet, t_list *prev, t_data *data);
 int		manip_chevron_str(char **str);
 void	file_to_open(char *file, int chev, t_data *data);
-void	reorder_lst(t_list **lst, t_list *prev, int context);
+void	reorder_lst(t_list **lst, t_list *prev);
 void	analyse_error_message(char *str, int context);
-int		analyse_sep(char c);
+int		analyse_sep(char *str, int *i, int context);
+void	init_analyse(char *str, int *i, int *ptr);
 void	quote_switcher(int *quote, int *dquote, char c);
 int		organiser(t_list **pouet, int *i, char *str, t_data *data);
 

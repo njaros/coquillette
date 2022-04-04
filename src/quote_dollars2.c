@@ -51,6 +51,7 @@ char	*pipage(char *str)
 	i = 0;
 	while (str[i])
 		i++;
+	i--;
 	while (str[i] == ' ' && i >= 0)
 		i--;
 	if (i < 0 || str[i] != '|')
@@ -89,6 +90,7 @@ int	double_token_char(char *str, int *quote, int *dquote, int *i)
 				return (1);
 		}
 	}
+	*i = -1;
 	return (0);
 }
 
@@ -97,7 +99,8 @@ char	*cherche_merde(char *str, int *quote, int *dquote)
 	int	i;
 
 	i = -1;
-	if (double_token_char(str, quote, dquote, &i))
+	if (double_token_char(str, quote, dquote, &i)
+			|| alone_pipe(str, &i))
 	{
 		add_history(str);
 		le_coupable_est(&str[i]);
