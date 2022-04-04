@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 18:22:53 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/04 16:17:46 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,10 @@ void	test_exec(char *line_read, t_list *env)
 	
 	i = 0;
 	tmp_fd = 0;
+	init_data(&data);
 	while (analyse(line_read, &i, &data) == 1) // read_line a déjà été transformée
 	{
-		lecture(data.argv);
+		// lecture(data.argv);
 		if (pipe(pipefd) == -1)
 			error("pipe");
 		// if (check_built(data.cmd_arg[0])) // vérifier si la cmd est un builtin
@@ -116,6 +117,8 @@ void	test_exec(char *line_read, t_list *env)
 			else
 				tmp_fd = loop_pipe(&data, tmp_fd, pipefd, env);
 		}
+		ft_free(data.argv);
+		free(data.cmd_path);
 	}
 	// dernier passage, on sort de la boucle car plus besoin de créer de nouveau pipe !
 	// if (check_built(data.argv[0])) // vérifier si la cmd est un builtin
@@ -127,5 +130,7 @@ void	test_exec(char *line_read, t_list *env)
 			printf("%s: command not found\n", data.argv[0]);
 		else
 			loop_pipe(&data, tmp_fd, pipefd, env);
+		ft_free(data.argv);
+		free(data.cmd_path);
 	// }
 }
