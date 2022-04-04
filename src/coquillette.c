@@ -27,7 +27,9 @@ int	main(int argc, char ** argv, char **envp)
 	while (1)
 	{
 		line_read = dollar_searcher(rl_get(line_read));
-		test_exec(line_read, env_list);
+		fprintf(stderr, "avant parsing : %s\n",line_read);
+		if (line_read)
+			test_exec(line_read, env_list);
 		/*else
 		{
 			cmd_arg = ft_split(line_read, ' ');

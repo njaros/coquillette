@@ -79,6 +79,7 @@ t_list	*init_envp(char **envp)
 
 	i = 0;
 	tmp = NULL;
+	env = NULL;
 	while (envp[i])
 	{
 		tmp = ft_lstnew(create_struct(envp[i]));
