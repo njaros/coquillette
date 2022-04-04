@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 17:43:27 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/04 15:01:24 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	file_to_open(char *file, int chev, t_data *data)
 	int	fd;
 
 	if (chev == 1)
-		fd = open(file, O_WRONLY | O_TRUNC | O_CREAT);
-	else if (chev == 2) 
-		fd = open(file, O_WRONLY | O_APPEND | O_CREAT);
+		fd = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	else if (chev == 2)
+		fd = open(file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	else if (chev == 3)
 		fd = open(file, O_RDONLY);
 	else if (chev == 4)
@@ -30,7 +30,7 @@ void	file_to_open(char *file, int chev, t_data *data)
 	if (chev == 3 || chev == 4)
 		data->in = fd;
 	if (fd == -1)
-		analyse_error_message(file, 1);
+		analyse_error_message(file, errno);
 }
 
 int	manip_chevron_str(char **str)
@@ -38,18 +38,22 @@ int	manip_chevron_str(char **str)
 	int	i;
 
 	i = 0;
-	while (*str[i] == '>')
+	while (str[0][i] == '>')
 		i++;
 	if (i > 0)
 	{
 		*str += i;
+		while (*str[0] == ' ')
+			*str += 1;
 		return (i);
 	}
-	while (*str[i] == '<')
+	while (str[0][i] == '<')
 		i++;
-	if (i < 0)
+	if (i > 0)
 	{
 		*str += i;
+		while (*str[0] == ' ')
+			*str += 1;
 		return (2 + i);
 	}
 	return (0);
@@ -64,22 +68,11 @@ int	chevron_manager(t_list **pouet, t_list *prev, t_data *data)
 
 	content = (*pouet)->content;
 	chevron_type = manip_chevron_str(&content);
-	if (chevron_type)
-	{
-		if (!content[0])
-		{
-			next_cont = (*pouet)->next->content;
-			file_to_open(next_cont, chevron_type, data);
-			reorder_lst(pouet, prev, 2);
-		}
-		else
-		{
-			file_to_open(content, chevron_type, data);
-			reorder_lst(pouet, prev, 1);
-		}
-		return (1);
-	}
-	return (0);
+	if (!chevron_type)
+		return (0);
+	file_to_open(content, chevron_type, data);
+	reorder_lst(pouet, prev);
+	return (1);
 }
 
 int	chevronnage(t_list **pouet, t_data *data)
@@ -91,6 +84,7 @@ int	chevronnage(t_list **pouet, t_data *data)
 	lg = 0;
 	first = NULL;
 	prev = NULL;
+	debug_blocs(*pouet);
 	while (*pouet)
 		if (!chevron_manager(pouet, prev, data))
 		{
@@ -100,5 +94,6 @@ int	chevronnage(t_list **pouet, t_data *data)
 			prev = *pouet;
 			*pouet = (*pouet)->next;
 		}
+	*pouet = first;
 	return (lg);
 }

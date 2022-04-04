@@ -3,14 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   analyse2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/31 17:42:45 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/04 15:28:36 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
+
+void	debug_blocs(t_list *lst)
+{
+	int		i;
+	char	*content;
+	i = 0;
+
+	while (lst)
+	{
+		i++;
+		content = lst->content;
+		fprintf(stderr, "ligne %d : %s\n", i, content);
+		lst = lst->next;
+	}
+}
+
+void	fill_without_quote(char *fill,char * str, int begin, int end)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = -1;
+	while (str[++i])
+		if (i != begin && i != end)
+			fill[++j] = str[i];
+	free(str);
+}
+
+int	str_dequotage(char *str, t_list *lst)
+{
+	char	*no_quote;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (str[i] && str[i] != 34 && str[i] != 39)
+		i++;
+	if (!str[i])
+		return (1);
+	j = ft_strlen(str);
+	no_quote = ft_calloc(1, j - 1);
+	if (!no_quote)
+		return (0);
+	while (j >= 0 && str[j] != 34 && str[j] != 39)
+		j--;
+	fill_without_quote(no_quote, str, i, j);
+	lst->content = no_quote;
+	return (1);
+}
+
+int	lst_dequotage(t_list *lst)
+{
+	char	*content;
+
+	while (lst)
+	{
+		content = lst->content;
+		if (!str_dequotage(content, lst))
+			return (0);
+		lst = lst->next;
+	}
+	return (1);
+}
 
 int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 {
@@ -20,6 +84,10 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 
 	j = -1;
 	lg = chevronnage(pouet, data);
+	if (!lst_dequotage(*pouet))
+		return (free_lst_analyse(pouet));
+	fprintf(stderr, "lg : %d | affichage des blocs : \n", lg);
+	debug_blocs(*pouet);
 	first = *pouet;
 	data->argv = malloc(sizeof(char *) * lg + 1);
 	if (!data->argv)
