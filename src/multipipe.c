@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 17:59:12 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/03/31 18:22:53 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*found_cmd(char *entry)
 	char	*cmd;
 	char	**path_tab;
 	int		i;
+	
 	i = -1;
 	while (entry[++i])
 		if (entry[i] == '/')
@@ -26,7 +27,7 @@ char	*found_cmd(char *entry)
 	path_tab = ft_split(env, ':');
 	cmd = get_cmd(entry, path_tab);
 	ft_free(path_tab);
-	free(entry);
+	//free(entry);
 	return (cmd);
 }
 
@@ -82,6 +83,14 @@ int	loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env)
 	return (pipefd[0]);
 }
 
+void	lecture(char **str)
+{
+	int i;
+	i = -1;
+	while (str[++i])
+		write(2, str[i], ft_strlen(str[i]));
+}
+
 void	test_exec(char *line_read, t_list *env)
 {
 	int		i;
@@ -94,6 +103,7 @@ void	test_exec(char *line_read, t_list *env)
 	tmp_fd = 0;
 	while (analyse(line_read, &i, &data) == 1) // read_line a déjà été transformée
 	{
+		lecture(data.argv);
 		if (pipe(pipefd) == -1)
 			error("pipe");
 		// if (check_built(data.cmd_arg[0])) // vérifier si la cmd est un builtin

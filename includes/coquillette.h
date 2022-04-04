@@ -123,6 +123,7 @@ int		error2(int err);
 t_env	*find_env_var(t_list *env, char *to_search);
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
+char	*ft_strmchr(char *s, char *charset);
 
 // multipipe
 void	test_exec(char *line_read, t_list *env);

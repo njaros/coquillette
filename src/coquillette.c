@@ -22,7 +22,7 @@ int	main(int argc, char ** argv, char **envp)
 	init_sigact(&act);
 	env_list = init_envp(envp);
 	if (!env_list)
-		return (-1);
+		return (1);
 	line_read = NULL;
 	while (1)
 	{
