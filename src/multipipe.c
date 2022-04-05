@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/04 16:17:46 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 09:15:03 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ int	loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env)
 		perror("fork");
 	if (f_pid == 0)
 	{
-		if (data->in == -1) // pas 1e cmd donc je lui passe le fd_in récupéré du précédemment passage
+		if (data->in == -2) // pas 1e cmd donc je lui passe le fd_in récupéré du précédemment passage
 			data->in = fd_in;
 		dup2(data->in, STDIN_FILENO);
 		close(pipefd[0]);
-		if (data->out == -1) // sauf derniere cmd
+		if (data->out == -2) // sauf derniere cmd
 			data->out = pipefd[1];
 		dup2(data->out, STDOUT_FILENO);
 		envp = transform_list(env);
@@ -101,7 +101,6 @@ void	test_exec(char *line_read, t_list *env)
 	
 	i = 0;
 	tmp_fd = 0;
-	init_data(&data);
 	while (analyse(line_read, &i, &data) == 1) // read_line a déjà été transformée
 	{
 		// lecture(data.argv);

@@ -52,8 +52,8 @@ t_env	*find_env_var(t_list *env, char *to_search)
 void init_data(t_data *data)
 {
 	data->last_return = 0;
-	data->in = -1;
-	data->out = -1;
+	data->in = -2;
+	data->out = -2;
 	data->argv = NULL;
 	data->cmd_path = NULL;
 }
