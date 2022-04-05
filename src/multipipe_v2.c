@@ -6,22 +6,21 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 11:28:45 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/05 12:06:07 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 14:46:56 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-void	pipe_test(t_data *data, t_list *env)
+void	pipe_test(t_data *data, t_list *env, int pipefd[2], int pip)
 {
-	int		pipedfd[2];
 	pid_t	f_pid;
 	char	**envp;
 
-	if (pipe(pipefd) == -1)
-		error("pipe");
+	envp = transform_list(env);
 	close(pipefd[0]);
-	dup2(pipefd[1], STDOUT_FILENO);
+	if (pip)
+		dup2(pipefd[1], STDOUT_FILENO);
 	// if (check_built == 1) // la cmd rentrée n'est pas un built-in, alors on crée un fork
 	
 	data->cmd_path = found_cmd(data->argv[0]);
@@ -34,22 +33,34 @@ void	pipe_test(t_data *data, t_list *env)
 			perror("fork");
 		if (f_pid == 0)
 		{
-			envp = transform_list(env);
 			if (execve(data->cmd_path, data->argv, envp) == -1)
 				exit (-1);
 		}
-		ft_free(envp);
+		waitpid(f_pid, NULL, 0);
 	}
+	dprintf(2, "blop\n");
 	close(pipefd[1]);
-	dup2(pipefd[0], STDIN_FILENO);
+	if (pip)
+		dup2(pipefd[0], STDIN_FILENO);
+	ft_free(envp);
 }
 
 
 void	execution(char *line_read, t_list *env)
 {
+	t_data	data;
+	int		i;
+	int		pip;
+	int		pipefd[2];
 	
-	while (analyse(line_read, &i, &data)) // tan que analyse renvoit 1, c'est qu'il y a un pipe après la cmd
+	i = 0;
+	if (pipe(pipefd) == -1)
+		error("pipe");
+	pip = analyse(line_read, &i, &data);
+	while (pip) // tant que analyse renvoit 1, c'est qu'il y a un pipe après la cmd
 	{
-		
+		pipe_test(&data, env, pipefd, pip);
+		pip = analyse(line_read, &i, &data);
 	}
+	pipe_test(&data, env, pipefd, pip);
 }
