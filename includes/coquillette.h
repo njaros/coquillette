@@ -70,7 +70,7 @@ char	*rl_get(char *line_read);
 
 // Fonctions d'initialisation
 
-void 	init_data(t_data *data);
+void 	init_data(t_data *data, int i);
 void	init_sigact(struct sigaction *act);
 
 // Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)

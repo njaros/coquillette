@@ -6,28 +6,13 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/04 15:28:36 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 09:33:38 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-void	debug_blocs(t_list *lst)
-{
-	int		i;
-	char	*content;
-	i = 0;
-
-	while (lst)
-	{
-		i++;
-		content = lst->content;
-		fprintf(stderr, "ligne %d : %s\n", i, content);
-		lst = lst->next;
-	}
-}
-
-void	fill_without_quote(char *fill,char * str, int begin, int end)
+void	fill_without_quote(char *fill, char * str, int begin, int end)
 {
 	int	i;
 	int	j;
@@ -86,8 +71,6 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 	lg = chevronnage(pouet, data);
 	if (!lst_dequotage(*pouet))
 		return (free_lst_analyse(pouet));
-	fprintf(stderr, "lg : %d | affichage des blocs : \n", lg);
-	debug_blocs(*pouet);
 	first = *pouet;
 	data->argv = malloc(sizeof(char *) * lg + 1);
 	if (!data->argv)
@@ -103,5 +86,7 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 		*i += 1;
 		return (1);
 	}
+	if (data->out == -2)
+		data->out == 1;
 	return (0);
 }

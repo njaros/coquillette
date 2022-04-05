@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/04 16:43:54 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 09:19:37 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	analyse(char *str, int *i, t_data *data)
 	quote = 0;
 	dquote = 0;
 	pouet = NULL;
-	// init fd
+	init_data(data, *i);
 	str = dollz_what(str, data);
 	if (!str)
 		return (0);
