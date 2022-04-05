@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 09:33:38 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 10:28:06 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@ int	lst_dequotage(t_list *lst)
 	return (1);
 }
 
+int	end_parsing(char *str, int *i, t_data *data)
+{
+	if (str[*i] == '|')
+	{
+		*i += 1;
+		return (1);
+	}
+	if (data->out == -2)
+		data->out = 1;
+	return (0);	
+}
+
 int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 {
 	t_list	*first;
@@ -72,6 +84,8 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 	if (!lst_dequotage(*pouet))
 		return (free_lst_analyse(pouet));
 	first = *pouet;
+	if (!lg)
+		return (end_parsing(str, i, data));
 	data->argv = malloc(sizeof(char *) * lg + 1);
 	if (!data->argv)
 		return (free_lst_analyse(pouet));
@@ -81,12 +95,8 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 		data->argv[++j] = (*pouet)->content;
 		*pouet = (*pouet)->next;
 	}
-	if (str[*i] == '|')
-	{
-		*i += 1;
-		return (1);
-	}
-	if (data->out == -2)
-		data->out == 1;
-	return (0);
+	fprintf(stderr,"preclear\n");
+	ft_lstclear(&first, do_nothing);
+	fprintf(stderr,"clear\n");
+	return (end_parsing(str, i, data));
 }

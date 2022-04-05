@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/04 15:01:24 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 10:01:34 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	chevronnage(t_list **pouet, t_data *data)
 	lg = 0;
 	first = NULL;
 	prev = NULL;
-	debug_blocs(*pouet);
 	while (*pouet)
 		if (!chevron_manager(pouet, prev, data))
 		{
