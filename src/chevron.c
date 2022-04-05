@@ -6,11 +6,31 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 10:34:06 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 12:16:06 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
+
+int	ft_heredoc(char *end)
+{
+	char	*line_read;
+	int 	fd[2];
+
+	close (fd[0]);
+	if (pipe(fd) == -1)
+		return (-1);
+	line_read = readline(">");
+	while (line_read && strcmp(line_read, end))
+	{
+		ft_putendl_fd(line_read, fd[1]);
+		free(line_read);
+		line_read = readline(">");
+	}
+	free(line_read);
+	close(fd[1]);
+	return (fd[0]);
+}
 
 void	file_to_open(char *file, int chev, t_data *data)
 {
@@ -23,8 +43,7 @@ void	file_to_open(char *file, int chev, t_data *data)
 	else if (chev == 3)
 		fd = open(file, O_RDONLY);
 	else if (chev == 4)
-		fd = -1;
-		//heredoc à faire ICI
+		fd = ft_heredoc(file);
 	if (chev == 1 || chev == 2)
 		data->out = fd;
 	if (chev == 3 || chev == 4)
