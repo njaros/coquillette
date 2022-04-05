@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 16:48:05 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 15:41:44 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 16:48:22 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ void	le_coupable_est(char *c)
 	}
 }
 
-int	alone_pipe(char *str, int *i)
+int	first_char_is_pipe(char *str)
 {
-	while (str[++(*i)] == ' ')
+	int	i;
+
+	i = -1;
+	while (str[++i] == ' ')
 		;
-	if (str[*i] == '|')
+	if (str[i] == '|')
 		return (1);
 	return (0);
 }

@@ -70,22 +70,23 @@ int	double_token_char(char *str, int *quote, int *dquote, int *i)
 {
 	int	pipe;
 
-	pipe = 0;
 	while (str[++(*i)])
 	{
-		if (str[*i] == 34 && !*quote)
-			*dquote = ft_switch(*dquote);
-		if (str[*i] == 39 && !*dquote)
-			*quote = ft_switch(*quote);
+		pipe = 0;
+		quote_switcher(quote, dquote, str[*i]);
 		if (ft_tokenchar(str[*i]) && !*quote && !*dquote)
 		{
-			if (str[*i] == '|')
+			if (str[(*i)] == '|')
+			{
 				pipe = 1;
+				while (str[++(*i)] == ' ')
+					;
+			}
 			if ((str[*i] == '>' && str[*i + 1] == '>')
 					|| (str[*i] == '<' && str[*i + 1] == '<'))
 				*i += 1;
-			while (str[++(*i)] == ' ')
-				;
+			while (str[*i] == ' ')
+				*i += 1;
 			if (ft_tokenchar(str[*i]) && !(pipe && !str[*i]))
 				return (1);
 		}
@@ -100,7 +101,7 @@ char	*cherche_merde(char *str, int *quote, int *dquote)
 
 	i = -1;
 	if (double_token_char(str, quote, dquote, &i)
-			|| alone_pipe(str, &i))
+			|| first_char_is_pipe(str))
 	{
 		add_history(str);
 		le_coupable_est(&str[i]);

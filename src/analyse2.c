@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 13:08:49 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 16:50:14 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	end_parsing(char *str, int *i, t_data *data)
 	}
 	if (data->out == -2)
 		data->out = 1;
+	ft_putendl_fd("fin parsing\n", 2);
 	return (0);	
 }
 
