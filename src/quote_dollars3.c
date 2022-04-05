@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 16:48:05 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/04 10:01:36 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 15:41:44 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,19 @@ int	alone_pipe(char *str, int *i)
 	if (str[*i] == '|')
 		return (1);
 	return (0);
+}
+
+int	last_char_is_pipe(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	i--;
+	while (str[i] == ' ')
+		i--;
+	if (str[i] == '|')
+		return (1);
+	return (0); 
 }

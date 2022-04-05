@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_dollars.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:26:54 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/30 10:33:55 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 15:40:33 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*quotage(char *str, int *dquote, int *quote)
 
 char	*check_quote_end(char *str)
 {
-	int		i;
 	int		quote;
 	int		dquote;
 	char	*next;
@@ -45,11 +44,14 @@ char	*check_quote_end(char *str)
 	quote = 0;
 	dquote = 0;
 	str = cherche_merde(str, &quote, &dquote);
-	i = -1;
 	while (str && (dquote || quote))
 		str = quotage(str, &dquote, &quote);
-	if (str)
+	str = cherche_merde(str, &quote, &dquote);
+	while (str && last_char_is_pipe(str))
+	{
 		str = pipage(str);
+		str = cherche_merde(str, &quote, &dquote);
+	}
 	return (str);
 }
 
