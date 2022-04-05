@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 13:22:45 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 15:58:01 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	file_to_open(char *file, int chev, t_data *data)
 	int	fd;
 
 	if (chev == 1)
-		fd = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		fd = open(file, O_WRONLY | O_TRUNC | O_CREAT, 644);
 	else if (chev == 2)
-		fd = open(file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		fd = open(file, O_WRONLY | O_APPEND | O_CREAT, 644);
 	else if (chev == 3)
 		fd = open(file, O_RDONLY);
 	else if (chev == 4)
