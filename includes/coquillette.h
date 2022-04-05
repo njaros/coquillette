@@ -48,6 +48,7 @@ typedef struct s_data
 	int		last_return;
 	int		in;
 	int		out;
+    // int     tmp_fd;
 	char	**argv;
     char	*cmd_path;
 }	            t_data;

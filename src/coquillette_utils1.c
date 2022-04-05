@@ -57,6 +57,7 @@ void init_data(t_data *data, int i)
 	else
 		data->in = -2;
 	data->out = -2;
+	// data->tmp_fd = 0;
 	data->argv = NULL;
 	data->cmd_path = NULL;
 }

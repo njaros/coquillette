@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multipipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/05 14:56:32 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 15:46:49 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,7 @@ int	loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env)
 			return (-1);
 		}
 	}
-	// close(pipefd[1]);
-	// close(pipefd[0]);
+	close(pipefd[1]);
 	waitpid(f_pid, NULL, 0);
 	ft_free(envp);
 	return (pipefd[0]);
