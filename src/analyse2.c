@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 10:33:41 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 10:40:33 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,8 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 		data->argv[++j] = (*pouet)->content;
 		*pouet = (*pouet)->next;
 	}
-	if (str[*i] == '|')
-	{
-		*i += 1;
-		return (1);
-	}
-	if (data->out == -2)
-		data->out = 1;
-	return (0);
+	fprintf(stderr,"preclear\n");
+	ft_lstclear(&first, do_nothing);
+	fprintf(stderr,"clear\n");
+	return (end_parsing(str, i, data));
 }

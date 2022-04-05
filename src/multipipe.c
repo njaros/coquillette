@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/05 09:15:03 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 11:23:28 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	test_exec(char *line_read, t_list *env)
 	tmp_fd = 0;
 	while (analyse(line_read, &i, &data) == 1) // read_line a déjà été transformée
 	{
-		// lecture(data.argv);
 		if (pipe(pipefd) == -1)
 			error("pipe");
 		// if (check_built(data.cmd_arg[0])) // vérifier si la cmd est un builtin
@@ -133,3 +132,5 @@ void	test_exec(char *line_read, t_list *env)
 		free(data.cmd_path);
 	// }
 }
+
+if (data.argv) // passer dans l'execution 
