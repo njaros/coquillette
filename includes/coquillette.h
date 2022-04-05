@@ -82,7 +82,6 @@ int		ft_switch(int n);
 t_list	*ft_lsttake(t_list **alst);
 
 // ICI ON PARSE
-void	debug_blocs(t_list *lst); // Debbugger
 char	*quotage(char *str, int *dquote, int *quote);
 char	*pipage(char *str);
 char	*check_quote_end(char *str);

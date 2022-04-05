@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 09:33:38 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 09:35:01 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 		return (1);
 	}
 	if (data->out == -2)
-		data->out == 1;
+		data->out = 1;
 	return (0);
 }
