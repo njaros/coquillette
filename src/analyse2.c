@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 09:35:01 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 10:33:41 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@ int	lst_dequotage(t_list *lst)
 	return (1);
 }
 
+int	end_parsing(char *str, int *i, t_data *data)
+{
+	if (str[*i] == '|')
+	{
+		*i += 1;
+		return (1);
+	}
+	if (data->out == -2)
+		data->out = 1;
+	return (0);	
+}
+
 int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 {
 	t_list	*first;
@@ -72,6 +84,8 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 	if (!lst_dequotage(*pouet))
 		return (free_lst_analyse(pouet));
 	first = *pouet;
+	if (!lg)
+		return (end_parsing(str, i, data));
 	data->argv = malloc(sizeof(char *) * lg + 1);
 	if (!data->argv)
 		return (free_lst_analyse(pouet));

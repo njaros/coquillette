@@ -6,11 +6,17 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 09:19:37 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/05 10:30:17 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
+
+// La fonction ci-dessous est beaucoup plus utile que vous ne le pensez
+void	do_nothing(void *let_him_alive)
+{
+	(void)let_him_alive;
+}
 
 char	*last_return(char *str, int *i, int ret)
 {
