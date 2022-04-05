@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 10:40:33 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 13:08:49 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 		data->argv[++j] = (*pouet)->content;
 		*pouet = (*pouet)->next;
 	}
-	fprintf(stderr,"preclear\n");
 	ft_lstclear(&first, do_nothing);
-	fprintf(stderr,"clear\n");
 	return (end_parsing(str, i, data));
 }

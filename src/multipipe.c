@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multipipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/05 12:15:59 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 13:03:40 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,4 +139,4 @@ void	test_exec(char *line_read, t_list *env)
 	// }
 }
 
-if (data.argv) // passer dans l'execution 
+//if (data.argv) // passer dans l'execution 

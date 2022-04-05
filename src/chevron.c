@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 12:16:06 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 13:22:45 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	ft_heredoc(char *end)
 	int 	fd[2];
 
 	close (fd[0]);
-	if (pipe(fd) == -1)
-		return (-1);
 	line_read = readline(">");
 	while (line_read && strcmp(line_read, end))
 	{
