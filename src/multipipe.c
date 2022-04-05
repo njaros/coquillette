@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multipipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/05 09:15:03 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 10:18:03 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	test_exec(char *line_read, t_list *env)
 			error("pipe");
 		// if (check_built(data.cmd_arg[0])) // vérifier si la cmd est un builtin
 		// 	builtins(data.cmd_arg, env, data.out);
-		else
+		else if (data.argv)
 		{
 			data.cmd_path = found_cmd(data.argv[0]);
 			if (!data.cmd_path) // vérifier que la commande existe
@@ -116,20 +116,26 @@ void	test_exec(char *line_read, t_list *env)
 			else
 				tmp_fd = loop_pipe(&data, tmp_fd, pipefd, env);
 		}
-		ft_free(data.argv);
-		free(data.cmd_path);
+		if (data.argv)
+		{
+			ft_free(data.argv);
+			free(data.cmd_path);
+		}
 	}
 	// dernier passage, on sort de la boucle car plus besoin de créer de nouveau pipe !
 	// if (check_built(data.argv[0])) // vérifier si la cmd est un builtin
 	// 	builtins(data.argv, env, data.out);
 	// else
-	// {
-		data.cmd_path = found_cmd(data.argv[0]);
-		if (!data.cmd_path) // vérifier que la commande existe
-			printf("%s: command not found\n", data.argv[0]);
-		else
-			loop_pipe(&data, tmp_fd, pipefd, env);
-		ft_free(data.argv);
-		free(data.cmd_path);
+	//// {
+		if (data.argv)
+		{
+			data.cmd_path = found_cmd(data.argv[0]);
+			if (!data.cmd_path) // vérifier que la commande existe
+				printf("%s: command not found\n", data.argv[0]);
+			else
+				loop_pipe(&data, tmp_fd, pipefd, env);
+			ft_free(data.argv);
+			free(data.cmd_path);
+		}
 	// }
 }
