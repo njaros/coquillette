@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/05 12:15:59 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/05 14:48:02 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char **transform_list(t_list *env)
 		i++;
 		env = env->next;
 	}
+	envp[size] = NULL;
 	return (envp);
 }
 
@@ -60,7 +61,8 @@ int	loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env)
 {
 	pid_t	f_pid;
 	char	**envp;
-	
+
+	envp = transform_list(env);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -73,13 +75,16 @@ int	loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env)
 		if (data->out == -2) // sauf derniere cmd
 			data->out = pipefd[1];
 		dup2(data->out, STDOUT_FILENO);
-		envp = transform_list(env);
-		execve(data->cmd_path, data->argv, envp);
-		ft_free(envp);
+		if (execve(data->cmd_path, data->argv, envp) == -1)
+		{
+			error("execve");
+			return (-1);
+		}
 	}
-	close(data->out);
-	close(data->in);
+	// close(pipefd[1]);
+	// close(pipefd[0]);
 	waitpid(f_pid, NULL, 0);
+	ft_free(envp);
 	return (pipefd[0]);
 }
 
@@ -101,7 +106,7 @@ void	test_exec(char *line_read, t_list *env)
 	
 	i = 0;
 	tmp_fd = 0;
-	while (analyse(line_read, &i, &data) == 1) // read_line a déjà été transformée
+	while (analyse(line_read, &i, &data)) // read_line a déjà été transformée
 	{
 		if (pipe(pipefd) == -1)
 			error("pipe");
@@ -139,4 +144,4 @@ void	test_exec(char *line_read, t_list *env)
 	// }
 }
 
-if (data.argv) // passer dans l'execution 
+//if (data.argv) // passer dans l'execution 

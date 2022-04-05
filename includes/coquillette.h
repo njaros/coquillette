@@ -131,5 +131,9 @@ char	*ft_strmchr(char *s, char *charset);
 void	test_exec(char *line_read, t_list *env);
 int	    loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env);
 char	*found_cmd(char *entry);
+char    **transform_list(t_list *env);
+
+void	execution(char *line_read, t_list *env);
+void	pipe_test(t_data *data, t_list *env, int pipefd[2], int pip);
 
 #endif

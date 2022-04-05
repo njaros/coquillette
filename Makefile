@@ -43,6 +43,7 @@ LST_SRCS =	coquillette_utils1.c \
 			chevron.c \
 			freeteuse.c \
 			multipipe.c \
+			multipipe_v2.c \
 			traitement_signaux.c \
 			libft_ajout1.c \
 			pipe.c \

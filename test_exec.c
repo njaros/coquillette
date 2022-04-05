@@ -51,11 +51,12 @@ int	main(int argc, char **argv, char **envp)
     if (pid == 0)
 	{
 		printf("depart fork\n");
-		execve(cmd_path, cmd_arg, envp) == -1)
-			return (-1); // printer message d'erreur et exit !
+		execve(cmd_path, cmd_arg, envp);
+		//	return (-1); // printer message d'erreur et exit !
 		// attention penser à mettre à jour la valeur cmd_ret
 	}
-   	wait(&cmd_ret);
+   	waitpid(pid, NULL, 0);
+	printf("test\n");
 	//error_message(cmd_arg[0], errno);
 	return (0);
 }
