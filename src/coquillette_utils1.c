@@ -49,11 +49,35 @@ t_env	*find_env_var(t_list *env, char *to_search)
 	return (var);
 }
 
-void init_data(t_data *data, int i)
+int	count_pipe(char *str)
+{
+	int	count;
+	int	i;
+	int	quote;
+	int dquote;
+
+	i = 0;
+	count = 0;
+	quote = 0;
+	dquote = 0;
+	while (str[i])
+	{
+		quote_switcher(&quote, &dquote, str[i]);
+		if (str[i] == '|' && !quote && !dquote)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+void init_data(t_data *data, int i, char *str)
 {
 	data->last_return = 0;
 	if (i == 0)
+	{
+		data->nb_cmd = 1 + count_pipe(str);
 		data->in = 0;
+	}
 	else
 		data->in = -2;
 	data->out = -2;
