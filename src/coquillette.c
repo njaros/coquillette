@@ -29,6 +29,9 @@ int	main(int argc, char ** argv, char **envp)
 		line_read = dollar_searcher(rl_get(line_read));
 		if (line_read)
 			execution(line_read, env_list);
+		// free(line_read);
 	}
+	feel_free(env_list);
+	ft_lstclear(&env_list, del);
 	return (0);
 }

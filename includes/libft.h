@@ -73,5 +73,6 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	reorder_lst(t_list **lst, t_list *prev);
 t_list	*ft_lsttake(t_list **alst);
 int		get_fd_rdonly(char *entry);
+void	del(void *content);
 
 #endif
