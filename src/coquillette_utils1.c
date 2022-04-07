@@ -42,7 +42,7 @@ int	count_pipe(char *str)
 
 void init_data(t_data *data, int i, char *str)
 {
-	if (i == 0 || data->out != -2)
+	if (i == 0)
 	{
 		if (i == 0)
 		{
