@@ -72,10 +72,13 @@ int	count_pipe(char *str)
 
 void init_data(t_data *data, int i, char *str)
 {
-	data->last_return = 0;
-	if (i == 0)
+	if (i == 0 || data->out != -2)
 	{
-		data->nb_cmd = 1 + count_pipe(str);
+		if (i == 0)
+		{
+			data->nb_cmd = 1 + count_pipe(str);
+			data->last_return = 0;
+		}
 		data->in = 0;
 	}
 	else

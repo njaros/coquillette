@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:26:54 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 15:40:33 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 10:23:07 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ char	*check_quote_end(char *str)
 	quote = 0;
 	dquote = 0;
 	str = cherche_merde(str, &quote, &dquote);
-	while (str && (dquote || quote))
-		str = quotage(str, &dquote, &quote);
-	str = cherche_merde(str, &quote, &dquote);
-	while (str && last_char_is_pipe(str))
+	while (str && ((dquote || quote) || last_char_is_pipe(str)))
 	{
-		str = pipage(str);
+		if (dquote || quote)
+			str = quotage(str, &dquote, &quote);
+		else if (last_char_is_pipe(str))
+			str = pipage(str);
 		str = cherche_merde(str, &quote, &dquote);
 	}
 	return (str);

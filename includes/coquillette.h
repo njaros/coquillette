@@ -92,7 +92,7 @@ char	*replace_dollz(char *str, int *i, int end);
 int		ft_quote_switch(int quote, char c);
 char	*dollar_searcher(char *str);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
-int		first_char_is_pipe(char *str);
+int		first_char_is_pipe(char *str, int *i);
 int		last_char_is_pipe(char *str);
 char	*cherche_merde(char *str, int *quote, int *dquote);
 void	le_coupable_est(char *c);
