@@ -93,7 +93,7 @@ int	analyse(char *str, int *i, t_data *data)
 	quote = 0;
 	dquote = 0;
 	pouet = NULL;
-	init_data(data, *i);
+	init_data(data, *i, str);
 	str = dollz_what(str, data);
 	if (!str)
 		return (0);

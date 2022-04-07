@@ -46,6 +46,7 @@ typedef struct s_env
 typedef struct s_data
 {
 	int		last_return;
+    int     nb_cmd; //(= nbr de pipes hors des quote + 1)
 	int		in;
 	int		out;
 	char	**argv;
@@ -61,7 +62,7 @@ char	*rl_get(char *line_read);
 
 // Fonctions d'initialisation
 
-void 	init_data(t_data *data, int i);
+void 	init_data(t_data *data, int i, char *str);
 void	init_sigact(struct sigaction *act);
 
 // ICI ON PARSE
