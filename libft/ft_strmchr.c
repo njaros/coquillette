@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   ft_strmchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/06 15:02:09 by ccartet          ###   ########.fr       */
+/*   Created: 2022/04/07 10:43:30 by ccartet           #+#    #+#             */
+/*   Updated: 2022/04/07 10:43:48 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "libft.h"
 
-int	built_env(t_list *env, char **cmd_arg, int fd)
+char	*ft_strmchr(char *s, char *charset)
 {
-	t_env	*tmp;
+	int	i;
+	int	j;
 
-	g_cmd_ret = 0;
-	if (cmd_arg[1] != NULL)
-		return (print_err("env : too many arguments", 1));
-	while (env)
+	i = 0;
+	while (s[i])
 	{
-		tmp = env->content;
-		if (tmp->eg == '=')
+		j = 0;
+		while (charset[j])
 		{
-			ft_putstr_fd(tmp->name, fd);
-			ft_putchar_fd('=', fd);
-			ft_putendl_fd(tmp->value, fd);
+			if (s[i] == charset[j])
+				return (&s[i]);
+			j++;
 		}
-		env = env->next;
+		i++;
 	}
+	if (s[i] == charset[j])
+		return (&s[i]);
 	return (0);
 }

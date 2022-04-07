@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   ft_lst_reorder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/06 15:02:09 by ccartet          ###   ########.fr       */
+/*   Created: 2022/04/07 09:55:57 by ccartet           #+#    #+#             */
+/*   Updated: 2022/04/07 09:56:16 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "libft.h"
 
-int	built_env(t_list *env, char **cmd_arg, int fd)
+void	reorder_lst(t_list **lst, t_list *prev)
 {
-	t_env	*tmp;
+	t_list	*temp;
 
-	g_cmd_ret = 0;
-	if (cmd_arg[1] != NULL)
-		return (print_err("env : too many arguments", 1));
-	while (env)
-	{
-		tmp = env->content;
-		if (tmp->eg == '=')
-		{
-			ft_putstr_fd(tmp->name, fd);
-			ft_putchar_fd('=', fd);
-			ft_putendl_fd(tmp->value, fd);
-		}
-		env = env->next;
-	}
-	return (0);
+	temp = *lst;
+	if (prev)
+		prev->next = (*lst)->next;
+	*lst = (*lst)->next;
+	ft_lstdelone(temp, free);
 }

@@ -6,85 +6,37 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:22:59 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/05 15:46:49 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/06 15:57:52 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-char	*found_cmd(char *entry)
-{
-	char	*env;
-	char	*cmd;
-	char	**path_tab;
-	int		i;
-	
-	i = -1;
-	while (entry[++i])
-		if (entry[i] == '/')
-			return (entry);
-	env = getenv("PATH");
-	path_tab = ft_split(env, ':');
-	cmd = get_cmd(entry, path_tab);
-	ft_free(path_tab);
-	//free(entry);
-	return (cmd);
-}
-
-char **transform_list(t_list *env)
-{
-	char	**envp;
-	int		size;
-	int		i;
-	t_env	*tmp;
-	char	*first;
-	
-	size = ft_lstsize(env);
-	envp = malloc(sizeof(char *) * (size + 1));
-	if (!envp)
-		return (NULL);
-	i = 0;
-	while (env)
-	{
-		tmp = env->content;
-		first = ft_strjoin(tmp->name, "=");
-		envp[i] = ft_strjoin(first, tmp->value);
-		free(first);
-		i++;
-		env = env->next;
-	}
-	envp[size] = NULL;
-	return (envp);
-}
-
-int	loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env)
+void	loop_pipe(t_data *data, int *fd_in, int pipefd[2], t_list *env)
 {
 	pid_t	f_pid;
 	char	**envp;
 
-	envp = transform_list(env);
+	envp = list_to_tab(env);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
 	if (f_pid == 0)
 	{
 		if (data->in == -2) // pas 1e cmd donc je lui passe le fd_in récupéré du précédemment passage
-			data->in = fd_in;
+			data->in = *fd_in;
 		dup2(data->in, STDIN_FILENO);
 		close(pipefd[0]);
 		if (data->out == -2) // sauf derniere cmd
 			data->out = pipefd[1];
 		dup2(data->out, STDOUT_FILENO);
 		if (execve(data->cmd_path, data->argv, envp) == -1)
-		{
 			error("execve");
-			return (-1);
-		}
 	}
 	close(pipefd[1]);
 	waitpid(f_pid, NULL, 0);
 	ft_free(envp);
-	return (pipefd[0]);
+	*fd_in = pipefd[0];
 }
 
 void	lecture(char **str)
@@ -117,7 +69,7 @@ void	test_exec(char *line_read, t_list *env)
 			if (!data.cmd_path) // vérifier que la commande existe
 				printf("%s: command not found\n", data.argv[0]);
 			else
-				tmp_fd = loop_pipe(&data, tmp_fd, pipefd, env);
+				loop_pipe(&data, &tmp_fd, pipefd, env);
 		}
 		if (data.argv)
 		{
@@ -136,7 +88,7 @@ void	test_exec(char *line_read, t_list *env)
 			if (!data.cmd_path) // vérifier que la commande existe
 				printf("%s: command not found\n", data.argv[0]);
 			else
-				loop_pipe(&data, tmp_fd, pipefd, env);
+				loop_pipe(&data, &tmp_fd, pipefd, env);
 			ft_free(data.argv);
 			free(data.cmd_path);
 		}

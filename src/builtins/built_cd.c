@@ -6,11 +6,26 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 17:28:50 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/07 10:47:15 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "coquillette.h"
+
+t_env	*find_env_var(t_list *env, char *to_search)
+{
+	t_env	*var;
+	
+	var = NULL;
+	while (env)
+	{
+		var = env->content;
+		if (!ft_strcmp(var->name, to_search))
+			break ;
+		env = env->next;
+	}
+	return (var);
+}
 
 int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
 {

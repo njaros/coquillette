@@ -48,21 +48,11 @@ typedef struct s_data
 	int		last_return;
 	int		in;
 	int		out;
-    // int     tmp_fd;
 	char	**argv;
-    char	*cmd_path;
+	char	*cmd_path;
 }	            t_data;
 
-typedef struct s_pipe
-{
-    int     infile;
-    int     outfile;
-    char    **path;
-    char    **cmd1_arg;
-    char    *cmd1;
-    char    **cmd2_arg;
-    char    *cmd2;
-}               t_pipe;
+long	g_cmd_ret;
 
 // Gestion initiales de l'entrée utilisateur
 
@@ -73,14 +63,6 @@ char	*rl_get(char *line_read);
 
 void 	init_data(t_data *data, int i);
 void	init_sigact(struct sigaction *act);
-
-// Fonctions utiles pour tout le cursus (bonne idée de les intégrer à la libft)
-
-int		get_fd_rdonly(char *entry);
-int		ft_tokenchar(int c);
-int		ft_metachar(int c);
-int		ft_switch(int n);
-t_list	*ft_lsttake(t_list **alst);
 
 // ICI ON PARSE
 void	do_nothing(void *let_him_alive);
@@ -103,39 +85,61 @@ int		chevronnage(t_list **pouet, t_data *data);
 int		chevron_manager(t_list **pouet, t_list *prev, t_data *data);
 int		manip_chevron_str(char **str);
 void	file_to_open(char *file, int chev, t_data *data);
-void	reorder_lst(t_list **lst, t_list *prev);
 void	analyse_error_message(char *str, int context);
 int		analyse_sep(char *str, int *i, int context);
 void	init_analyse(char *str, int *i, int *ptr);
 void	quote_switcher(int *quote, int *dquote, char c);
 int		organiser(t_list **pouet, int *i, char *str, t_data *data);
+int		ft_tokenchar(int c);
+int		ft_metachar(int c);
+int		ft_switch(int n);
 
-//pipe
-int     pipex(int argc, char *argv[], char **envp);
-void    init(t_pipe *pip, char **argv);
-void    child_one(t_pipe *pip, int *fd, char **envp);
-void    child_two(t_pipe *pip, int *fd, char **envp);
-char    *get_cmd(char *cmd, char **path);
 //
-void    feel_free(t_pipe *pip);
-void	ft_free(char **tab);
 int		free_lst_analyse(t_list **to_free);
-void	error(char *msg);
 int		error2(int err);
 
 //coquilette_utils1
-t_env	*find_env_var(t_list *env, char *to_search);
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
-char	*ft_strmchr(char *s, char *charset);
+int	    print_err(char *str, int err);
 
-// multipipe
-void	test_exec(char *line_read, t_list *env);
-int	    loop_pipe(t_data *data, int fd_in, int pipefd[2], t_list *env);
-char	*found_cmd(char *entry);
-char    **transform_list(t_list *env);
-
+// execution
 void	execution(char *line_read, t_list *env);
-void	pipe_test(t_data *data, t_list *env, int pipefd[2], int pip);
+void    fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in);
+void	transform_fds(t_data *data, int fd_in, int fd_out);
+char	*found_cmd(char *entry);
+char    *get_path(char *cmd, char **path);
+char    **list_to_tab(t_list *env);
+void	ft_free(char **tab);
+void	error(char *msg);
+//test
+void	test_exec(char *line_read, t_list *env);
+void    loop_pipe(t_data *data, int *fd_in, int pipefd[2], t_list *env);
+
+// builtins
+int	    builtins(t_data data, t_list *env);
+//
+int	    built_cd(char **cmd_arg, t_list *env, int fd);
+int	    to_home(void);
+int 	change_pwd_oldpwd(char *oldpwd, t_list *env);
+int 	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
+t_env	*find_env_var(t_list *env, char *to_search);
+//
+int 	built_echo(char **cmd_arg, int fd);
+//
+int	    built_env(t_list *env, char **cmd_arg, int fd);
+//
+void	built_exit(char **cmd_arg, t_list *env);
+int	    check_arg(char *arg);
+//
+int	    built_export(char **cmd_arg, t_list *env, int fd);
+void	print_export(t_list *env, int size, int fd);
+void    init_rank(t_list *env, int *size);
+//
+int 	built_pwd(char **cmd_arg, int fd);
+//
+int 	built_unset(char **cmd_arg, t_list *env);
+t_list	*find_link(t_list *env, char *to_search);
+void	env_del(t_list *env, t_list *to_del);
 
 #endif

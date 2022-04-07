@@ -85,8 +85,8 @@ int	double_token_char(char *str, int *quote, int *dquote, int *i)
 			if ((str[*i] == '>' && str[*i + 1] == '>')
 					|| (str[*i] == '<' && str[*i + 1] == '<'))
 				*i += 1;
-			while (str[*i] == ' ')
-				*i += 1;
+			while (str[++(*i)] == ' ')
+				;
 			if (ft_tokenchar(str[*i]) && !(pipe && !str[*i]))
 				return (1);
 		}

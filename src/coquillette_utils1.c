@@ -12,41 +12,11 @@
 
 #include "coquillette.h"
 
-char	*ft_strmchr(char *s, char *charset)
+int	print_err(char *str, int err)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (s[i])
-	{
-		j = 0;
-		while (charset[j])
-		{
-			if (s[i] == charset[j])
-				return (&s[i]);
-			j++;
-		}
-		i++;
-	}
-	if (s[i] == charset[j])
-		return (&s[i]);
-	return (0);
-}
-
-t_env	*find_env_var(t_list *env, char *to_search)
-{
-	t_env	*var;
-	
-	var = NULL;
-	while (env)
-	{
-		var = env->content;
-		if (!ft_strcmp(var->name, to_search))
-			break ;
-		env = env->next;
-	}
-	return (var);
+	ft_putendl_fd(str, 2);
+	g_cmd_ret = err;
+	return (1);
 }
 
 void init_data(t_data *data, int i)
@@ -57,25 +27,8 @@ void init_data(t_data *data, int i)
 	else
 		data->in = -2;
 	data->out = -2;
-	// data->tmp_fd = 0;
 	data->argv = NULL;
 	data->cmd_path = NULL;
-}
-
-char	*rl_get(char *line_read)
-{
-	if (line_read)
-		free(line_read);
-	line_read = readline("\e[34mcoquillette0.1>\e[0m");
-	if (!line_read)
-	{
-		ft_putendl_fd("exit", 1);
-		exit(EXIT_SUCCESS);
-	}
-	line_read = check_quote_end(line_read);
-	if (line_read && *line_read)
-		add_history(line_read);
-	return (line_read);
 }
 
 t_env	*create_struct(char *env)
@@ -109,9 +62,25 @@ t_list	*init_envp(char **envp)
 	{
 		tmp = ft_lstnew(create_struct(envp[i]));
 		if (!tmp)
-			return (NULL);
+			return (NULL); // free le reste de la liste chainee !!
 		ft_lstadd_back(&env, tmp);
 		i++;
 	}
 	return (env);
+}
+
+char	*rl_get(char *line_read)
+{
+	if (line_read)
+		free(line_read);
+	line_read = readline("\e[34mcoquillette0.1>\e[0m");
+	if (!line_read)
+	{
+		ft_putendl_fd("exit", 1);
+		exit(EXIT_SUCCESS);
+	}
+	line_read = check_quote_end(line_read);
+	if (line_read && *line_read)
+		add_history(line_read);
+	return (line_read);
 }
