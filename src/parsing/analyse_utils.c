@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   analyse_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:40:11 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/04 14:54:54 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 10:04:18 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
+
+int	ft_switch(int n)
+{
+	if (n)
+		return (0);
+	return (1);
+}
 
 void	quote_switcher(int *quote, int *dquote, char c)
 {
@@ -49,15 +56,4 @@ void	analyse_error_message(char *str, int context)
 		write(2, ": No such file or directory\n", 29);
 	if (context == EISDIR)
 		write(2, ": Is a directory\n", 18);
-}
-
-void	reorder_lst(t_list **lst, t_list *prev)
-{
-	t_list	*temp;
-
-	temp = *lst;
-	if (prev)
-		prev->next = (*lst)->next;
-	*lst = (*lst)->next;
-	ft_lstdelone(temp, free);
 }

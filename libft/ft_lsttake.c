@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   ft_lsttake.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/06 15:02:09 by ccartet          ###   ########.fr       */
+/*   Created: 2022/04/07 10:01:14 by ccartet           #+#    #+#             */
+/*   Updated: 2022/04/07 10:01:39 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "libft.h"
 
-int	built_env(t_list *env, char **cmd_arg, int fd)
+t_list	*ft_lsttake(t_list **alst)
 {
-	t_env	*tmp;
+	t_list	*token;
 
-	g_cmd_ret = 0;
-	if (cmd_arg[1] != NULL)
-		return (print_err("env : too many arguments", 1));
-	while (env)
-	{
-		tmp = env->content;
-		if (tmp->eg == '=')
-		{
-			ft_putstr_fd(tmp->name, fd);
-			ft_putchar_fd('=', fd);
-			ft_putendl_fd(tmp->value, fd);
-		}
-		env = env->next;
-	}
-	return (0);
+	if (!*alst)
+		return NULL;
+	token = *alst;
+	*alst = (*alst)->next;
+	token->next = NULL;
+	return (token);
 }

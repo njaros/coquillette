@@ -6,11 +6,11 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/30 14:43:06 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/06 15:02:21 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "coquillette.h"
 
 t_list	*find_link(t_list *env, char *to_search)
 {
@@ -49,7 +49,7 @@ void	env_del(t_list *env, t_list *to_del)
 	free(var);
 }
 
-void	built_unset(char **cmd_arg, t_list *env)
+int	built_unset(char **cmd_arg, t_list *env)
 {
 	t_list	*tmp;
 	int		i;
@@ -62,4 +62,5 @@ void	built_unset(char **cmd_arg, t_list *env)
 			env_del(env, tmp);
 		i++;
 	}
+	return (0);
 }

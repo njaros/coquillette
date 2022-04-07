@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   ft_get_fd_rdonly.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/06 15:02:09 by ccartet          ###   ########.fr       */
+/*   Created: 2022/04/07 10:16:31 by ccartet           #+#    #+#             */
+/*   Updated: 2022/04/07 10:19:12 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "libft.h"
 
-int	built_env(t_list *env, char **cmd_arg, int fd)
+int	get_fd_rdonly(char *entry)
 {
-	t_env	*tmp;
+	int	i;
+	int	fd;
 
-	g_cmd_ret = 0;
-	if (cmd_arg[1] != NULL)
-		return (print_err("env : too many arguments", 1));
-	while (env)
+	i = -1;
+	while (entry[++i])
 	{
-		tmp = env->content;
-		if (tmp->eg == '=')
-		{
-			ft_putstr_fd(tmp->name, fd);
-			ft_putchar_fd('=', fd);
-			ft_putendl_fd(tmp->value, fd);
-		}
-		env = env->next;
+		if (entry[i] < '0' && entry[i] > '9')
+			return (open(entry, O_RDONLY));
 	}
-	return (0);
+	fd = open(entry, O_RDONLY);
+	if (fd < 0)
+		return (ft_atoi(entry));
+	else
+		return (fd);
 }
