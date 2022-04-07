@@ -83,12 +83,8 @@ int	double_token_char(char *str, int *quote, int *dquote, int *i)
 				*i += 1;
 			while (str[++(*i)] == ' ')
 				;
-<<<<<<< HEAD:src/quote_dollars2.c
 			if (ft_tokenchar(str[*i]) &&
 					!(pipe && (!str[*i] || str[*i] == '<' || str[*i] == '>')))
-=======
-			if (ft_tokenchar(str[*i]) && !(pipe && !str[*i]))
->>>>>>> 000df75312bca2ee4e28447ce57db83468c9db61:src/parsing/quote_dollars2.c
 				return (1);
 			*i -= 1;
 		}

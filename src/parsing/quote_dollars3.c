@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_dollars3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 16:48:05 by njaros            #+#    #+#             */
-<<<<<<< HEAD:src/quote_dollars3.c
-/*   Updated: 2022/04/07 10:05:49 by njaros           ###   ########lyon.fr   */
-=======
-/*   Updated: 2022/04/07 10:03:38 by ccartet          ###   ########.fr       */
->>>>>>> 000df75312bca2ee4e28447ce57db83468c9db61:src/parsing/quote_dollars3.c
+/*   Updated: 2022/04/07 11:45:47 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
