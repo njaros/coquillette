@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/06 16:25:13 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/08 13:01:50 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	execution(char *line_read, t_list *env)
 	int		pipefd[2];
 	int 	tmp_fd;
 	
+	data.env = env;
 	i = 0;
 	tmp_fd = 0;
 	while (analyse(line_read, &i, &data))
