@@ -30,6 +30,7 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	envp = list_to_tab(env);
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
+	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -85,12 +86,15 @@ void	execution(char *line_read, t_list *env)
 	int		i;
 	int		pipefd[2];
 	int 	tmp_fd;
+	int		blop;
 	
 	data.env = env;
 	i = 0;
 	tmp_fd = 0;
-	while (analyse(line_read, &i, &data))
+	blop = analyse(line_read, &i, &data);
+	while (blop)
 	{
+		dprintf(2, "%d\n", blop);
 		if (pipe(pipefd) == -1)
 			error("pipe"); // return si le pipe ne fonctionne pas ?
 		if (data.argv)
@@ -98,7 +102,9 @@ void	execution(char *line_read, t_list *env)
 			fork_loop(&data, pipefd, env, &tmp_fd);
 			ft_free(data.argv);
 		}
+		blop = analyse(line_read, &i, &data);
 	}
+	dprintf(2, "%d\n", blop);
 	if (data.argv)
 	{
 		if (builtins(data, env) == -1)
