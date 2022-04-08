@@ -108,6 +108,7 @@ int		error2(int err);
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
 int	    print_err(char *str, int err);
+void	feel_free(t_list *env);
 
 // execution
 void	execution(char *line_read, t_list *env);
@@ -126,7 +127,7 @@ void    loop_pipe(t_data *data, int *fd_in, int pipefd[2], t_list *env);
 int	    builtins(t_data data, t_list *env);
 //
 int	    built_cd(char **cmd_arg, t_list *env, int fd);
-int	    to_home(void);
+int	    to_home(char c, t_list *env);
 int 	change_pwd_oldpwd(char *oldpwd, t_list *env);
 int 	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
 t_env	*find_env_var(t_list *env, char *to_search);

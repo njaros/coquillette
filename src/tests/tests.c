@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_builtins.c                                    :+:      :+:    :+:   */
+/*   tests.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 17:20:47 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 13:43:48 by ccartet          ###   ########.fr       */
+/*   Created: 2022/04/07 15:51:29 by ccartet           #+#    #+#             */
+/*   Updated: 2022/04/07 16:19:51 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+void	feel_free(t_list *env)
+{
+	t_env	*var;
+	
+	while (env)
+	{
+		var = env->content;
+		free(var->name);
+		free(var->value);
+		env = env->next;
+	}
+}
 
 long	ft_atol(const char *str)
 {
@@ -68,22 +81,6 @@ int	print_err(char *str, int err)
 	return (1);
 }
 
-char	*rl_get(char *line_read)
-{
-	if (line_read)
-		free(line_read);
-	line_read = readline("\e[34mcoquillette0.1>\e[0m");
-	if (!line_read)
-	{
-		ft_putendl_fd("exit", 1);
-		exit(EXIT_SUCCESS);
-	}
-	//line_read = check_quote_end(line_read);
-	if (line_read && *line_read)
-		add_history(line_read);
-	return (line_read);
-}
-
 t_env	*create_struct(char *env)
 {
 	t_env	*blop;
@@ -122,47 +119,25 @@ t_list	*init_envp(char **envp)
 	return (env);
 }
 
-void	builtins(char **cmd_arg, t_list *env, int fd)
-{
-	if (!ft_strcmp(cmd_arg[0], "echo"))
-		built_echo(cmd_arg, fd);
-	else if (!ft_strcmp(cmd_arg[0], "cd"))
-		built_cd(cmd_arg, env, fd);
-	else if (!ft_strcmp(cmd_arg[0], "pwd"))
-		built_pwd(cmd_arg, fd);
-	else if (!ft_strcmp(cmd_arg[0], "export"))
-		built_export(cmd_arg, env, fd);
-	else if (!ft_strcmp(cmd_arg[0], "unset"))
-		built_unset(cmd_arg, env);
-	else if (!ft_strcmp(cmd_arg[0], "env"))
-		built_env(env, cmd_arg, fd);
-	else if (!ft_strcmp(cmd_arg[0], "exit"))
-		built_exit(cmd_arg, env);
-}
-
-int	main(int argc, char ** argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env_list;
-	char	*line_read;
 	char	**cmd_arg;
 	int		i;
 
-	line_read = NULL;
 	env_list = init_envp(envp);
 	if (!env_list)
 		return (1);
-	while (1)
+	cmd_arg = ft_split(argv[1], ' ');
+	built_cd(cmd_arg, env_list, 1);
+	i = 0;
+	while (cmd_arg[i])
 	{
-		line_read = rl_get(line_read);
-		cmd_arg = ft_split(line_read, ' ');
-		builtins(cmd_arg, env_list, 1);
-		i = 0;
-		while (cmd_arg[i])
-		{
-			free(cmd_arg[i]);
-			i++;
-		}
-		free(cmd_arg);
+		free(cmd_arg[i]);
+		i++;
 	}
+	free(cmd_arg);
+	feel_free(env_list);
+	ft_lstclear(&env_list, del);
 	return (0);
 }

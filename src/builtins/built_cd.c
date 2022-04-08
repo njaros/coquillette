@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 10:47:15 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/07 16:21:23 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ t_env	*find_env_var(t_list *env, char *to_search)
 	{
 		var = env->content;
 		if (!ft_strcmp(var->name, to_search))
-			break ;
+			return (var);
 		env = env->next;
 	}
-	return (var);
+	return (NULL);
 }
 
 int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
@@ -76,11 +76,21 @@ int	change_pwd_oldpwd(char *oldpwd, t_list *env)
 	return (0);
 }
 
-int	to_home(void)
+int	to_home(char c, t_list *env)
 {
 	char	*home;
+	t_env	*tmp;
 
-	home = getenv("HOME");
+	home = NULL;
+	if (c == '~')
+		home = getenv("HOME");
+	else
+	{
+		tmp = find_env_var(env, "HOME");
+		if (tmp)
+			home = ft_strdup(tmp->value);
+			
+	}
 	if (!home)
 		return (print_err("cd : HOME not set", errno));
 	g_cmd_ret = chdir(home);
@@ -100,7 +110,7 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 		return (print_err("getcwd() error", errno));
 	if (!cmd_arg[1])
 	{
-		if (to_home() != 0)
+		if (to_home(0, env) != 0)
 			return (1);
 	}
 	else
@@ -109,7 +119,9 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 			return (print_err("cd : too many arguments", 1));
 		if (cmd_arg[1][i] == '-')
 		{
-			tmp = find_env_var(env, "OLDPWD"); // faire attention à la possibilité qu'il n'y ai pas de variable OLDPWD !!
+			tmp = find_env_var(env, "OLDPWD");
+			if (!tmp)
+				return (print_err("cd : OLDPWD not set", errno));
 			ft_putendl_fd(tmp->value, fd);
 			g_cmd_ret = chdir(tmp->value);
 		}
@@ -117,7 +129,7 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 		{
 			if (cmd_arg[1][i] == '~')
 			{
-				if (to_home() != 0)
+				if (to_home(cmd_arg[1][i], env) != 0)
 					return (1);
 				i = 2;
 			}
