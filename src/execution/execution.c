@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/08 13:36:43 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/08 13:51:53 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 		if (builtins(*data, env) == -1)
 		{
 			cmd_path = found_cmd(data->argv[0]);
-			if (!cmd_path) // vérifier que la commande existe
+			if (!cmd_path)
 			{
-				dprintf(STDERR_FILENO, "%s: command not found\n", data->argv[0]);
-				//exit(EXIT_SUCCESS);
-			}
+				dprintf(2, "%s: command not found\n", data->argv[0]);
+				exit(1);
+			} // vérifier que la commande existe
 			else if (execve(cmd_path, data->argv, envp) == -1)
 				error("execve");
 		}

@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/08 11:18:58 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/08 14:04:20 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	ft_heredoc(char *end)
 	char	*line_read;
 	int 	fd[2];
 
-	close (fd[0]);
+	if (pipe(fd) == -1)
+		return (-1);
 	line_read = readline(">");
 	while (line_read && strcmp(line_read, end))
 	{
