@@ -51,6 +51,7 @@ typedef struct s_data
 	int		out;
 	char	**argv;
 	char	*cmd_path;
+	t_list	*env;
 }	            t_data;
 
 long	g_cmd_ret;
@@ -72,7 +73,7 @@ char	*pipage(char *str);
 char	*check_quote_end(char *str);
 char	*replace_dollz(char *str, int *i, int end);
 int		ft_quote_switch(int quote, char c);
-char	*dollar_searcher(char *str);
+char	*dollar_searcher(char *str, t_data *data);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
 int		first_char_is_pipe(char *str, int *i);
 int		last_char_is_pipe(char *str);
@@ -86,7 +87,7 @@ int		chevronnage(t_list **pouet, t_data *data);
 int		chevron_manager(t_list **pouet, t_list *prev, t_data *data);
 int		manip_chevron_str(char **str);
 void	file_to_open(char *file, int chev, t_data *data);
-void	analyse_error_message(char *str, int context);
+int		analyse_error_message(char *str, int context);
 int		analyse_sep(char *str, int *i, int context);
 void	init_analyse(char *str, int *i, int *ptr);
 void	quote_switcher(int *quote, int *dquote, char c);
@@ -94,6 +95,10 @@ int		organiser(t_list **pouet, int *i, char *str, t_data *data);
 int		ft_tokenchar(int c);
 int		ft_metachar(int c);
 int		ft_switch(int n);
+char	*quote_doll_handler(char *str, t_data *data);
+char	*only_quote_handler(char *str);
+int		handler_switcher(char c, char q);
+int		law_to_print(char a, char q, int context);
 
 //
 int		free_lst_analyse(t_list **to_free);

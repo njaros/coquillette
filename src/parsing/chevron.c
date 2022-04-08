@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 15:58:01 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/08 11:18:58 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,14 @@ int	chevron_manager(t_list **pouet, t_list *prev, t_data *data)
 	chevron_type = manip_chevron_str(&content);
 	if (!chevron_type)
 		return (0);
+	if (chevron_type != 4)
+		content = quote_doll_handler(content, data);
+	else
+		content = only_quote_handler(content);
+	if (!content)
+		return (analyse_error_message("chevron_manager", ENOMEM));
 	file_to_open(content, chevron_type, data);
+	free(content);
 	reorder_lst(pouet, prev);
 	return (1);
 }

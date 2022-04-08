@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:26:54 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/07 10:23:07 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 16:43:55 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*replace_dollz(char *str, int *i, int end)
 	return (replaced);
 }
 
-char	*pid_dollz(char *str, int *i)
+char	*pid_dollz(char *str, int *i, t_data *data)
 {
 	char	*number;
 	char	*sub;
@@ -88,7 +88,7 @@ char	*pid_dollz(char *str, int *i)
 	if (str[*i + 1] == '$')
 		number = ft_itoa(getpid());
 	else
-		return (str);
+		number = ft_itoa(data->last_return);
 	sub = ft_substr(str, 0, *i);
 	tmp = ft_strjoin(sub, number);
 	free(sub);
@@ -102,7 +102,7 @@ char	*pid_dollz(char *str, int *i)
 	return (number);
 }
 
-char	*dollar_searcher(char *str)
+char	*dollar_searcher(char *str, t_data *data)
 {
 	int		i;
 	int		end;
@@ -117,7 +117,7 @@ char	*dollar_searcher(char *str)
 		if (str[i] == '$' && !quote && str[i + 1] && str[i + 1] != ' ')
 		{
 			if (str[i + 1] == '?' || str[i + 1] == '$')
-				str = pid_dollz(str, &i);
+				str = pid_dollz(str, &i, data);
 			else
 			{
 				end = i + 1;

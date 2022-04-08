@@ -56,6 +56,7 @@ void init_data(t_data *data, int i, char *str)
 	data->out = -2;
 	data->argv = NULL;
 	data->cmd_path = NULL;
+	data->env = NULL;
 }
 
 t_env	*create_struct(char *env)

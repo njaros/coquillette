@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:40:11 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/07 10:04:18 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/07 14:59:20 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	init_analyse(char *str, int *i, int *ptr)
 		*i += 1;
 }
 
-void	analyse_error_message(char *str, int context)
+int	analyse_error_message(char *str, int context)
 {
 	write(2, "coquillette: ", 14);
 	write(2, str, ft_strlen(str));
@@ -56,4 +56,7 @@ void	analyse_error_message(char *str, int context)
 		write(2, ": No such file or directory\n", 29);
 	if (context == EISDIR)
 		write(2, ": Is a directory\n", 18);
+	if (context == ENOMEM)
+		write(2, ": Not enought memory during command analysing\n", 47);
+	return (0);
 }
