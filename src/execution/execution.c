@@ -29,6 +29,7 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 
 	envp = list_to_tab(env);
 	cmd_path = NULL;
+	dprintf(2, "fd_in: %d\n", *fd_in);
 	transform_fds(data, *fd_in, pipefd[1]);
 	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	f_pid = fork();
@@ -41,7 +42,10 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 		close(pipefd[0]); // si c'est la derniere cmd, fermer pipefd[1] ?
 		close(data->in);
 		if (data->out != 1)
+		{
 			dup2(data->out, STDOUT_FILENO);
+			close(pipefd[1]);
+		}
 		if (builtins(*data, env) == -1)
 		{
 			cmd_path = found_cmd(data->argv[0]);
@@ -90,7 +94,7 @@ void	execution(char *line_read, t_list *env)
 	
 	data.env = env;
 	i = 0;
-	tmp_fd = 0;
+	tmp_fd = 3;
 	blop = analyse(line_read, &i, &data);
 	while (blop)
 	{
@@ -109,7 +113,7 @@ void	execution(char *line_read, t_list *env)
 	{
 		if (builtins(data, env) == -1)
 			fork_loop(&data, pipefd, env, &tmp_fd);
-		// close(tmp_fd);
+		close(tmp_fd);
 		ft_free(data.argv);
 	}
 }

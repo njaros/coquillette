@@ -21,6 +21,8 @@ int	built_echo(char **cmd_arg, int fd)
 	
 	nl = 1;
 	i = 1;
+	if (fd == -2)
+		fd = 1;
 	while (cmd_arg[i])
 	{
 		if (cmd_arg[i][0] == '-' && cmd_arg[i][1] == 'n')
