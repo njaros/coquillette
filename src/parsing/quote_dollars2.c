@@ -58,9 +58,11 @@ char	*pipage(char *str)
 		return (str);
 	while (is_only_blank(add))
 	{
-		add = readline(">");
+		add = readline("> ");
 		piped = ft_strjoin(str, add);
 		free(str);
+		if (!add)
+			return (eof_detector(piped, 0));
 		str = piped;
 	}
 	return (piped);
@@ -96,6 +98,10 @@ char	*cherche_merde(char *str, int *quote, int *dquote)
 {
 	int	i;
 
+	*quote = 0;
+	*dquote = 0;
+	if (!str)
+		return (NULL);
 	i = -1;
 	if (double_token_char(str, quote, dquote, &i)
 			|| first_char_is_pipe(str, &i))
