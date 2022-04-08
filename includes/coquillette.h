@@ -68,12 +68,11 @@ void	init_sigact(struct sigaction *act);
 
 // ICI ON PARSE
 void	do_nothing(void *let_him_alive);
+char	*eof_detector(char *to_free, int context);
 char	*quotage(char *str, int *dquote, int *quote);
 char	*pipage(char *str);
 char	*check_quote_end(char *str);
-char	*replace_dollz(char *str, int *i, int end);
 int		ft_quote_switch(int quote, char c);
-char	*dollar_searcher(char *str, t_data *data);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
 int		first_char_is_pipe(char *str, int *i);
 int		last_char_is_pipe(char *str);
@@ -81,8 +80,6 @@ char	*cherche_merde(char *str, int *quote, int *dquote);
 void	le_coupable_est(char *c);
 int		analyse(char *str, int *i, t_data *data);
 int		ajout_block(t_list **pouet, int *i, int *ptr, char *str);
-char	*dollz_what(char *str, t_data *data);
-char	*last_return(char *str, int *i, int ret);
 int		chevronnage(t_list **pouet, t_data *data);
 int		chevron_manager(t_list **pouet, t_list *prev, t_data *data);
 int		manip_chevron_str(char **str);

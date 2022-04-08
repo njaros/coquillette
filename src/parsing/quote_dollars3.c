@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 16:48:05 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/07 11:45:47 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/08 15:44:25 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	last_char_is_pipe(char *str)
 
 int	ft_tokenchar(int c)
 {
-	if (c == '\n' || c == '\0')
+	if (c == '\0')
 		return (1);
 	if (c == ';')
 		return (1);
