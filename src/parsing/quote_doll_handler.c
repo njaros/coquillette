@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:30:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/08 12:47:12 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/08 12:58:03 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,18 @@ char	*is_str_dollz(char *ret, char *str, int *ind, t_data *data)
 	int		lg_str;
 	char	*to_search;
 	char	*new;
-	char	*tmp;
+	t_env	*env;
 
 	to_search = ft_substr(str, ind[0] + 1, ind[2] - (ind[0] + 1));
-	tmp = ft_strdup("je mets des quotes et des dollars LUUULZZZ '$ '$ '$$$$ ' ' ");
-	//tmp = find_env_var(data->env, to_search);
+	env = find_env_var(data->env, to_search);
 	free(to_search);
-	lg_str = ft_strlen(tmp);
-	fprintf(stderr, "%d\n", lg_str);
+	lg_str = ft_strlen(env->value);
 	new = calloc(1, lg_str + ft_strlen(ret) + 1);
 	if (!new)
 		return (NULL);
 	ft_strcat(new, ret);
 	free(ret);
-	ft_strcat(new, tmp);
+	ft_strcat(new, env->value);
 	ind[0] = ind[2] - 1;
 	ind[1] += lg_str;
 	return (new);
