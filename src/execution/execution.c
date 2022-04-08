@@ -44,8 +44,11 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 		if (builtins(*data, env) == -1)
 		{
 			cmd_path = found_cmd(data->argv[0]);
-			if (!cmd_path) // vérifier que la commande existe
-				printf("%s: command not found\n", data->argv[0]);
+			if (!cmd_path)
+			{
+				dprintf(2, "%s: command not found\n", data->argv[0]);
+				exit(1);
+			} // vérifier que la commande existe
 			else if (execve(cmd_path, data->argv, envp) == -1)
 				error("execve");
 		}
