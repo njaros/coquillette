@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:38:46 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 17:04:21 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/07 15:56:10 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ char	*ft_strmchr(char *s, char *charset);
 long	ft_atol(const char *str);
 //
 int	    built_cd(char **cmd_arg, t_list *env, int fd);
-int	    to_home(void);
+int	    to_home(char c, t_list *env);
 int 	change_pwd_oldpwd(char *oldpwd, t_list *env);
 int 	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
 //
-void	built_echo(char **cmd_arg, int fd);
+int	built_echo(char **cmd_arg, int fd);
 //
 int	    built_env(t_list *env, char **cmd_arg, int fd);
 //
@@ -71,7 +71,7 @@ void    init_rank(t_list *env, int *size);
 //
 int 	built_pwd(char **cmd_arg, int fd);
 //
-void	built_unset(char **cmd_arg, t_list *env);
+int 	built_unset(char **cmd_arg, t_list *env);
 t_list	*find_link(t_list *env, char *to_search);
 void	env_del(t_list *env, t_list *to_del);
 

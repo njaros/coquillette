@@ -6,11 +6,11 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/30 13:53:44 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/07 14:42:41 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "coquillette.h"
 
 void	init_rank(t_list *env, int *size)
 {
@@ -92,6 +92,10 @@ int	built_export(char **cmd_arg, t_list *env, int fd)
 	while (cmd_arg[i])
 	{
 		to_search = ft_substr(cmd_arg[i], 0, ft_strmchr(cmd_arg[i], "=+") - cmd_arg[i]);
+		if (!to_search)
+			to_search = ft_strdup(cmd_arg[i]);
+		if (to_search[0] == '\0')
+			return (print_err("not a valid identifier", 1));
 		a = -1;
 		while (to_search[a++])
 		{
@@ -100,10 +104,9 @@ int	built_export(char **cmd_arg, t_list *env, int fd)
 		}
 		tmp = find_env_var(env, to_search);
 		free(to_search);
-		value = ft_substr(ft_strchr(cmd_arg[i], '='), 1, ft_strlen(cmd_arg[i])); // vérifier comportement si rien après le =, \0 ??
+		value = ft_substr(ft_strchr(cmd_arg[i], '='), 1, ft_strlen(cmd_arg[i]));
 		replace_or_create(env, tmp, cmd_arg[i], value);
 		i++;
 	}
 	return (0);
 }
-// attention ! tester export NAME=, et ensuite env, je dois voir cette nouvelle variable apparaitre

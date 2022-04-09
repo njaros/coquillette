@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 14:09:38 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 14:35:19 by ccartet          ###   ########.fr       */
+/*   Created: 2022/04/07 16:52:11 by njaros            #+#    #+#             */
+/*   Updated: 2022/04/07 16:59:12 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
-
-int	built_pwd(char **cmd_arg, int fd)
+void	ft_strcat(char *dest, char *src)
 {
-	char	pwd[MAXPATHLEN];
+	unsigned int	i;
+	unsigned int	j;
 
-	g_cmd_ret = 0;
-	if (!getcwd(pwd, MAXPATHLEN))
-		return (print_err("getcwd() error", errno));
-	ft_putendl_fd(pwd, fd);
-	return (0);
+	i = 0;
+	j = 0;
+	while (dest[i] != '\0')
+		i++;
+	while (src[j] != '\0')
+	{
+		dest[i] = src[j];
+		j++;
+		i++;
+	}
+	dest[i] = '\0';
 }

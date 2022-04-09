@@ -12,17 +12,6 @@
 
 #include "coquillette.h"
 
-int	ft_quote_switch(int quote, char c, int *i)
-{
-	static int	dquote = 0;
-
-	if (!quote && c == 34)
-		dquote = ft_switch(dquote);
-	if (!dquote && c == 39)
-		return (ft_switch(quote));
-	return (quote);
-}
-
 int	is_only_blank(char *add)
 {
 	int	i;
@@ -58,9 +47,11 @@ char	*pipage(char *str)
 		return (str);
 	while (is_only_blank(add))
 	{
-		add = readline(">");
+		add = readline("> ");
 		piped = ft_strjoin(str, add);
 		free(str);
+		if (!add)
+			return (eof_detector(piped, 0));
 		str = piped;
 	}
 	return (piped);
@@ -77,21 +68,18 @@ int	double_token_char(char *str, int *quote, int *dquote, int *i)
 		if (ft_tokenchar(str[*i]) && !*quote && !*dquote)
 		{
 			if (str[(*i)] == '|')
-			{
 				pipe = 1;
-				while (str[++(*i)] == ' ')
-					;
-			}
 			if ((str[*i] == '>' && str[*i + 1] == '>')
 					|| (str[*i] == '<' && str[*i + 1] == '<'))
 				*i += 1;
-			while (str[*i] == ' ')
-				*i += 1;
-			if (ft_tokenchar(str[*i]) && !(pipe && !str[*i]))
+			while (str[++(*i)] == ' ')
+				;
+			if (ft_tokenchar(str[*i]) &&
+					!(pipe && (!str[*i] || str[*i] == '<' || str[*i] == '>')))
 				return (1);
+			*i -= 1;
 		}
 	}
-	*i = -1;
 	return (0);
 }
 
@@ -99,9 +87,13 @@ char	*cherche_merde(char *str, int *quote, int *dquote)
 {
 	int	i;
 
+	*quote = 0;
+	*dquote = 0;
+	if (!str)
+		return (NULL);
 	i = -1;
 	if (double_token_char(str, quote, dquote, &i)
-			|| first_char_is_pipe(str))
+			|| first_char_is_pipe(str, &i))
 	{
 		add_history(str);
 		le_coupable_est(&str[i]);

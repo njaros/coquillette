@@ -6,56 +6,23 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 16:50:14 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/08 11:24:38 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-void	fill_without_quote(char *fill, char * str, int begin, int end)
+int	lst_dequotage(t_list *lst, t_data *data)
 {
-	int	i;
-	int	j;
-
-	i = -1;
-	j = -1;
-	while (str[++i])
-		if (i != begin && i != end)
-			fill[++j] = str[i];
-	free(str);
-}
-
-int	str_dequotage(char *str, t_list *lst)
-{
-	char	*no_quote;
-	int		i;
-	int		j;
-
-	i = 0;
-	while (str[i] && str[i] != 34 && str[i] != 39)
-		i++;
-	if (!str[i])
-		return (1);
-	j = ft_strlen(str);
-	no_quote = ft_calloc(1, j - 1);
-	if (!no_quote)
-		return (0);
-	while (j >= 0 && str[j] != 34 && str[j] != 39)
-		j--;
-	fill_without_quote(no_quote, str, i, j);
-	lst->content = no_quote;
-	return (1);
-}
-
-int	lst_dequotage(t_list *lst)
-{
-	char	*content;
+	char	*formated;
 
 	while (lst)
 	{
-		content = lst->content;
-		if (!str_dequotage(content, lst))
+		formated = quote_doll_handler((char *)lst->content, data);
+		free(lst->content);
+		if (!formated)
 			return (0);
+		lst->content = formated;
 		lst = lst->next;
 	}
 	return (1);
@@ -70,7 +37,6 @@ int	end_parsing(char *str, int *i, t_data *data)
 	}
 	if (data->out == -2)
 		data->out = 1;
-	ft_putendl_fd("fin parsing\n", 2);
 	return (0);	
 }
 
@@ -82,7 +48,7 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 
 	j = -1;
 	lg = chevronnage(pouet, data);
-	if (!lst_dequotage(*pouet))
+	if (!lst_dequotage(*pouet, data))
 		return (free_lst_analyse(pouet));
 	first = *pouet;
 	if (!lg)

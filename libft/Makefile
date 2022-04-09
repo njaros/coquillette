@@ -8,11 +8,14 @@ SRCS = 	ft_isalnum.c \
 		ft_strrchr.c \
 		ft_toupper.c \
 		ft_atoi.c \
+		ft_atol.c	\
 		ft_itoa.c \
 		ft_isalpha.c \
 		ft_memcpy.c \
 		ft_putendl_fd.c \
+		ft_strcat.c \
 		ft_strchr.c \
+		ft_strmchr.c \
 		ft_strjoin.c \
 		ft_strmapi.c \
 		ft_strtrim.c \
@@ -42,7 +45,11 @@ SRCS = 	ft_isalnum.c \
 		ft_lstiter.c \
 		ft_lstsize.c \
 		ft_lstadd_front.c \
-		ft_lstlast.c
+		ft_lstlast.c	\
+		ft_lst_reorder.c	\
+		ft_lsttake.c	\
+		ft_get_fd_rdonly.c	\
+		ft_del.c
 OBJS = ${SRCS:.c=.o}
 HEADERS_PATH = ../includes
 HEADERS = ../includes/libft.h

@@ -6,11 +6,11 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/03/31 17:03:45 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/07 16:21:39 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "coquillette.h"
 
 int	check_arg(char *arg)
 {
@@ -64,7 +64,8 @@ void	built_exit(char **cmd_arg, t_list *env)
 		if (!g_cmd_ret)
 			g_cmd_ret = ft_atol(cmd_arg[1]);
 	}
-	// fonction feel_free
+	feel_free(env);
+	ft_lstclear(&env, del);
 	ft_putendl_fd("exit", 2);
 	exit(g_cmd_ret);
 }

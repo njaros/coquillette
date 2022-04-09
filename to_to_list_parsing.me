@@ -2,20 +2,16 @@
 
 ## tri du plus important au moins important ##
 
-- avoir le droit de | < ou | >,  et debugguer le | en premier
-
-- le $ apres un << ne doit pas etre interpreté
-
-- si $truc='"' : ca casse tout
-	donc il faut interpreter les $ juste avant de les inserer dans les argv
-	je pense qu il faut le faire dans la fonction dequotage.
-	ou alors s il y a des quotes : les entourer de double quotes et vice versa
-
-- tester le fameus heredoc (<<)
+- rl-get a besoin de connaitre la derniere valeur de retour (data->last_ret) pour le exit
 
 - des segfault lorsque 
 
 - inserer un EOF (CTRL + D) dans les line_read des fermetures de quote et fermetures de pipe.
 	--> doit afficher une erreur de type "il y a eu un EOF innatendu".
 
-### Boussah ###
+- variable globale pour le ctrl + c ? Simplifie le reset de line_read
+ Ou alors mettre line_read en variable globale ?
+
+### MODIFS LIBFT ###
+
+- securiser le ft_lstdelone

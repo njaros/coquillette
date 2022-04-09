@@ -26,24 +26,11 @@ int	main(int argc, char ** argv, char **envp)
 	line_read = NULL;
 	while (1)
 	{
-		line_read = dollar_searcher(rl_get(line_read));
+		line_read = rl_get(line_read);
 		if (line_read)
-			test_exec(line_read, env_list);
-		/*else
-		{
-			cmd_arg = ft_split(line_read, ' ');
-			cmd = get_cmd(cmd_arg[0], path);
-			if (cmd == NULL)
-				printf("%s: command not found\n", cmd_arg[0]);
-			else
-				pid = fork();
-				if (pid == -1)
-					perror("fork");
-				if (pid == 0)
-					if (execve(cmd, cmd_arg, envp) == -1)
-						perror("execve");
-				waitpid(pid, NULL, 0);
-		}*/
+			execution(line_read, env_list);
 	}
+	feel_free(env_list);
+	ft_lstclear(&env_list, del);
 	return (0);
 }

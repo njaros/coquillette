@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   ft_lsttake.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 14:09:38 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 14:35:19 by ccartet          ###   ########.fr       */
+/*   Created: 2022/04/07 10:01:14 by ccartet           #+#    #+#             */
+/*   Updated: 2022/04/07 10:01:39 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "coquillette.h"
+#include "libft.h"
 
-int	built_pwd(char **cmd_arg, int fd)
+t_list	*ft_lsttake(t_list **alst)
 {
-	char	pwd[MAXPATHLEN];
+	t_list	*token;
 
-	g_cmd_ret = 0;
-	if (!getcwd(pwd, MAXPATHLEN))
-		return (print_err("getcwd() error", errno));
-	ft_putendl_fd(pwd, fd);
-	return (0);
+	if (!*alst)
+		return NULL;
+	token = *alst;
+	*alst = (*alst)->next;
+	token->next = NULL;
+	return (token);
 }
