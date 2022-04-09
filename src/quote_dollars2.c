@@ -12,7 +12,7 @@
 
 #include "coquillette.h"
 
-int	ft_quote_switch(int quote, char c)
+int	ft_quote_switch(int quote, char c, int *i)
 {
 	static int	dquote = 0;
 

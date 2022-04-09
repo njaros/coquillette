@@ -2,13 +2,18 @@
 
 ## tri du plus important au moins important ##
 
-- inserer dans la data le compteur de pipe + 1
-
 - avoir le droit de | < ou | >,  et debugguer le | en premier
 
 - le $ apres un << ne doit pas etre interpreté
 
+- si $truc='"' : ca casse tout
+	donc il faut interpreter les $ juste avant de les inserer dans les argv
+	je pense qu il faut le faire dans la fonction dequotage.
+	ou alors s il y a des quotes : les entourer de double quotes et vice versa
+
 - tester le fameus heredoc (<<)
+
+- des segfault lorsque 
 
 - inserer un EOF (CTRL + D) dans les line_read des fermetures de quote et fermetures de pipe.
 	--> doit afficher une erreur de type "il y a eu un EOF innatendu".

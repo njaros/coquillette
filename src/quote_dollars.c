@@ -112,8 +112,8 @@ char	*dollar_searcher(char *str)
 	i = -1;
 	while (str && str[++i])
 	{
-		if (str[i] == 39 || str[i] == 34)
-			quote = ft_quote_switch(quote, str[i]);
+		if (str[i] == 39 || str[i] == 34 || str[i] == '<')
+			quote = ft_quote_switch(quote, str[i], &i);
 		if (str[i] == '$' && !quote && str[i + 1] && str[i + 1] != ' ')
 		{
 			if (str[i + 1] == '?' || str[i + 1] == '$')
