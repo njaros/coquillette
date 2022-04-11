@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/11 13:00:07 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/11 13:58:00 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	envp = list_to_tab(env);
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
-	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -39,12 +38,11 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 		if (data->in != 0)
 			dup2(data->in, STDIN_FILENO);
 		close(pipefd[0]); // si c'est la derniere cmd, fermer pipefd[1] ?
-		close(data->in);
 		if (data->out != 1)
 			dup2(data->out, STDOUT_FILENO);
 		if (builtins(*data, env) == -1)
 		{
-			cmd_path = found_cmd(data->argv[0]);
+			cmd_path = found_cmd(data->argv[0], env);
 			if (!cmd_path || data->argv[0][0] == '\0')
 			{
 				dprintf(2, "coquillette: %s: command not found\n", data->argv[0]);
@@ -53,11 +51,12 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 			else if (execve(cmd_path, data->argv, envp) != 0)
 				error("execve");
 		}
-		//close(pipefd[1]);
 		exit(0);
 	}
 	close(pipefd[1]);
 	waitpid(f_pid, &data->last_return, 0);
+	if (data->in != 0)
+		close(data->in);
 	if (data->out != 1)
 		close(data->out);
 	ft_free(envp);

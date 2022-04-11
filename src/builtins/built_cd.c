@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 16:21:23 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/11 14:41:24 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,12 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 	else
 	{
 		if (cmd_arg[2] != NULL)
-			return (print_err("cd : too many arguments", 1));
+			return (print_err("cd: too many arguments", 1));
 		if (cmd_arg[1][i] == '-')
 		{
 			tmp = find_env_var(env, "OLDPWD");
 			if (!tmp)
-				return (print_err("cd : OLDPWD not set", errno));
+				return (print_err("cd: OLDPWD not set", errno));
 			ft_putendl_fd(tmp->value, fd);
 			g_cmd_ret = chdir(tmp->value);
 		}
@@ -134,9 +134,13 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 				i = 2;
 			}
 			if (cmd_arg[1][i])
+			{
+				if (!opendir(&cmd_arg[1][i]))
+					return (print_err("cd: Permission denied", 1));
 				g_cmd_ret = chdir(&cmd_arg[1][i]);
-			if (g_cmd_ret == -1)
-				return (print_err("No such file or directory", 1));
+				if (g_cmd_ret == -1)
+					return (print_err("No such file or directory", 1));
+			}
 		}
 	}
 	if (change_pwd_oldpwd(oldpwd, env) != 0)

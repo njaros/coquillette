@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:10:44 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/06 13:33:27 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/11 13:57:20 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,16 @@ char    *get_path(char *cmd, char **path)
     return (cmd_path);
 }
 
-char	*found_cmd(char *entry)
+char	*found_cmd(char *entry, t_list *env)
 {
-	char	*env;
 	char	*cmd;
 	char	**path_tab;
 	int		i;
+	t_env	*tmp;
 	
 	i = -1;
 	while (entry[++i])
+	{
 		if (entry[i] == '/')
 		{
 			if (access(entry, X_OK) == 0)
@@ -92,8 +93,11 @@ char	*found_cmd(char *entry)
 			else
 				return (NULL);
 		}
-	env = getenv("PATH");
-	path_tab = ft_split(env, ':');
+	}
+	tmp = find_env_var(env, "PATH");
+	if (!tmp)
+		return (NULL);
+	path_tab = ft_split(tmp->value, ':');
 	cmd = get_path(entry, path_tab);
 	ft_free(path_tab);
 	return (cmd);
