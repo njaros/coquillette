@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/11 10:30:31 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/11 13:00:07 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 
 	envp = list_to_tab(env);
 	cmd_path = NULL;
-	dprintf(2, "fd_in: %d\n", *fd_in);
 	transform_fds(data, *fd_in, pipefd[1]);
 	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	f_pid = fork();
@@ -42,24 +41,25 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 		close(pipefd[0]); // si c'est la derniere cmd, fermer pipefd[1] ?
 		close(data->in);
 		if (data->out != 1)
-		{
 			dup2(data->out, STDOUT_FILENO);
-			close(pipefd[1]);
-		}
 		if (builtins(*data, env) == -1)
 		{
 			cmd_path = found_cmd(data->argv[0]);
-			if (!cmd_path)
+			if (!cmd_path || data->argv[0][0] == '\0')
 			{
-				dprintf(2, "%s: command not found\n", data->argv[0]);
+				dprintf(2, "coquillette: %s: command not found\n", data->argv[0]);
 				exit(1);
 			} // vérifier que la commande existe
-			else if (execve(cmd_path, data->argv, envp) == -1)
+			else if (execve(cmd_path, data->argv, envp) != 0)
 				error("execve");
 		}
+		//close(pipefd[1]);
+		exit(0);
 	}
 	close(pipefd[1]);
-	waitpid(f_pid, NULL, 0);
+	waitpid(f_pid, &data->last_return, 0);
+	if (data->out != 1)
+		close(data->out);
 	ft_free(envp);
 	free(cmd_path);
 	*fd_in = pipefd[0];
@@ -84,7 +84,7 @@ int	builtins(t_data data, t_list *env)
 	return (-1);
 }
 
-void	execution(char *line_read, t_list *env)
+int	execution(char *line_read, t_list *env)
 {
 	t_data	data;
 	int		i;
@@ -98,7 +98,6 @@ void	execution(char *line_read, t_list *env)
 	blop = analyse(line_read, &i, &data);
 	while (blop)
 	{
-		dprintf(2, "%d\n", blop);
 		if (pipe(pipefd) == -1)
 			error("pipe"); // return si le pipe ne fonctionne pas ?
 		if (data.argv)
@@ -108,7 +107,6 @@ void	execution(char *line_read, t_list *env)
 		}
 		blop = analyse(line_read, &i, &data);
 	}
-	dprintf(2, "%d\n", blop);
 	if (data.argv)
 	{
 		if (builtins(data, env) == -1)
@@ -116,4 +114,5 @@ void	execution(char *line_read, t_list *env)
 		close(tmp_fd);
 		ft_free(data.argv);
 	}
+	return (data.last_return);
 }

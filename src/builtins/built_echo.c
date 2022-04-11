@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 14:35:09 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/11 12:53:07 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	built_echo(char **cmd_arg, int fd)
 	
 	nl = 1;
 	i = 1;
-	if (fd == -2)
-		fd = 1;
 	while (cmd_arg[i])
 	{
 		if (cmd_arg[i][0] == '-' && cmd_arg[i][1] == 'n')

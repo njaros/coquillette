@@ -107,7 +107,7 @@ int	    print_err(char *str, int err);
 void	feel_free(t_list *env);
 
 // execution
-void	execution(char *line_read, t_list *env);
+int		execution(char *line_read, t_list *env);
 void    fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in);
 void	transform_fds(t_data *data, int fd_in, int fd_out);
 char	*found_cmd(char *entry);
