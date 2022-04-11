@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:30:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/08 13:08:26 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/11 10:01:17 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	*is_num_dollz(char *ret, char *str, int *ind, t_data *data)
 	else
 		number = ft_itoa(data->last_return);
 	lg_nbr = ft_strlen(number);
-	new = ft_calloc(1, lg_nbr + ft_strlen(str) + 1);
+	ind[3] += lg_nbr;
+	new = ft_calloc(1, ind[3]);
 	if (!new)
 	{
 		free(number);
@@ -52,7 +53,8 @@ char	*is_str_dollz(char *ret, char *str, int *ind, t_data *data)
 	if (!env)
 		return (ret);
 	lg_str = ft_strlen(env->value);
-	new = calloc(1, lg_str + ft_strlen(str) + 1);
+	ind[3] += lg_str;
+	new = calloc(1, ind[3]);
 	if (!new)
 		return (NULL);
 	ft_strcat(new, ret);
@@ -92,8 +94,9 @@ char	*quote_doll_handler(char *str, t_data *data)
 	int		*ind;
 	char	q_val;
 
-	ind = malloc(sizeof(int) * 3);
-	ret = ft_calloc(ft_strlen(str) + 1, 1);
+	ind = malloc(sizeof(int) * 4);
+	ind[3] = ft_strlen(str) + 1;
+	ret = ft_calloc(ind[3], 1);
 	if (!ret)
 		return (NULL);
 	ind[0] = -1;
