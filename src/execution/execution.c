@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/06 16:25:13 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/11 10:29:19 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 
 	envp = list_to_tab(env);
 	cmd_path = NULL;
+	dprintf(2, "fd_in: %d\n", *fd_in);
 	transform_fds(data, *fd_in, pipefd[1]);
+	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -40,12 +42,18 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 		close(pipefd[0]); // si c'est la derniere cmd, fermer pipefd[1] ?
 		close(data->in);
 		if (data->out != 1)
+		{
 			dup2(data->out, STDOUT_FILENO);
+			close(pipefd[1]);
+		}
 		if (builtins(*data, env) == -1)
 		{
 			cmd_path = found_cmd(data->argv[0]);
-			if (!cmd_path) // vérifier que la commande existe
-				printf("%s: command not found\n", data->argv[0]);
+			if (!cmd_path)
+			{
+				dprintf(2, "%s: command not found\n", data->argv[0]);
+				exit(1);
+			} // vérifier que la commande existe
 			else if (execve(cmd_path, data->argv, envp) == -1)
 				error("execve");
 		}
@@ -82,11 +90,15 @@ void	execution(char *line_read, t_list *env)
 	int		i;
 	int		pipefd[2];
 	int 	tmp_fd;
+	int		blop;
 	
+	data.env = env;
 	i = 0;
-	tmp_fd = 0;
-	while (analyse(line_read, &i, &data))
+	tmp_fd = 3;
+	blop = analyse(line_read, &i, &data);
+	while (blop)
 	{
+		dprintf(2, "%d\n", blop);
 		if (pipe(pipefd) == -1)
 			error("pipe"); // return si le pipe ne fonctionne pas ?
 		if (data.argv)
@@ -94,12 +106,14 @@ void	execution(char *line_read, t_list *env)
 			fork_loop(&data, pipefd, env, &tmp_fd);
 			ft_free(data.argv);
 		}
+		blop = analyse(line_read, &i, &data);
 	}
+	dprintf(2, "%d\n", blop);
 	if (data.argv)
 	{
 		if (builtins(data, env) == -1)
 			fork_loop(&data, pipefd, env, &tmp_fd);
-		// close(tmp_fd);
+		close(tmp_fd);
 		ft_free(data.argv);
 	}
 }
