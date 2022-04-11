@@ -12,19 +12,6 @@
 
 #include "coquillette.h"
 
-void	feel_free(t_list *env)
-{
-	t_env	*var;
-	
-	while (env)
-	{
-		var = env->content;
-		free(var->name);
-		free(var->value);
-		env = env->next;
-	}
-}
-
 int	print_err(char *str, int err)
 {
 	ft_putendl_fd(str, 2);
@@ -111,11 +98,6 @@ t_list	*init_envp(char **envp)
 
 char	*rl_get(char *line_read)
 {
-/*	int	pid;
-
-	pid = fork();
-	if (pid == -1)*/
-		
 	if (line_read)
 		free(line_read);
 	line_read = readline("\e[34mcoquillette0.1>\e[0m");
