@@ -47,7 +47,6 @@ LST_SRCS =	coquillette.c	\
 			parsing/freeteuse.c	\
 			execution/execution.c	\
 			execution/exec_utils.c	\
-			execution/multipipe.c	\
 			builtins/built_cd.c	\
 			builtins/built_echo.c	\
 			builtins/built_env.c	\
