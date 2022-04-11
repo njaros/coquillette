@@ -116,7 +116,7 @@ char	*rl_get(char *line_read)
 	line_read = readline("\e[34mcoquillette0.1>\e[0m");
 	if (!line_read)
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("j'ai recu un \\0 donc je dois exit", 1);
 		exit(EXIT_SUCCESS);
 	}
 	line_read = check_quote_end(line_read);

@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/05 10:30:17 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 15:09:24 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,48 +16,6 @@
 void	do_nothing(void *let_him_alive)
 {
 	(void)let_him_alive;
-}
-
-char	*last_return(char *str, int *i, int ret)
-{
-	char	*number;
-	char	*sub;
-	char	*tmp;
-
-	number = ft_itoa(ret);
-	sub = ft_substr(str, 0, *i);
-	tmp = ft_strjoin(sub, number);
-	free(sub);
-	sub = ft_substr(str, *i + 2, ft_strlen(str));
-	*i += ft_strlen(number) - 1;
-	free(number);
-	number = ft_strjoin(tmp, sub);
-	free(str);
-	free(tmp);
-	free(sub);
-	return (number);
-}
-
-char	*dollz_what(char *str, t_data *data)
-{
-	int	quote;
-	int	dquote;
-	int	i;
-
-	quote = 0;
-	dquote = 0;
-	i = -1;
-	while (str[++i] && str[i] != '|')
-	{
-		quote_switcher(&quote, &dquote, str[i]);
-		if (str[i] == '$' && !quote && !dquote)
-		{
-			str = last_return(str, &i, data->last_return);
-			if (!str)
-				return (NULL);
-		}
-	}
-	return (str);
 }
 
 int	ajout_block(t_list **pouet, int *i, int *ptr, char *str)
@@ -94,7 +52,6 @@ int	analyse(char *str, int *i, t_data *data)
 	dquote = 0;
 	pouet = NULL;
 	init_data(data, *i, str);
-	str = dollz_what(str, data);
 	if (!str)
 		return (0);
 	init_analyse(str, i, &ptr);

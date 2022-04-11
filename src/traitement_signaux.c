@@ -16,11 +16,10 @@ void	handler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	if (sig == SIGQUIT)
 	{
-		rl_redisplay();
+		//rl_redisplay();
 		return ;
 	}
-	ft_putstr_fd("\ncoquillette0.1>", 1);
-	rl_redisplay();
+	ft_putstr_fd("\n", 1);
 }
 
 void	init_sigact(struct sigaction *act)

@@ -2,16 +2,15 @@
 
 ## tri du plus important au moins important ##
 
-- refaire le dequotage + y inserer l'interpreteur de $
+- rl-get a besoin de connaitre la derniere valeur de retour (data->last_ret) pour le exit
 
-- avoir le droit de | < ou | >,  et debugguer le | en premier
-
-- le $ apres un << ne doit pas etre interpreté
-
-- tester le fameus heredoc (<<)
+- des segfault lorsque 
 
 - inserer un EOF (CTRL + D) dans les line_read des fermetures de quote et fermetures de pipe.
 	--> doit afficher une erreur de type "il y a eu un EOF innatendu".
+
+- variable globale pour le ctrl + c ? Simplifie le reset de line_read
+ Ou alors mettre line_read en variable globale ?
 
 ### MODIFS LIBFT ###
 
