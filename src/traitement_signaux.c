@@ -14,12 +14,18 @@
 
 void	handler(int sig, siginfo_t *siginfo, void *ucontext)
 {
-	if (sig == SIGQUIT)
+	static int	prompt = 1;
+
+	if (sig == SIGUSR1 && siginfo->si_pid == getpid())
 	{
-		//rl_redisplay();
+		prompt = ft_switch(prompt);
 		return ;
 	}
-	ft_putstr_fd("\n", 1);
+	if (sig == SIGQUIT)
+		return ;
+	if (prompt)
+		ft_putstr_fd("\n\e[34mcoquillette0.1>\e[0m", 1);
+	rl_replace_line("", 0);
 }
 
 void	init_sigact(struct sigaction *act)
@@ -28,4 +34,5 @@ void	init_sigact(struct sigaction *act)
 	act->sa_sigaction = handler;
 	sigaction(SIGINT, act, NULL);
 	sigaction(SIGQUIT, act, NULL);
+	sigaction(SIGUSR1, act, NULL);
 }

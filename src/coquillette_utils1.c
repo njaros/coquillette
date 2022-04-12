@@ -12,19 +12,6 @@
 
 #include "coquillette.h"
 
-void	feel_free(t_list *env)
-{
-	t_env	*var;
-	
-	while (env)
-	{
-		var = env->content;
-		free(var->name);
-		free(var->value);
-		env = env->next;
-	}
-}
-
 int	print_err(char *str, int err)
 {
 	ft_putendl_fd(str, 2);
@@ -109,20 +96,16 @@ t_list	*init_envp(char **envp)
 	return (env);
 }
 
-char	*rl_get(char *line_read)
+char	*rl_get(char *line_read, int cmd_return)
 {
-/*	int	pid;
-
-	pid = fork();
-	if (pid == -1)*/
-		
+	fprintf(stderr, "ret = %d | line = %s\n", cmd_return, line_read);
 	if (line_read)
 		free(line_read);
 	line_read = readline("\e[34mcoquillette0.1>\e[0m");
 	if (!line_read)
 	{
-		ft_putendl_fd("j'ai recu un \\0 donc je dois exit", 1);
-		exit(EXIT_SUCCESS);
+		ft_putendl_fd("\nexit", 1);
+		exit(cmd_return);
 	}
 	line_read = check_quote_end(line_read);
 	if (line_read && *line_read)
