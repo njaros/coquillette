@@ -47,7 +47,6 @@ void init_data(t_data *data, int i, char *str)
 		if (i == 0)
 		{
 			data->nb_cmd = 1 + count_pipe(str);
-			fprintf(stderr, "nb_cmd = %d\n", data->nb_cmd);
 			data->last_return = 0;
 		}
 		data->in = 0;
@@ -99,11 +98,9 @@ t_list	*init_envp(char **envp)
 
 char	*rl_get(char *line_read, int cmd_return)
 {
-	fprintf(stderr, "ret = %d | line = %s\n", cmd_return, line_read);
 	if (line_read)
 		free(line_read);
 	line_read = readline("\e[34mcoquillette0.1>\e[0m");
-	fprintf(stderr,"juste avant if (!line_read) : line_read = %s\n", line_read);
 	if (!line_read)
 	{
 		ft_putendl_fd("\nexit", 1);

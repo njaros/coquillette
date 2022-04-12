@@ -97,7 +97,10 @@ int	chevron_manager(t_list **pouet, t_list *prev, t_data *data)
 	else
 		content = only_quote_handler(content);
 	if (!content)
-		return (analyse_error_message("chevron_manager", ENOMEM));
+	{
+		perror("coquillette : chevron_manager :");
+		return (0);
+	}
 	file_to_open(content, chevron_type, data);
 	free(content);
 	reorder_lst(pouet, prev);
