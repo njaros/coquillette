@@ -16,9 +16,10 @@ void	handler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	static int	prompt = 1;
 
-	if (sig == SIGUSR1 && siginfo->si_pid == getpid())
+	if (sig == SIGUSR1)
 	{
 		prompt = ft_switch(prompt);
+		fprintf(stderr, "\nSIGUSR1 recu, affichage prompt : %d\n", prompt);
 		return ;
 	}
 	if (sig == SIGQUIT)

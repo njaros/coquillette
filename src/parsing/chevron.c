@@ -47,8 +47,12 @@ void	file_to_open(char *file, int chev, t_data *data)
 		data->out = fd;
 	if (chev == 3 || chev == 4)
 		data->in = fd;
+	fprintf(stderr, "fd = %d\n", fd);
 	if (fd == -1)
-		analyse_error_message(file, errno);
+	{
+		ft_putstr_fd("coquillette: ", 2);
+		perror(file);
+	}
 }
 
 int	manip_chevron_str(char **str)
