@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/11 12:58:08 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/11 17:53:57 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	file_to_open(char *file, int chev, t_data *data)
 	if (chev == 3 || chev == 4)
 		data->in = fd;
 	if (fd == -1)
-		analyse_error_message(file, errno);
+	{
+		ft_putstr_fd("coquillette: ", 2);
+		perror(file);
+	}
 }
 
 int	manip_chevron_str(char **str)
@@ -93,7 +96,10 @@ int	chevron_manager(t_list **pouet, t_list *prev, t_data *data)
 	else
 		content = only_quote_handler(content);
 	if (!content)
-		return (analyse_error_message("chevron_manager", ENOMEM));
+	{
+		perror("coquillette : chevron_manager :");
+		return (0);
+	}
 	file_to_open(content, chevron_type, data);
 	free(content);
 	reorder_lst(pouet, prev);

@@ -2,14 +2,12 @@
 
 ## tri du plus important au moins important ##
 
-- rl-get a besoin de connaitre la derniere valeur de retour (data->last_ret) pour le exit
+- si j envoie un -1 en fd-in, il ne faut pas executer (exemple avec "ls < no_existing_file")
 
-- des segfault lorsque 
+- minishell doit s'envoyer un kill SIGUSR1 avant et apres chaque fork de fork_loop
 
-- inserer un EOF (CTRL + D) dans les line_read des fermetures de quote et fermetures de pipe.
-	--> doit afficher une erreur de type "il y a eu un EOF innatendu".
-
-- variable globale pour le ctrl + c ? Simplifie le reset de line_read
+- si l'objectif du dessus ne marche pas : 
+ variable globale pour le ctrl + c ? Simplifie le reset de line_read
  Ou alors mettre line_read en variable globale ?
 
 ### MODIFS LIBFT ###

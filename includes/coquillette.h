@@ -59,7 +59,7 @@ long	g_cmd_ret;
 // Gestion initiales de l'entrée utilisateur
 
 void	handler(int sig, siginfo_t *siginfo, void *ucontext);
-char	*rl_get(char *line_read);
+char	*rl_get(char *line_read, int *cmd_return);
 
 // Fonctions d'initialisation
 
@@ -83,7 +83,6 @@ int		chevronnage(t_list **pouet, t_data *data);
 int		chevron_manager(t_list **pouet, t_list *prev, t_data *data);
 int		manip_chevron_str(char **str);
 void	file_to_open(char *file, int chev, t_data *data);
-int		analyse_error_message(char *str, int context);
 int		analyse_sep(char *str, int *i, int context);
 void	init_analyse(char *str, int *i, int *ptr);
 void	quote_switcher(int *quote, int *dquote, char c);
