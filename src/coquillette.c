@@ -28,7 +28,7 @@ int	main(int argc, char ** argv, char **envp)
 	line_read = NULL;
 	while (1)
 	{
-		line_read = rl_get(line_read, cmd_return);
+		line_read = rl_get(line_read, &cmd_return);
 		if (line_read)
 			cmd_return = execution(line_read, env_list);
 	}
