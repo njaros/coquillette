@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/11 17:53:57 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/12 14:06:40 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	file_to_open(char *file, int chev, t_data *data)
 		data->out = fd;
 	if (chev == 3 || chev == 4)
 		data->in = fd;
-	fprintf(stderr, "fd = %d\n", fd);
 	if (fd == -1)
 	{
 		ft_putstr_fd("coquillette: ", 2);
