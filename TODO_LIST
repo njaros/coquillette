@@ -1,0 +1,17 @@
+### Je liste ici des erreurs et cas particuliers trouves que j aimerai m'occuper plus tard ###
+
+## tri du plus important au moins important ##
+
+- declarer t_data data dans le main (modifier les parametre des execution en consequence)
+
+- Trouver la gruge pour le ctrl + \ qui ne montre pas de ^\
+
+- Faire des tests avec des " et des '
+
+- ctrl + C aussi pourrait stopper les heredoc
+
+- bonus ? ou la flemme ?
+
+### MODIFS LIBFT ###
+
+- securiser le ft_lstdelone
