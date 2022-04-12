@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/12 12:54:01 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/12 14:02:08 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	envp = list_to_tab(env);
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
-<<<<<<< HEAD
-	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
-=======
+	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	kill(0, SIGUSR1);
->>>>>>> 8553f041859a2f4f83681c1d403d7bf740cf6296
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");

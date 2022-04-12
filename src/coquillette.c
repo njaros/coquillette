@@ -18,9 +18,9 @@ int	main(int argc, char ** argv, char **envp)
 	char				*line_read;
 	(void)argc;
 	t_list				*env_list;
-	int					cmd_return;
+	int					cmd_rn;
 
-	cmd_return = 0;
+	cmd_rn = 0;
 	init_sigact(&act);
 	env_list = init_envp(envp);
 	if (!env_list)
@@ -28,9 +28,9 @@ int	main(int argc, char ** argv, char **envp)
 	line_read = NULL;
 	while (1)
 	{
-		line_read = rl_get(line_read, cmd_return);
+		line_read = rl_get(line_read, cmd_rn);
 		if (line_read)
-			cmd_return = execution(line_read, env_list);
+			cmd_rn = execution(line_read, env_list);
 	}
 	feel_free(env_list);
 	ft_lstclear(&env_list, del);

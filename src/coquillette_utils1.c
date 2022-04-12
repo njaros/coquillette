@@ -96,7 +96,7 @@ t_list	*init_envp(char **envp)
 	return (env);
 }
 
-char	*rl_get(char *line_read, int cmd_return)
+char	*rl_get(char *line_read, int cmd_rn)
 {
 	if (line_read)
 		free(line_read);
@@ -104,7 +104,7 @@ char	*rl_get(char *line_read, int cmd_return)
 	if (!line_read)
 	{
 		ft_putendl_fd("\nexit", 1);
-		exit(cmd_return);
+		exit(0);
 	}
 	line_read = check_quote_end(line_read);
 	if (line_read && *line_read)

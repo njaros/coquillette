@@ -59,7 +59,7 @@ long	g_cmd_ret;
 // Gestion initiales de l'entrée utilisateur
 
 void	handler(int sig, siginfo_t *siginfo, void *ucontext);
-char	*rl_get(char *line_read, int cmd_return);
+char	*rl_get(char *line_read, int cmd_rn);
 
 // Fonctions d'initialisation
 
