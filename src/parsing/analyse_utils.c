@@ -47,16 +47,3 @@ void	init_analyse(char *str, int *i, int *ptr)
 	while (str[*i] && analyse_sep(str, i, 0))
 		*i += 1;
 }
-
-int	analyse_error_message(char *str, int context)
-{
-	write(2, "coquillette: ", 14);
-	write(2, str, ft_strlen(str));
-	if (context == ENOENT)
-		write(2, ": No such file or directory\n", 29);
-	if (context == EISDIR)
-		write(2, ": Is a directory\n", 18);
-	if (context == ENOMEM)
-		write(2, ": Not enought memory during command analysing\n", 47);
-	return (0);
-}

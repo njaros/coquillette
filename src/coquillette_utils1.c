@@ -98,7 +98,6 @@ t_list	*init_envp(char **envp)
 
 char	*rl_get(char *line_read, int cmd_return)
 {
-	fprintf(stderr, "ret = %d | line = %s\n", cmd_return, line_read);
 	if (line_read)
 		free(line_read);
 	line_read = readline("\e[34mcoquillette0.1>\e[0m");

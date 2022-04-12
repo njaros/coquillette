@@ -30,7 +30,11 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	envp = list_to_tab(env);
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
+<<<<<<< HEAD
 	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
+=======
+	kill(0, SIGUSR1);
+>>>>>>> 8553f041859a2f4f83681c1d403d7bf740cf6296
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -60,6 +64,7 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	}
 	close(pipefd[1]);
 	waitpid(f_pid, &data->last_return, 0);
+	kill(0, SIGUSR1);
 	if (data->in != 0)
 		close(data->in);
 	if (data->out != 1)
