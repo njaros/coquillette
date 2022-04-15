@@ -4,11 +4,13 @@
 
 - declarer t_data data dans le main (modifier les parametre des execution en consequence)
 
-- Trouver la gruge pour le ctrl + \ qui ne montre pas de ^\
+- un caractere juste derriere | doit etre lu !!
 
 - Faire des tests avec des " et des '
 
 - ctrl + C aussi pourrait stopper les heredoc
+
+- le builtin exit doit contenir la ligne "terminal_handler(1);"
 
 - bonus ? ou la flemme ?
 

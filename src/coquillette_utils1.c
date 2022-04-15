@@ -114,6 +114,7 @@ char	*rl_get(char *line_read, int *cmd_return)
 	line_read = ft_readline("\e[34mcoquillette0.1>\e[0m"); 
 	if (!line_read)
 	{
+		terminal_handler(1);
 		ft_putendl_fd("\nexit", 1);
 		exit(*cmd_return);
 	}
