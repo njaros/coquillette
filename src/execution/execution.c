@@ -6,11 +6,12 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/12 14:33:45 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/12 16:28:04 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
+
 
 void	transform_fds(t_data *data, int fd_in, int fd_out)
 {
@@ -21,7 +22,7 @@ void	transform_fds(t_data *data, int fd_in, int fd_out)
 		data->out = fd_out;
 }
 
-void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
+int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 {
 	pid_t	f_pid;
 	char	**envp;
@@ -30,7 +31,6 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	envp = list_to_tab(env);
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
-	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	kill(0, SIGUSR1);
 	f_pid = fork();
@@ -40,7 +40,7 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	{
 		if (data->in != 0)
 			dup2(data->in, STDIN_FILENO);
-		close(pipefd[0]); // si c'est la derniere cmd, fermer pipefd[1] ?
+		close(pipefd[0]);
 		if (data->out != 1)
 			dup2(data->out, STDOUT_FILENO);
 		if (data->in != -1 && data->out != -1)
@@ -52,16 +52,15 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 				{
 					dprintf(2, "coquillette: %s: command not found\n", data->argv[0]);
 					exit(1);
-				} // vérifier que la commande existe
+				}
 				else if (execve(cmd_path, data->argv, envp) != 0)
 					error("execve");
 			}
-			// exit(0);
 		}
 		exit(0);
 	}
 	close(pipefd[1]);
-	waitpid(f_pid, &data->last_return, 0);
+	// waitpid(f_pid, &data->last_return, 0);
 	kill(0, SIGUSR1);
 	if (data->in != 0)
 		close(data->in);
@@ -70,6 +69,7 @@ void 	fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	ft_free(envp);
 	free(cmd_path);
 	*fd_in = pipefd[0];
+	return (f_pid);
 }
 
 int	builtins(t_data data, t_list *env)
@@ -97,29 +97,42 @@ int	execution(char *line_read, t_list *env)
 	int		i;
 	int		pipefd[2];
 	int 	tmp_fd;
-	int		blop;
+	int		nb_cmd;
+	pid_t	*f_pid;
+	int		j;
 	
 	data.env = env;
 	i = 0;
 	tmp_fd = 3;
-	blop = analyse(line_read, &i, &data);
-	while (blop)
+	analyse(line_read, &i, &data);
+	nb_cmd = data.nb_cmd;
+	f_pid = malloc(sizeof(int) * nb_cmd); // sécuriser malloc !
+	j = 0;
+	while (j < nb_cmd - 1)
 	{
 		if (pipe(pipefd) == -1)
 			error("pipe"); // return si le pipe ne fonctionne pas ?
 		if (data.argv)
 		{
-			fork_loop(&data, pipefd, env, &tmp_fd);
+			f_pid[j] = fork_loop(&data, pipefd, env, &tmp_fd);
 			ft_free(data.argv);
 		}
-		blop = analyse(line_read, &i, &data);
+		analyse(line_read, &i, &data);
+		j++;
 	}
 	if (data.argv)
 	{
 		if (builtins(data, env) == -1)
-			fork_loop(&data, pipefd, env, &tmp_fd);
+			f_pid[j] = fork_loop(&data, pipefd, env, &tmp_fd);
 		close(tmp_fd);
 		ft_free(data.argv);
 	}
+	j = 0;
+	while (j < nb_cmd)
+	{
+		waitpid(f_pid[j], &data.last_return, 0);
+		j++;
+	}
+	free(f_pid);
 	return (data.last_return);
 }
