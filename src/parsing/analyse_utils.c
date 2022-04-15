@@ -31,6 +31,11 @@ int	analyse_sep(char *str, int *i, int context)
 {
 	if (str[*i] == ' ' || str[*i] == '<' || str[*i] == '>')
 		return (1);
+	if (str[*i + 1] == '|' && context)
+	{
+		*i += 1;
+		return (1);
+	}
 	if (!str[*i + 1] && context)
 	{
 		*i += 1;
