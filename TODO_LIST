@@ -1,6 +1,4 @@
-### Je liste ici des erreurs et cas particuliers trouves que j aimerai m'occuper plus tard ###
-
-## tri du plus important au moins important ##
+## tri des suggestions de la plus importante a la moins important ##
 
 - declarer t_data data dans le main (modifier les parametre des execution en consequence) 
 
@@ -19,3 +17,5 @@
 ### MODIFS LIBFT ###
 
 - securiser le ft_lstdelone
+
+- discuter des fonctions qui seront les plus usuelles pour les integrer
