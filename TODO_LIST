@@ -2,9 +2,11 @@
 
 ## tri du plus important au moins important ##
 
-- declarer t_data data dans le main (modifier les parametre des execution en consequence)
+- declarer t_data data dans le main (modifier les parametre des execution en consequence) 
 
-- un caractere juste derriere | doit etre lu !!
+- refaire le signal suivant le modele de test_signal.c
+
+- recuperer le "WEXITSTATUS" du wstatus du wait
 
 - Faire des tests avec des " et des '
 

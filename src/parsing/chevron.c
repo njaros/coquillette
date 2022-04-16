@@ -19,7 +19,7 @@ int	ft_heredoc(char *end)
 
 	if (pipe(fd) == -1)
 		return (-1);
-	line_read = readline(">");
+	line_read = readline("> ");
 	while (line_read && strcmp(line_read, end))
 	{
 		ft_putendl_fd(line_read, fd[1]);
