@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chevron.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/12 14:06:40 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 13:56:43 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,19 @@
 
 int	ft_heredoc(char *end)
 {
-	char	*line_read;
 	int 	fd[2];
+	int		ret;
+	int		pid_fork;
 
 	if (pipe(fd) == -1)
-		return (-1);
-	line_read = readline("> ");
-	while (line_read && strcmp(line_read, end))
-	{
-		ft_putendl_fd(line_read, fd[1]);
-		free(line_read);
-		line_read = readline(">");
-	}
-	free(line_read);
-	close(fd[1]);
+		error("coquillette: analyse: ft_heredoc: pipe");
+	pid_fork = fork();
+	if (pid_fork == -1)
+		error("coquillette: analyse: ft_heredoc: fork");
+	if (pid_fork == 0)
+		heredoc_fork(fd[1], end);
+	waitpid(pid_fork, &ret, 0);
+	//if ()
 	return (fd[0]);
 }
 
@@ -96,10 +95,7 @@ int	chevron_manager(t_list **pouet, t_list *prev, t_data *data)
 	else
 		content = only_quote_handler(content);
 	if (!content)
-	{
-		perror("coquillette : chevron_manager :");
-		return (0);
-	}
+		error("coquillette : chevron_manager :");
 	file_to_open(content, chevron_type, data);
 	free(content);
 	reorder_lst(pouet, prev);

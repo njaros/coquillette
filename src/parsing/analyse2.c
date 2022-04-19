@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/08 11:24:38 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 11:50:14 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int	organiser(t_list **pouet, int *i, char *str, t_data *data)
 	j = -1;
 	lg = chevronnage(pouet, data);
 	if (!lst_dequotage(*pouet, data))
-		return (free_lst_analyse(pouet));
+		error("analyse: organiser: lst_dequotage");
 	first = *pouet;
 	if (!lg)
 		return (end_parsing(str, i, data));
 	data->argv = malloc(sizeof(char *) * lg + 1);
 	if (!data->argv)
-		return (free_lst_analyse(pouet));
+		error("analyse: organiser: data_argv_malloc");
 	data->argv[lg] = NULL;
 	while (*pouet)
 	{

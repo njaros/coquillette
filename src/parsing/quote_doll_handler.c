@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:30:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/11 10:01:17 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 11:58:16 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,13 @@ char	*is_num_dollz(char *ret, char *str, int *ind, t_data *data)
 		number = ft_itoa(getpid());
 	else
 		number = ft_itoa(data->last_return);
+	if (!number)
+		error("coquillette: analyse: is_num_dollz");
 	lg_nbr = ft_strlen(number);
 	ind[3] += lg_nbr;
 	new = ft_calloc(1, ind[3]);
 	if (!new)
-	{
-		free(number);
-		return (NULL);
-	}
+		error("coquillette: analyse: is_num_dollz");
 	ft_strcat(new, ret);
 	free(ret);
 	ft_strcat(new, number);
@@ -47,6 +46,8 @@ char	*is_str_dollz(char *ret, char *str, int *ind, t_data *data)
 	t_env	*env;
 
 	to_search = ft_substr(str, ind[0] + 1, ind[2] - (ind[0] + 1));
+	if (!to_search)
+		error("coquillette: analyse: is_str_dollz");
 	env = find_env_var(data->env, to_search);
 	free(to_search);
 	ind[0] = ind[2] - 1;
@@ -56,7 +57,7 @@ char	*is_str_dollz(char *ret, char *str, int *ind, t_data *data)
 	ind[3] += lg_str;
 	new = calloc(1, ind[3]);
 	if (!new)
-		return (NULL);
+		error("coquillette: analyse: is_str_dollz");
 	ft_strcat(new, ret);
 	free(ret);
 	ft_strcat(new, env->value);
@@ -95,10 +96,12 @@ char	*quote_doll_handler(char *str, t_data *data)
 	char	q_val;
 
 	ind = malloc(sizeof(int) * 4);
+	if (!ind)
+		error("coquillette: analyse: quote_doll_handler");
 	ind[3] = ft_strlen(str) + 1;
 	ret = ft_calloc(ind[3], 1);
 	if (!ret)
-		return (NULL);
+		error("coquillette: analyse: quote_doll_handler");
 	ind[0] = -1;
 	ind[1] = -1;
 	q_val = 0;

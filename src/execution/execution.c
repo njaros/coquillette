@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 14:20:51 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 14:35:42 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,3 @@ int execution(char *line_read, t_data *data)
     free(f_pid);
     return (data->last_return);
 }
-

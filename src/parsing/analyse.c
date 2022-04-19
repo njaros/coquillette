@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 13:00:42 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/07 15:09:24 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 11:47:27 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	analyse(char *str, int *i, t_data *data)
 		if ((analyse_sep(str, i, 1) && !quote && !dquote))
 		{
 			if (!ajout_block(&pouet, i, &ptr, str))
-				return (free_lst_analyse(&pouet));
+				error("analyse: ajout_block");
 		}
 		else
 			*i += 1;

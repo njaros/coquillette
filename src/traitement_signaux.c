@@ -19,7 +19,6 @@ void	terminal_handler(int end)
 	static struct termios	term_before;
 
 	fd_term = ttyslot();
-	fprintf(stderr, "pid terminal : %d\n", fd_term);
 	if (end)
 	{
 		tcsetattr(fd_term, TCSANOW, &term_before);
@@ -28,6 +27,7 @@ void	terminal_handler(int end)
 	tcgetattr(fd_term, &term_before);
 	term_minishell = term_before;
 	term_minishell.c_cc[VQUIT] = 0;
+	term_minishell.c_lflag &= ~(ICANON | ECHOCTL);
 	tcsetattr(fd_term, TCSANOW, &term_minishell);
 }
 
@@ -39,8 +39,10 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 		pid_father = siginfo->si_pid;
 	if (sig == SIGINT && siginfo->si_pid == pid_father)
 	{
+		rl_on_new_line();
 		ft_putstr_fd("\n\e[34mcoquillette0.1>\e[0m", 1);
 		rl_replace_line("", 0);
+		return ;
 	}
 }
 

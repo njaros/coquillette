@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 11:26:54 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/08 16:00:58 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 12:10:33 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,16 @@ char	*quotage(char *str, int *dquote, int *quote)
 		if (*dquote)
 			return (eof_detector(str, 1));
 		return (eof_detector(str, 2));
-	}	
+	}
 	while (add[++i])
 		quote_switcher(quote, dquote, add[i]);
 	join = ft_strjoin("\n", add);
+	if (!join)
+		error("coquillette: rl_get: check_quote_end: quotage");
 	free(add);
 	add = ft_strjoin(str, join);
+	if (!add)
+		error("coquillette: rl_get: check_quote_end: quotage");
 	free(str);
 	free(join);
 	return (add);
@@ -56,14 +60,8 @@ char	*check_quote_end(char *str)
 
 char	*eof_detector(char *to_free, int context)
 {
-	char	del;
-
-	del = 127;
 	if (context)
-	{
-		write(2, &del, 1);
 		ft_putstr_fd("coquillette: unexpected EOF while looking for matching `", 2);
-	}
 	if (context == 1)
 		ft_putendl_fd("\"'", 2);
 	if (context == 2)

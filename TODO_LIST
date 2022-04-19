@@ -8,7 +8,7 @@
 
 - Faire des tests avec des " et des '
 
-- ctrl + C aussi pourrait stopper les heredoc
+- ctrl + C aussi pourrait stopper les heredoc --> fork a finir
 
 - faire un prompt dynamique.
 

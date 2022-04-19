@@ -49,6 +49,8 @@ char	*pipage(char *str)
 	{
 		add = readline("> ");
 		piped = ft_strjoin(str, add);
+		if (!piped)
+			error("coquillette: rl_get: pipage");
 		free(str);
 		if (!add)
 			return (eof_detector(piped, 0));

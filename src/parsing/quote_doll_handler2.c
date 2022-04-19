@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 10:17:55 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/08 11:17:18 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 11:58:37 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*only_quote_handler(char *str)
 	q_val = 0;
 	ret = calloc(1, ft_strlen(str) + 1);
 	if (!ret)
-		return (NULL);
+		error("coquillette: analyse: only_quote_handler");
 	while (str[++i])
 	{
 		q_val = handler_switcher(str[i], q_val);
