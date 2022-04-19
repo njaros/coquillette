@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 10:34:53 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 10:45:00 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
 	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
-	kill(0, SIGUSR1);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -60,8 +59,6 @@ int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 		exit(0);
 	}
 	close(pipefd[1]);
-	// waitpid(f_pid, &data->last_return, 0);
-	kill(0, SIGUSR1);
 	if (data->in != 0)
 		close(data->in);
 	if (data->out != 1)

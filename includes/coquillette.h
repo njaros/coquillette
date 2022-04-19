@@ -50,7 +50,6 @@ typedef struct s_data
 	int		in;
 	int		out;
 	char	**argv;
-	char	*cmd_path;
 	t_list	*env;
 }	            t_data;
 
