@@ -65,7 +65,7 @@ char	*rl_get(char *line_read, int *cmd_return);
 // Fonctions d'initialisation
 
 void 	init_data(t_data *data, int i, char *str);
-void	init_sigact(struct sigaction *act);
+void	init(struct sigaction *act, t_data *data, t_list *env);
 
 // ICI ON PARSE
 void	do_nothing(void *let_him_alive);

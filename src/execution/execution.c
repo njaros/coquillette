@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/12 16:28:04 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 10:34:53 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,8 @@ int	builtins(t_data data, t_list *env)
 	return (-1);
 }
 
-int	execution(char *line_read, t_list *env)
+int	execution(char *line_read, t_data *data, t_list *env)
 {
-	t_data	data;
 	int		i;
 	int		pipefd[2];
 	int 	tmp_fd;
@@ -101,21 +100,20 @@ int	execution(char *line_read, t_list *env)
 	pid_t	*f_pid;
 	int		j;
 	
-	data.env = env;
 	i = 0;
 	tmp_fd = 3;
-	analyse(line_read, &i, &data);
-	nb_cmd = data.nb_cmd;
+	analyse(line_read, &i, data);
+	nb_cmd = data->nb_cmd;
 	f_pid = malloc(sizeof(int) * nb_cmd); // sécuriser malloc !
 	j = 0;
 	while (j < nb_cmd - 1)
 	{
 		if (pipe(pipefd) == -1)
 			error("pipe"); // return si le pipe ne fonctionne pas ?
-		if (data.argv)
+		if (data->argv)
 		{
-			f_pid[j] = fork_loop(&data, pipefd, env, &tmp_fd);
-			ft_free(data.argv);
+			f_pid[j] = fork_loop(data, pipefd, env, &tmp_fd);
+			ft_free(data->argv);
 		}
 		analyse(line_read, &i, &data);
 		j++;
