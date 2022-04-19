@@ -22,6 +22,7 @@ int	main(int argc, char ** argv, char **envp)
 
 	cmd_return = 0;
 	init_sigact(&act);
+	kill(0, SIGUSR2);
 	env_list = init_envp(envp);
 	if (!env_list)
 		return (1);

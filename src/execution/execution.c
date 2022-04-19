@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/12 16:28:04 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 09:35:53 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
 	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
-	kill(0, SIGUSR1);
+//	kill(0, SIGUSR1);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -61,7 +61,7 @@ int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	}
 	close(pipefd[1]);
 	// waitpid(f_pid, &data->last_return, 0);
-	kill(0, SIGUSR1);
+//	kill(0, SIGUSR1);
 	if (data->in != 0)
 		close(data->in);
 	if (data->out != 1)
