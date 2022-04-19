@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 16:21:39 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 09:48:04 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	built_exit(char **cmd_arg, t_list *env)
 	feel_free(env);
 	ft_lstclear(&env, del);
 	ft_putendl_fd("exit", 2);
+	terminal_handler(1);
 	exit(g_cmd_ret);
 }

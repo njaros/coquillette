@@ -44,8 +44,9 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 	}
 }
 
-void	init_sigact(struct sigaction *act)
+void	init(struct sigaction *act, t_data *data, t_list *env_list)
 {
+	data->env = env_list;
 	terminal_handler(0);
 	act->sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;
 	act->sa_sigaction = signal_handler;
