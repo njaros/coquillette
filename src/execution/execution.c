@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 10:54:56 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 11:27:55 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	transform_fds(t_data *data, int fd_in, int fd_out)
 		data->out = fd_out;
 }
 
-int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
+int fork_loop(t_data *data, int pipefd[2], int *fd_in)
 {
 	pid_t	f_pid;
 	char	**envp;
 	char	*cmd_path;
 
-	envp = list_to_tab(env);
+	envp = list_to_tab(data->env);
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
 	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
@@ -44,9 +44,9 @@ int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 			dup2(data->out, STDOUT_FILENO);
 		if (data->in != -1 && data->out != -1)
 		{
-			if (builtins(*data, env) == -1)
+			if (builtins(data) == -1)
 			{
-				cmd_path = found_cmd(data->argv[0], env);
+				cmd_path = found_cmd(data->argv[0], data->env);
 				if (!cmd_path || data->argv[0][0] == '\0')
 				{
 					dprintf(2, "coquillette: %s: command not found\n", data->argv[0]);
@@ -69,22 +69,22 @@ int fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in)
 	return (f_pid);
 }
 
-int	builtins(t_data data, t_list *env)
+int	builtins(t_data *data)
 {
-	if (!ft_strcmp(data.argv[0], "echo"))
-		return (built_echo(data.argv, data.out));
-	else if (!ft_strcmp(data.argv[0], "cd"))
-		return (built_cd(data.argv, env, data.out));
-	else if (!ft_strcmp(data.argv[0], "pwd"))
-		return (built_pwd(data.argv, data.out));
-	else if (!ft_strcmp(data.argv[0], "export"))
-		return (built_export(data.argv, env, data.out));
-	else if (!ft_strcmp(data.argv[0], "unset"))
-		return (built_unset(data.argv, env));
-	else if (!ft_strcmp(data.argv[0], "env"))
-		return (built_env(env, data.argv, data.out));
-	else if (!ft_strcmp(data.argv[0], "exit"))
-		built_exit(data.argv, env); // attention exit ne ferme pas forcement minishell
+	if (!ft_strcmp(data->argv[0], "echo"))
+		return (built_echo(data->argv, data->out));
+	else if (!ft_strcmp(data->argv[0], "cd"))
+		return (built_cd(data->argv, data->env, data->out));
+	else if (!ft_strcmp(data->argv[0], "pwd"))
+		return (built_pwd(data->argv, data->out));
+	else if (!ft_strcmp(data->argv[0], "export"))
+		return (built_export(data->argv, data->env, data->out));
+	else if (!ft_strcmp(data->argv[0], "unset"))
+		return (built_unset(data->argv, data->env));
+	else if (!ft_strcmp(data->argv[0], "env"))
+		return (built_env(data->env, data->argv, data->out));
+	else if (!ft_strcmp(data->argv[0], "exit"))
+		built_exit(data); // attention exit ne ferme pas forcement minishell
 	return (-1);
 }
 
@@ -93,41 +93,39 @@ int	execution(char *line_read, t_data *data)
 	int		i;
 	int		pipefd[2];
 	int 	tmp_fd;
-	int		nb_cmd;
 	pid_t	*f_pid;
 	int		j;
 	
 	i = 0;
 	tmp_fd = 3;
 	analyse(line_read, &i, data);
-	nb_cmd = data->nb_cmd;
-	f_pid = malloc(sizeof(int) * nb_cmd); // sécuriser malloc !
+	f_pid = malloc(sizeof(int) * data->nb_cmd); // sécuriser malloc !
 	j = 0;
-	while (j < nb_cmd - 1)
+	while (j < data->nb_cmd - 1)
 	{
 		if (pipe(pipefd) == -1)
 			error("pipe"); // return si le pipe ne fonctionne pas ?
 		if (data->argv)
 		{
-			f_pid[j] = fork_loop(data, pipefd, env, &tmp_fd);
+			f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
 			ft_free(data->argv);
 		}
-		analyse(line_read, &i, &data);
+		analyse(line_read, &i, data);
 		j++;
 	}
-	if (data.argv)
+	if (data->argv)
 	{
-		if (builtins(data, env) == -1)
-			f_pid[j] = fork_loop(&data, pipefd, env, &tmp_fd);
+		if (builtins(data) == -1)
+			f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
 		close(tmp_fd);
-		ft_free(data.argv);
+		ft_free(data->argv);
 	}
 	j = 0;
-	while (j < nb_cmd)
+	while (j < data->nb_cmd)
 	{
-		waitpid(f_pid[j], &data.last_return, 0);
+		waitpid(f_pid[j], &data->last_return, 0);
 		j++;
 	}
 	free(f_pid);
-	return (data.last_return);
+	return (data->last_return);
 }

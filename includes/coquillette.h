@@ -106,8 +106,8 @@ int	    print_err(char *str, int err);
 void	feel_free(t_list *env);
 
 // execution
-int		execution(char *line_read, t_list *env);
-int		fork_loop(t_data *data, int pipefd[2], t_list *env, int *fd_in);
+int		execution(char *line_read, t_data *data);
+int		fork_loop(t_data *data, int pipefd[2], int *fd_in);
 void	transform_fds(t_data *data, int fd_in, int fd_out);
 char	*found_cmd(char *entry, t_list *env);
 char    *get_path(char *cmd, char **path);
@@ -119,7 +119,7 @@ void	test_exec(char *line_read, t_list *env);
 void    loop_pipe(t_data *data, int *fd_in, int pipefd[2], t_list *env);
 
 // builtins
-int	    builtins(t_data data, t_list *env);
+int	    builtins(t_data *data);
 //
 int	    built_cd(char **cmd_arg, t_list *env, int fd);
 int	    to_home(char c, t_list *env);
@@ -131,7 +131,7 @@ int 	built_echo(char **cmd_arg, int fd);
 //
 int	    built_env(t_list *env, char **cmd_arg, int fd);
 //
-void	built_exit(char **cmd_arg, t_list *env);
+void	built_exit(t_data *data);
 int	    check_arg(char *arg);
 //
 int	    built_export(char **cmd_arg, t_list *env, int fd);
