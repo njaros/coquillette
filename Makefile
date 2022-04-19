@@ -44,7 +44,7 @@ LST_SRCS =	coquillette.c	\
 			parsing/quote_doll_handler2.c \
 			parsing/analyse_utils.c	\
 			parsing/chevron.c	\
-			parsing/chevron2.c \
+			parsing/heredoc.c \
 			parsing/freeteuse.c	\
 			execution/execution.c	\
 			execution/exec_utils.c	\

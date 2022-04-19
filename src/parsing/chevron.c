@@ -6,29 +6,11 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/19 13:56:43 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 17:19:13 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
-
-int	ft_heredoc(char *end)
-{
-	int 	fd[2];
-	int		ret;
-	int		pid_fork;
-
-	if (pipe(fd) == -1)
-		error("coquillette: analyse: ft_heredoc: pipe");
-	pid_fork = fork();
-	if (pid_fork == -1)
-		error("coquillette: analyse: ft_heredoc: fork");
-	if (pid_fork == 0)
-		heredoc_fork(fd[1], end);
-	waitpid(pid_fork, &ret, 0);
-	//if ()
-	return (fd[0]);
-}
 
 void	file_to_open(char *file, int chev, t_data *data)
 {
@@ -41,7 +23,7 @@ void	file_to_open(char *file, int chev, t_data *data)
 	else if (chev == 3)
 		fd = open(file, O_RDONLY);
 	else if (chev == 4)
-		fd = ft_heredoc(file);
+		fd = ft_atoi(file);
 	if (chev == 1 || chev == 2)
 		data->out = fd;
 	if (chev == 3 || chev == 4)

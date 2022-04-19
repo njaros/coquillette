@@ -34,16 +34,29 @@ void	terminal_handler(int end)
 void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	static int	pid_father = 0;
+	static int	pid_heredoc = 0;
 
 	if (sig == SIGUSR2 && !pid_father)
+	{
 		pid_father = siginfo->si_pid;
+		return ;
+	}
+	if (sig == SIGUSR1)
+	{
+		pid_heredoc = siginfo->si_pid;
+		return ;
+	}
 	if (sig == SIGINT && siginfo->si_pid == pid_father)
 	{
 		rl_on_new_line();
-		ft_putstr_fd("\n\e[34mcoquillette0.1>\e[0m", 1);
 		rl_replace_line("", 0);
+		write(0, "\n", 1);
+		rl_redisplay();
 		return ;
 	}
+	if (sig == SIGINT && siginfo->si_pid == pid_heredoc)
+		exit(siginfo->si_signo);
+	write(1, "\n", 1);
 }
 
 void	init(struct sigaction *act, t_data *data, t_list *env_list)
