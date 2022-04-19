@@ -22,11 +22,11 @@ int	main(int argc, char ** argv, char **envp)
 
 	(void)argc;
 	cmd_return = 0;
-	kill(0, SIGUSR2);
 	env_list = init_envp(envp);
 	if (!env_list)
 		return (1);
 	init(&act, &data, env_list);
+	kill(0, SIGUSR2);
 	line_read = NULL;
 	while (1)
 	{
