@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
+/*   execution copy.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 15:29:46 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 15:01:37 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	transform_fds(t_data *data, int fd_in, int fd_out)
 {
-	if (data->in == -2)
+	if (data->in == -2) // sauf premiere cmd
+	// je lui passe le fd_in récupéré du précédemment passage : pipefd[0]
 		data->in = fd_in;
-	if (data->out == -2)
+	if (data->out == -2) // sauf derniere cmd
 		data->out = fd_out;
 }
 
@@ -29,7 +30,7 @@ int	fork_loop(t_data *data, int pipefd[2], int *fd_in)
 	envp = list_to_tab(data->env);
 	cmd_path = NULL;
 	transform_fds(data, *fd_in, pipefd[1]);
-	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
+	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
 	f_pid = fork();
 	if (f_pid == -1)
 		perror("fork");
@@ -65,7 +66,6 @@ int	fork_loop(t_data *data, int pipefd[2], int *fd_in)
 		close(data->out);
 	ft_free(envp);
 	free(cmd_path);
-	ft_free(data->argv);
 	*fd_in = pipefd[0];
 	return (f_pid);
 }
@@ -108,6 +108,7 @@ pid_t	*exec_cmd(t_data *data, char *line_read, int *i)
 		if (pipe(pipefd) == -1)
 			error("pipe");
 		f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
+		ft_free(data->argv);
 		analyse(line_read, i, data);
 		j++;
 	}
@@ -116,6 +117,7 @@ pid_t	*exec_cmd(t_data *data, char *line_read, int *i)
 		if (builtins(data) == -1)
 			f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
 		close(tmp_fd);
+		ft_free(data->argv);
 	}
 	return (f_pid);
 }
