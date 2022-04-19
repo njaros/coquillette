@@ -108,7 +108,7 @@ void	feel_free(t_list *env);
 
 // execution
 int		execution(char *line_read, t_data *data);
-void	exec_cmd(t_data *data, char *line_read, int *i, pid_t *f_pid);
+pid_t	*exec_cmd(t_data *data, char *line_read, int *i);
 int		fork_loop(t_data *data, int pipefd[2], int *fd_in);
 void	transform_fds(t_data *data, int fd_in, int fd_out);
 char	*found_cmd(char *entry, t_list *env);
