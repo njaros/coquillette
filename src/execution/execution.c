@@ -6,12 +6,11 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 11:27:55 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 14:20:51 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
-
 
 void	transform_fds(t_data *data, int fd_in, int fd_out)
 {
@@ -22,7 +21,7 @@ void	transform_fds(t_data *data, int fd_in, int fd_out)
 		data->out = fd_out;
 }
 
-int fork_loop(t_data *data, int pipefd[2], int *fd_in)
+int	fork_loop(t_data *data, int pipefd[2], int *fd_in)
 {
 	pid_t	f_pid;
 	char	**envp;
@@ -49,7 +48,9 @@ int fork_loop(t_data *data, int pipefd[2], int *fd_in)
 				cmd_path = found_cmd(data->argv[0], data->env);
 				if (!cmd_path || data->argv[0][0] == '\0')
 				{
-					dprintf(2, "coquillette: %s: command not found\n", data->argv[0]);
+					ft_putstr_fd("coquillette: ", 2);
+					ft_putstr_fd(data->argv[0], 2);
+					ft_putendl_fd(": command not found", 2);
 					exit(1);
 				}
 				else if (execve(cmd_path, data->argv, envp) != 0)
@@ -83,49 +84,58 @@ int	builtins(t_data *data)
 		return (built_unset(data->argv, data->env));
 	else if (!ft_strcmp(data->argv[0], "env"))
 		return (built_env(data->env, data->argv, data->out));
-	else if (!ft_strcmp(data->argv[0], "exit"))
-		built_exit(data); // attention exit ne ferme pas forcement minishell
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
+		built_exit(data);
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
+		return (0);
 	return (-1);
 }
 
-int	execution(char *line_read, t_data *data)
+void    exec_cmd(t_data *data, char *line_read, int *i, pid_t *f_pid)
 {
-	int		i;
-	int		pipefd[2];
-	int 	tmp_fd;
-	pid_t	*f_pid;
-	int		j;
-	
-	i = 0;
-	tmp_fd = 3;
-	analyse(line_read, &i, data);
-	f_pid = malloc(sizeof(int) * data->nb_cmd); // sécuriser malloc !
-	j = 0;
-	while (j < data->nb_cmd - 1)
-	{
-		if (pipe(pipefd) == -1)
-			error("pipe"); // return si le pipe ne fonctionne pas ?
-		if (data->argv)
-		{
-			f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
-			ft_free(data->argv);
-		}
-		analyse(line_read, &i, data);
-		j++;
-	}
-	if (data->argv)
-	{
-		if (builtins(data) == -1)
-			f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
-		close(tmp_fd);
-		ft_free(data->argv);
-	}
-	j = 0;
-	while (j < data->nb_cmd)
-	{
-		waitpid(f_pid[j], &data->last_return, 0);
-		j++;
-	}
-	free(f_pid);
-	return (data->last_return);
+    int j;
+    int pipefd[2];
+    int tmp_fd;
+
+    j = 0;
+    tmp_fd = 3;
+    while (j < data->nb_cmd - 1 && data->argv)
+    {
+        if (pipe(pipefd) == -1)
+            error("pipe");
+        f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
+        ft_free(data->argv);
+        analyse(line_read, i, data);
+        j++;
+    }
+    if (data->argv)
+    {
+        if (builtins(data) == -1)
+            f_pid[j] = fork_loop(data, pipefd, &tmp_fd);
+        close(tmp_fd);
+        ft_free(data->argv);
+    }
 }
+
+int execution(char *line_read, t_data *data)
+{
+    int     i;
+    pid_t   *f_pid;
+    int     j;
+    
+    i = 0;
+    analyse(line_read, &i, data);
+    f_pid = malloc(sizeof(int) * data->nb_cmd);
+    if (!f_pid)
+        error("malloc");
+    exec_cmd(data, line_read, &i, f_pid);
+    j = 0;
+    while (j < data->nb_cmd)
+    {
+        waitpid(f_pid[j], &data->last_return, 0);
+        j++;
+    }
+    free(f_pid);
+    return (data->last_return);
+}
+

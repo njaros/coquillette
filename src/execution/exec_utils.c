@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:10:44 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/11 13:57:20 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 11:38:13 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_free(char **tab)
 	while (tab[++i])
 		free(tab[i]);
 	free(tab);
+	tab = NULL;
 }
 
 char	**list_to_tab(t_list *env)
@@ -35,7 +36,7 @@ char	**list_to_tab(t_list *env)
 	int		i;
 	t_env	*tmp;
 	char	*first;
-	
+
 	size = ft_lstsize(env);
 	envp = malloc(sizeof(char *) * (size + 1));
 	if (!envp)
@@ -54,26 +55,26 @@ char	**list_to_tab(t_list *env)
 	return (envp);
 }
 
-char    *get_path(char *cmd, char **path)
+char	*get_path(char *cmd, char **path)
 {
-    char    *cmd_path;
-    char    *tmp;
-    int     i;
+	char	*cmd_path;
+	char	*tmp;
+	int		i;
 
-    cmd_path = NULL;
-    i = 0;
-    while(path[i])
-    {
-        tmp = ft_strjoin(path[i], "/");
-        cmd_path = ft_strjoin(tmp, cmd);
-        free(tmp);
-        if (access(cmd_path, X_OK) == 0)
-            break ;
-        free(cmd_path);
-        cmd_path = NULL;
-        i++;
-    }
-    return (cmd_path);
+	cmd_path = NULL;
+	i = 0;
+	while (path[i])
+	{
+		tmp = ft_strjoin(path[i], "/");
+		cmd_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(cmd_path, X_OK) == 0)
+			break ;
+		free(cmd_path);
+		cmd_path = NULL;
+		i++;
+	}
+	return (cmd_path);
 }
 
 char	*found_cmd(char *entry, t_list *env)
@@ -82,7 +83,7 @@ char	*found_cmd(char *entry, t_list *env)
 	char	**path_tab;
 	int		i;
 	t_env	*tmp;
-	
+
 	i = -1;
 	while (entry[++i])
 	{

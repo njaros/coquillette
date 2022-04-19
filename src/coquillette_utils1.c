@@ -102,7 +102,7 @@ char	*rl_get(char *line_read, int *cmd_return)
 {
 	if (line_read)
 		free(line_read);
-	line_read = readline("\e[34mcoquillette0.1>\e[0m"); 
+	line_read = readline("\e[34mcoquillette0.1>\e[0m");
 	if (!line_read)
 	{
 		terminal_handler(1);
