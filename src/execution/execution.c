@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 10:45:00 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/19 10:54:56 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	builtins(t_data data, t_list *env)
 	return (-1);
 }
 
-int	execution(char *line_read, t_data *data, t_list *env)
+int	execution(char *line_read, t_data *data)
 {
 	int		i;
 	int		pipefd[2];

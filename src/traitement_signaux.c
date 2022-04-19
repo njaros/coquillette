@@ -19,8 +19,7 @@ void	terminal_handler(int end)
 	static struct termios	term_before;
 
 	fd_term = ttyslot();
-	if (isatty(fd_term))
-		fprintf(stderr, "tty : %s\n", ttyname(fd_term));
+	fprintf(stderr, "pid terminal : %d\n", fd_term);
 	if (end)
 	{
 		tcsetattr(fd_term, TCSANOW, &term_before);
@@ -34,26 +33,24 @@ void	terminal_handler(int end)
 
 void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 {
-	static int	prompt = 1;
+	static int	pid_father = 0;
 
-	if (sig == SIGUSR1)
+	if (sig == SIGUSR2 && !pid_father)
+		pid_father = siginfo->si_pid;
+	if (sig == SIGINT && siginfo->si_pid == pid_father)
 	{
-		prompt = ft_switch(prompt);
-		return ;
-	}
-	if (sig == SIGQUIT)
-		return ;
-	if (prompt)
 		ft_putstr_fd("\n\e[34mcoquillette0.1>\e[0m", 1);
-	rl_replace_line("", 0);
+		rl_replace_line("", 0);
+	}
 }
 
-void	init_sigact(struct sigaction *act)
+void	init(struct sigaction *act, t_data *data, t_list *env_list)
 {
+	data->env = env_list;
 	terminal_handler(0);
 	act->sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;
 	act->sa_sigaction = signal_handler;
 	sigaction(SIGINT, act, NULL);
-	sigaction(SIGQUIT, act, NULL);
+	sigaction(SIGUSR2, act, NULL);
 	sigaction(SIGUSR1, act, NULL);
 }

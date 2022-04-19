@@ -99,19 +99,11 @@ t_list	*init_envp(char **envp)
 	return (env);
 }
 
-char	*ft_readline(char *str)
-{
-	int i;
-
-	i = 1;
-	return (readline(str));
-}
-
 char	*rl_get(char *line_read, int *cmd_return)
 {
 	if (line_read)
 		free(line_read);
-	line_read = ft_readline("\e[34mcoquillette0.1>\e[0m"); 
+	line_read = readline("\e[34mcoquillette0.1>\e[0m"); 
 	if (!line_read)
 	{
 		terminal_handler(1);

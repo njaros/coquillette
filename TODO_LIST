@@ -1,8 +1,8 @@
 ## tri des suggestions de la plus importante a la moins important ##
 
-- declarer t_data data dans le main (modifier les parametre des execution en consequence) 
+- refaire init_sigaction pour initialiser aussi la data. .h deja fait !
 
-- refaire le signal suivant le modele de test_signal.c
+- faire en sorte que les historiques ne fassent pas de bug d'affichage
 
 - recuperer le "WEXITSTATUS" du wstatus du wait
 
@@ -10,7 +10,7 @@
 
 - ctrl + C aussi pourrait stopper les heredoc
 
-- le builtin exit doit contenir la ligne "terminal_handler(1);"
+- faire un prompt dynamique.
 
 - bonus ? ou la flemme ?
 

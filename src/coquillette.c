@@ -22,6 +22,7 @@ int	main(int argc, char ** argv, char **envp)
 
 	(void)argc;
 	cmd_return = 0;
+	kill(0, SIGUSR2);
 	env_list = init_envp(envp);
 	if (!env_list)
 		return (1);
@@ -31,7 +32,7 @@ int	main(int argc, char ** argv, char **envp)
 	{
 		line_read = rl_get(line_read, &cmd_return);
 		if (line_read)
-			cmd_return = execution(line_read, &data, env_list);
+			cmd_return = execution(line_read, &data);
 	}
 	feel_free(env_list);
 	ft_lstclear(&env_list, del);
