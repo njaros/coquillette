@@ -34,6 +34,7 @@ LIB =	libft/libft.a
 
 LST_SRCS =	coquillette.c	\
 			coquillette_utils1.c	\
+			prompt.c \
 			traitement_signaux.c \
 			parsing/quote_dollars.c	\
 			parsing/quote_dollars2.c	\

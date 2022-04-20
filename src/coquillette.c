@@ -30,7 +30,7 @@ int	main(int argc, char ** argv, char **envp)
 	{
 		line_read = rl_get(line_read, &data);
 		if (line_read)
-			cmd_return = execution(line_read, &data);
+			execution(line_read, &data);
 	}
 	feel_free(env_list);
 	ft_lstclear(&env_list, del);

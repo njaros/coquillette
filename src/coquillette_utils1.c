@@ -101,16 +101,20 @@ t_list	*init_envp(char **envp)
 	return (env);
 }
 
-char	*rl_get(char *line_read, int *cmd_return)
+char	*rl_get(char *line_read, t_data *data)
 {
+	char	*prompt;
+
+	prompt = prompt_builder(data);
 	if (line_read)
 		free(line_read);
-	line_read = readline("\e[34mcoquillette0.1>\e[0m");
+	line_read = readline(prompt);
+	free(prompt);
 	if (!line_read)
 	{
 		terminal_handler(1);
 		ft_putendl_fd("\nexit", 1);
-		exit(*cmd_return);
+		exit(WEXITSTATUS(data->last_return));
 	}
 	line_read = check_quote_end(line_read);
 	if (line_read && *line_read)
