@@ -65,7 +65,6 @@ int	fork_loop(t_data *data, int pipefd[2], int *fd_in)
 		close(data->out);
 	ft_free(envp);
 	free(cmd_path);
-	ft_free(data->argv);
 	*fd_in = pipefd[0];
 	return (f_pid);
 }

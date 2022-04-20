@@ -17,6 +17,7 @@ int	built_pwd(char **cmd_arg, int fd)
 	char	pwd[MAXPATHLEN];
 
 	g_cmd_ret = 0;
+	kill(0, SIGUSR1);
 	if (!getcwd(pwd, MAXPATHLEN))
 		return (print_err("getcwd() error", errno));
 	ft_putendl_fd(pwd, fd);

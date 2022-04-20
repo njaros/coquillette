@@ -55,6 +55,7 @@ int	built_unset(char **cmd_arg, t_list *env)
 	int		i;
 	
 	i = 1;
+	kill(0, SIGUSR1);
 	while (cmd_arg[i])
 	{
 		tmp = find_link(env, cmd_arg[i]);

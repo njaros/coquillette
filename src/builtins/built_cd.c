@@ -106,6 +106,7 @@ int	built_cd(char **cmd_arg, t_list *env, int fd)
 	i = 0;
 	g_cmd_ret = 0;
 	tmp = NULL;
+	kill(0, SIGUSR1);
 	if (!getcwd(oldpwd, MAXPATHLEN))
 		return (print_err("getcwd() error", errno));
 	if (!cmd_arg[1])

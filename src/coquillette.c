@@ -17,11 +17,9 @@ int	main(int argc, char ** argv, char **envp)
 	struct sigaction	act;
 	char				*line_read;
 	t_list				*env_list;
-	int					cmd_return;
 	t_data				data;
 
 	(void)argc;
-	cmd_return = 0;
 	env_list = init_envp(envp);
 	if (!env_list)
 		return (1);
@@ -30,7 +28,7 @@ int	main(int argc, char ** argv, char **envp)
 	line_read = NULL;
 	while (1)
 	{
-		line_read = rl_get(line_read, &cmd_return);
+		line_read = rl_get(line_read, &data);
 		if (line_read)
 			cmd_return = execution(line_read, &data);
 	}

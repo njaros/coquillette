@@ -40,6 +40,7 @@ void	built_exit(t_data *data)
 	char	*var_name;
 	
 	g_cmd_ret = 0;
+	kill(0, SIGUSR1);
 	level = getenv("SHLVL"); // modification du level shell, attention que ce passe-t-il s'il n'y a pas de variable SHLVL ?
 	lvl = ft_atoi(level); // créer une sous-fonction
 	lvl--;

@@ -17,6 +17,7 @@ int	built_env(t_list *env, char **cmd_arg, int fd)
 	t_env	*tmp;
 
 	g_cmd_ret = 0;
+	kill(0, SIGUSR1);
 	if (cmd_arg[1] != NULL)
 		return (print_err("env : too many arguments", 1));
 	while (env)

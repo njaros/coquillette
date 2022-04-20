@@ -84,6 +84,7 @@ int	built_export(char **cmd_arg, t_list *env, int fd)
 	i = 1;
 	size = 0;
 	g_cmd_ret = 0;
+	kill(0, SIGUSR1);
 	if (!cmd_arg[1])
 	{
 		init_rank(env, &size);
