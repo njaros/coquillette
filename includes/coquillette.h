@@ -59,6 +59,7 @@ long	g_cmd_ret;
 
 void	terminal_handler(int end);
 void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext);
+char	*prompt_builder(t_data *data);
 char	*rl_get(char *line_read, t_data *data);
 
 // Fonctions d'initialisation

@@ -38,7 +38,7 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 
 	if (sig == SIGUSR2 && !pid_father)
 		pid_father = siginfo->si_pid;
-	else if (sig == SIGUSR1)
+	else if (sig == SIGUSR1 && siginfo->si_pid != pid_father)
 		pid_heredoc = siginfo->si_pid;
 	else if (sig == SIGINT && siginfo->si_pid == pid_father)
 	{
