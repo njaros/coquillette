@@ -12,6 +12,14 @@
 
 #include "coquillette.h"
 
+void	print_error(char *cmd)
+{
+	ft_putstr_fd("coquillette: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	perror(NULL);
+}
+
 int	print_err(char *str, int err)
 {
 	ft_putendl_fd(str, 2);
@@ -65,20 +73,20 @@ void init_data(t_data *data, int i, char *str)
 
 t_env	*create_struct(char *env)
 {
-	t_env	*blop;
+	t_env	*new;
 
-	blop = NULL;
-	blop = malloc(sizeof(t_env));
-	if (!blop)
+	new = NULL;
+	new = malloc(sizeof(t_env));
+	if (!new)
 		return (NULL);
-	blop->name = ft_substr(env, 0, ft_strmchr(env, "=+") - env);
+	new->name = ft_substr(env, 0, ft_strmchr(env, "=+") - env);
 	if (ft_strrchr(env, '='))
-		blop->eg = '=';
+		new->eg = '=';
 	else
-		blop->eg = 'c';
-	blop->value = ft_substr(ft_strchr(env, '='), 1, ft_strlen(env));
-	blop->rank = 0;
-	return (blop);
+		new->eg = 'c';
+	new->value = ft_substr(ft_strchr(env, '='), 1, ft_strlen(env));
+	new->rank = 0;
+	return (new);
 }
 
 t_list	*init_envp(char **envp)
@@ -94,7 +102,10 @@ t_list	*init_envp(char **envp)
 	{
 		tmp = ft_lstnew(create_struct(envp[i]));
 		if (!tmp)
-			return (NULL); // free le reste de la liste chainee !!
+		{
+			ft_lstclear(&env, del); // a vérifier !!
+			return (NULL);
+		}
 		ft_lstadd_back(&env, tmp);
 		i++;
 	}

@@ -47,9 +47,6 @@ int	fork_loop(t_data *data, int pipefd[2], int *fd_in)
 				cmd_path = found_cmd(data->argv[0], data->env);
 				if (!cmd_path || data->argv[0][0] == '\0')
 				{
-					ft_putstr_fd("coquillette: ", 2);
-					ft_putstr_fd(data->argv[0], 2);
-					ft_putendl_fd(": command not found", 2);
 					exit(1);
 				}
 				if (execve(cmd_path, data->argv, envp) != 0)

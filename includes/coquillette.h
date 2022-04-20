@@ -107,6 +107,7 @@ t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
 int	    print_err(char *str, int err);
 void	feel_free(t_list *env);
+void	print_error(char *cmd);
 
 // execution
 void	execution(char *line_read, t_data *data);

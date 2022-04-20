@@ -40,13 +40,17 @@ char	**list_to_tab(t_list *env)
 	size = ft_lstsize(env);
 	envp = malloc(sizeof(char *) * (size + 1));
 	if (!envp)
-		return (NULL);
+		error("malloc");
 	i = 0;
 	while (env)
 	{
 		tmp = env->content;
 		first = ft_strjoin(tmp->name, "=");
+		if (!first)
+			error("malloc");
 		envp[i] = ft_strjoin(first, tmp->value);
+		if (!envp[i])
+			error("malloc");
 		free(first);
 		i++;
 		env = env->next;
@@ -66,7 +70,11 @@ char	*get_path(char *cmd, char **path)
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
+		if (!tmp)
+			error("malloc");
 		cmd_path = ft_strjoin(tmp, cmd);
+		if (!cmd_path)
+			error("malloc");
 		free(tmp);
 		if (access(cmd_path, X_OK) == 0)
 			break ;
@@ -77,29 +85,61 @@ char	*get_path(char *cmd, char **path)
 	return (cmd_path);
 }
 
-char	*found_cmd(char *entry, t_list *env)
+int	check_path(char *entry)
 {
-	char	*cmd;
-	char	**path_tab;
-	int		i;
-	t_env	*tmp;
+	int	i;
 
 	i = -1;
+	// gérer Is a directory ?!
 	while (entry[++i])
 	{
 		if (entry[i] == '/')
 		{
-			if (access(entry, X_OK) == 0)
-				return (entry);
+			if (!opendir(entry) && errno == ENOENT)
+			{
+				print_error(entry);
+				return (-1);
+			}
 			else
-				return (NULL);
+			{
+				if (access(entry, X_OK) == 0)
+					return (1);
+				else
+				{
+					print_error(entry);
+					return (-1);
+				}
+			}
 		}
 	}
+	return (0);
+}
+
+char	*found_cmd(char *entry, t_list *env)
+{
+	char	*cmd;
+	char	**path_tab;
+	int		ck;
+	t_env	*tmp;
+
+	ck = check_path(entry);
+	if (ck == 1)
+		return (entry);
+	if (ck == -1)
+		return (NULL);
 	tmp = find_env_var(env, "PATH");
 	if (!tmp)
+	{
+		print_error(entry); // vérifier message si path unset
 		return (NULL);
+	}
 	path_tab = ft_split(tmp->value, ':');
+	if (!path_tab)
+		error("malloc");
 	cmd = get_path(entry, path_tab);
+	if (!cmd)
+		print_error(entry);
 	ft_free(path_tab);
+	dprintf(2, "%s\n", cmd);
 	return (cmd);
 }
