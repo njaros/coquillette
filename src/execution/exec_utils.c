@@ -97,7 +97,7 @@ int	check_path(char *entry)
 		{
 			if (!opendir(entry) && errno == ENOENT)
 			{
-				print_error(entry);
+				print_error(entry, NULL);
 				return (-1);
 			}
 			else
@@ -106,7 +106,7 @@ int	check_path(char *entry)
 					return (1);
 				else
 				{
-					print_error(entry);
+					print_error(entry, NULL);
 					return (-1);
 				}
 			}
@@ -130,7 +130,7 @@ char	*found_cmd(char *entry, t_list *env)
 	tmp = find_env_var(env, "PATH");
 	if (!tmp)
 	{
-		print_error(entry); // vérifier message si path unset
+		print_error(entry, "command not found"); // vérifier message si path unset
 		return (NULL);
 	}
 	path_tab = ft_split(tmp->value, ':');
@@ -138,7 +138,7 @@ char	*found_cmd(char *entry, t_list *env)
 		error("malloc");
 	cmd = get_path(entry, path_tab);
 	if (!cmd)
-		print_error(entry);
+		print_error(entry, "command not found");
 	ft_free(path_tab);
 	dprintf(2, "%s\n", cmd);
 	return (cmd);

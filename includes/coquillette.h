@@ -107,12 +107,12 @@ t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
 int	    print_err(char *str, int err);
 void	feel_free(t_list *env);
-void	print_error(char *cmd);
+void	print_error(char *cmd, char *msg);
 
 // execution
 void	execution(char *line_read, t_data *data);
 pid_t	*exec_cmd(t_data *data, char *line_read, int *i);
-int		fork_loop(t_data *data, int pipefd[2], int *fd_in);
+int		create_process(t_data *data, int pipefd[2], int *fd_in);
 void	transform_fds(t_data *data, int fd_in, int fd_out);
 char	*found_cmd(char *entry, t_list *env);
 char    *get_path(char *cmd, char **path);

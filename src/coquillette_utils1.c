@@ -12,17 +12,20 @@
 
 #include "coquillette.h"
 
-void	print_error(char *cmd)
+void	print_error(char *cmd, char *msg)
 {
-	ft_putstr_fd("coquillette: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": ", 2);
-	perror(NULL);
+	ft_putstr_fd("coquillette: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	if (msg)
+		ft_putendl_fd(msg, STDERR_FILENO);
+	else
+		perror(NULL);
 }
 
 int	print_err(char *str, int err)
 {
-	ft_putendl_fd(str, 2);
+	ft_putendl_fd(str, STDERR_FILENO);
 	g_cmd_ret = err;
 	return (1);
 }
