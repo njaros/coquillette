@@ -12,13 +12,24 @@
 
 #include "coquillette.h"
 
-int	law_to_print(char a, char q, int context)
+int	trap_dollz(char b)
+{
+	if (b == ' ' || b == 39 || b == 34 
+		|| b == '<' || b == '>' || b == '|'
+		|| b == '%' || b == '^' || b == '='
+		|| b == '+' || b == '\0' || b == '/'
+		|| b == ',' || b == ':')
+		return (1);
+	return (0);
+}
+
+int	law_to_print(char a, char q, char b)
 {
 	if (!q && (a == 34 || a == 39))
 		return (0);
 	if (a == q)
 		return (0);
-	if (a == '$' && q != 39 && context)
+	if (a == '$' && q != 39 && !trap_dollz(b))
 		return (0);
 	return (1);
 }

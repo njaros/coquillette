@@ -1,16 +1,8 @@
 ## tri des suggestions de la plus importante a la moins important ##
 
-- refaire init_sigaction pour initialiser aussi la data. .h deja fait !
-
 - faire en sorte que les historiques ne fassent pas de bug d'affichage
 
 - recuperer le "WEXITSTATUS" du wstatus du wait
-
-- Faire des tests avec des " et des '
-
-- ctrl + C aussi pourrait stopper les heredoc --> fork a finir
-
-- faire un prompt dynamique.
 
 - bonus ? ou la flemme ?
 

@@ -53,7 +53,7 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 		pid_heredoc = -1;
 		exit(siginfo->si_signo);
 	}
-	else
+	else if (sig == SIGINT)
 		write(1, "\n", 1);
 }
 

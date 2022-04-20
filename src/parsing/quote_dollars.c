@@ -44,16 +44,30 @@ char	*check_quote_end(char *str)
 {
 	int		quote;
 	int		dquote;
-	char	*next;
 
 	str = cherche_merde(str, &quote, &dquote);
-	while (str && ((dquote || quote) || last_char_is_pipe(str)))
+	/*while (str && ((dquote || quote) || last_char_is_pipe(str)))
 	{
 		if (dquote || quote)
 			str = quotage(str, &dquote, &quote);
 		else if (last_char_is_pipe(str))
 			str = pipage(str);
 		str = cherche_merde(str, &quote, &dquote);
+	}*/
+	if (str)
+	{
+		if (dquote)
+			ft_putendl_fd("coquillette: double quote not closed, request ignored", 2);
+		if (quote)
+			ft_putendl_fd("coquillette: quote not closed, request ignored", 2);
+		if (last_char_is_pipe(str) && !quote && !dquote)
+			ft_putendl_fd("coquillette: pipe at end of line, request ignored", 2);
+		if (dquote || quote || last_char_is_pipe(str))
+		{
+			add_history(str);
+			free(str);
+			str = NULL;
+		}
 	}
 	return (str);
 }
