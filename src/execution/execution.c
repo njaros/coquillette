@@ -119,7 +119,7 @@ pid_t	*exec_cmd(t_data *data, char *line_read, int *i)
 	return (f_pid);
 }
 
-int	execution(char *line_read, t_data *data)
+void	execution(char *line_read, t_data *data)
 {
 	int		i;
 	pid_t	*f_pid;
@@ -135,5 +135,4 @@ int	execution(char *line_read, t_data *data)
 		j++;
 	}
 	free(f_pid);
-	return (data->last_return);
 }
