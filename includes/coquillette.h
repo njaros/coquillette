@@ -96,7 +96,7 @@ int		ft_switch(int n);
 char	*quote_doll_handler(char *str, t_data *data);
 char	*only_quote_handler(char *str);
 int		handler_switcher(char c, char q);
-int		law_to_print(char a, char q, int context);
+int		law_to_print(char a, char q, char b);
 
 //
 int		free_lst_analyse(t_list **to_free);

@@ -118,7 +118,9 @@ char	*rl_get(char *line_read, t_data *data)
 	}
 	line_read = check_quote_end(line_read);
 	if (line_read && *line_read)
+	{
 		add_history(line_read);
-	line_read = heredoc_handler(line_read);
+		line_read = heredoc_handler(line_read);
+	}
 	return (line_read);
 }

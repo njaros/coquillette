@@ -108,7 +108,7 @@ char	*quote_doll_handler(char *str, t_data *data)
 	while (str[++ind[0]])
 	{
 		q_val = handler_switcher(str[ind[0]], q_val);
-		if (law_to_print(str[ind[0]], q_val, 1))
+		if (law_to_print(str[ind[0]], q_val, str[ind[0] + 1]))
 			ret[++ind[1]] = str[ind[0]];
 		else if (str[ind[0]] == '$')
 			ret = handler_doller(ret, str, ind, data);
