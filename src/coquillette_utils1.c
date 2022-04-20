@@ -49,13 +49,16 @@ void init_data(t_data *data, int i, char *str)
 		data->last_return = 0;
 		first_init = 0;
 	}
-	if (i == 0)
+	if (!i)
 	{
 		data->nb_cmd = 1 + count_pipe(str);
 		data->in = 0;
 	}
-	else
+	if (i)
+	{
 		data->in = -2;
+		ft_free(data->argv);
+	}
 	data->out = -2;
 	data->argv = NULL;
 }

@@ -15,17 +15,21 @@
 void	heredoc_fork(int fd, char *eof)
 {
 	char	*line_read;
+	char	*noqeof;
 
+	noqeof = only_quote_handler(eof);
+	if (!eof)
+		error("coquillette: heredoc: only_quote_handler: malloc");
 	kill (0, SIGUSR1);
 	line_read = readline(">");
-	while (line_read && strcmp(line_read, eof))
+	while (line_read && strcmp(line_read, noqeof))
 	{
 		ft_putendl_fd(line_read, fd);
 		free(line_read);
 		line_read = readline(">");
 	}
 	free(line_read);
-	free(eof);
+	free(noqeof);
 	close(fd);
 	exit(0);
 }
