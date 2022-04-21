@@ -86,17 +86,17 @@ void	built_cd(t_data *data)
 	}
 	else
 	{
-		if (cmd_arg[1][i] == '~')
+		if (data->argv[1][i] == '~')
 		{
-			if (to_home(cmd_arg[1][i], env) != 0)
-				return (1);
+			if (to_home(data, data->argv[1][i]) != 0)
+				exit(data->last_return);
 			i = 2;
 		}
-		if (cmd_arg[1][i])
+		if (data->argv[1][i])
 		{
-			if (!opendir(&cmd_arg[1][i]))
+			if (!opendir(&data->argv[1][i]))
 				return (print_err("cd: Permission denied", 1));
-			data->last_return = chdir(&cmd_arg[1][i]);
+			data->last_return = chdir(&data->argv[1][i]);
 			if (data->last_return == -1)
 				return (print_err("No such file or directory", 1));
 		}
@@ -105,3 +105,4 @@ void	built_cd(t_data *data)
 		return (1);
 	exit(data->last_return);
 }
+// too many arguments ?!
