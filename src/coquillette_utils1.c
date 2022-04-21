@@ -53,13 +53,6 @@ int	count_pipe(char *str)
 
 void init_data(t_data *data, int i, char *str)
 {
-	static int	first_init = 1;
-
-	if (first_init)
-	{
-		data->last_return = 0;
-		first_init = 0;
-	}
 	if (!i)
 	{
 		data->nb_cmd = 1 + count_pipe(str);
@@ -127,7 +120,7 @@ char	*rl_get(char *line_read, t_data *data)
 	if (!line_read)
 	{
 		terminal_handler(1);
-		ft_putendl_fd("\nexit", 1);
+		ft_putendl_fd("exit", 1);
 		exit(WEXITSTATUS(data->last_return));
 	}
 	line_read = check_quote_end(line_read);

@@ -27,6 +27,7 @@ void	terminal_handler(int end)
 	tcgetattr(fd_term, &term_before);
 	term_minishell = term_before;
 	term_minishell.c_cc[VQUIT] = 0;
+	term_minishell.c_iflag |= INLCR;
 	term_minishell.c_lflag &= ~(ICANON | ECHOCTL);
 	tcsetattr(fd_term, TCSANOW, &term_minishell);
 }
@@ -34,12 +35,12 @@ void	terminal_handler(int end)
 void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	static int	pid_father = 0;
-	static int	pid_heredoc = -1;
+	static int	pid_fork = -1;
 
 	if (sig == SIGUSR2 && !pid_father)
 		pid_father = siginfo->si_pid;
 	else if (sig == SIGUSR1 && siginfo->si_pid != pid_father)
-		pid_heredoc = siginfo->si_pid;
+		pid_fork = siginfo->si_pid;
 	else if (sig == SIGINT && siginfo->si_pid == pid_father)
 	{
 		rl_on_new_line();
@@ -48,9 +49,9 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 		rl_redisplay();
 		return ;
 	}
-	else if (sig == SIGINT && siginfo->si_pid == pid_heredoc)
+	else if (sig == SIGINT && siginfo->si_pid == pid_fork)
 	{
-		pid_heredoc = -1;
+		pid_fork = -1;
 		exit(siginfo->si_signo);
 	}
 	else if (sig == SIGINT)
@@ -60,6 +61,7 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 void	init(struct sigaction *act, t_data *data, t_list *env_list)
 {
 	data->env = env_list;
+	data->last_return = 0;
 	terminal_handler(0);
 	act->sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;
 	act->sa_sigaction = signal_handler;
