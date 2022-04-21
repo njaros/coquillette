@@ -1,7 +1,5 @@
 ## tri des suggestions de la plus importante a la moins important ##
 
-- faire en sorte que les historiques ne fassent pas de bug d'affichage
-
 C - recuperer le "WEXITSTATUS" du wstatus du wait - en cours
 
 C - forker tout, meme les builtins => les modifier pour qu'ils exit(last_return)

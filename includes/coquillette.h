@@ -69,14 +69,11 @@ void	init(struct sigaction *act, t_data *data, t_list *env);
 
 // ICI ON PARSE
 void	do_nothing(void *let_him_alive);
-char	*eof_detector(char *to_free, int context);
-char	*quotage(char *str, int *dquote, int *quote);
-char	*pipage(char *str);
 char	*check_quote_end(char *str);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
 int		first_char_is_pipe(char *str, int *i);
 int		last_char_is_pipe(char *str);
-char	*cherche_merde(char *str, int *quote, int *dquote);
+char	*guilty_searcher(char *str, int *quote, int *dquote);
 void	le_coupable_est(char *c);
 int		analyse(char *str, int *i, t_data *data);
 int		ajout_block(t_list **pouet, int *i, int *ptr, char *str);

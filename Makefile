@@ -36,9 +36,8 @@ LST_SRCS =	coquillette.c	\
 			coquillette_utils1.c	\
 			prompt.c \
 			traitement_signaux.c \
-			parsing/quote_dollars.c	\
-			parsing/quote_dollars2.c	\
-			parsing/quote_dollars3.c	\
+			parsing/check_quote.c	\
+			parsing/check_quote2.c	\
 			parsing/analyse.c	\
 			parsing/analyse2.c	\
 			parsing/quote_doll_handler.c \
