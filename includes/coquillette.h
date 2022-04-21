@@ -109,22 +109,25 @@ int	    print_err(char *str, int err);
 void	feel_free(t_list *env);
 void	print_error(char *cmd, char *msg);
 
+// EXECUTION //
 // execution
 void	execution(char *line_read, t_data *data);
 pid_t	*exec_cmd(t_data *data, char *line_read, int *i);
 int		create_process(t_data *data, int pipefd[2], int *fd_in);
+void	child(t_data *data, int pipefd[2]);
+int	    builtins(t_data *data);
+// exec_utils
 void	transform_fds(t_data *data, int fd_in, int fd_out);
-char	*found_cmd(char *entry, t_list *env);
-char    *get_path(char *cmd, char **path);
 char    **list_to_tab(t_list *env);
 void	ft_free(char **tab);
 void	error(char *msg);
-//test
-void	test_exec(char *line_read, t_list *env);
-void    loop_pipe(t_data *data, int *fd_in, int pipefd[2], t_list *env);
+// found_cmd
+char	*found_cmd(char *entry, t_list *env);
+int		check_absolute_path(char *entry);
+int		is_a_directory(char *entry);
+char    *get_path(char *cmd, char **path);
 
-// builtins
-int	    builtins(t_data *data);
+// BUILTINS //
 //
 int	    built_cd(char **cmd_arg, t_list *env, int fd);
 int	    to_home(char c, t_list *env);

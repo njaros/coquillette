@@ -6,65 +6,11 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 13:01:05 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/21 14:40:03 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
-
-void	transform_fds(t_data *data, int fd_in, int fd_out)
-{
-	if (data->in == -2)
-		data->in = fd_in;
-	if (data->out == -2)
-		data->out = fd_out;
-}
-
-void	child(t_data *data, int pipefd[2])
-{
-	char	*cmd_path;
-	char	**envp;
-
-	cmd_path = NULL;
-	envp = list_to_tab(data->env);
-	if (data->in != 0)
-		dup2(data->in, STDIN_FILENO);
-	close(pipefd[0]);
-	if (data->out != 1)
-		dup2(data->out, STDOUT_FILENO);
-	if (data->in != -1 && data->out != -1)
-	{
-		if (builtins(data) == -1)
-		{
-			cmd_path = found_cmd(data->argv[0], data->env);
-			if (!cmd_path || data->argv[0][0] == '\0')
-				exit(1);
-			if (execve(cmd_path, data->argv, envp) != 0)
-				error("execve");
-		}
-	}
-	exit(0);
-}
-
-int	create_process(t_data *data, int pipefd[2], int *fd_in)
-{
-	pid_t	f_pid;
-
-	transform_fds(data, *fd_in, pipefd[1]);
-	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
-	f_pid = fork();
-	if (f_pid == -1)
-		error("fork");
-	if (f_pid == 0)
-		child(data, pipefd);
-	close(pipefd[1]);
-	if (data->in != 0)
-		close(data->in);
-	if (data->out != 1)
-		close(data->out);
-	*fd_in = pipefd[0];
-	return (f_pid);
-}
 
 int	builtins(t_data *data)
 {
@@ -85,6 +31,59 @@ int	builtins(t_data *data)
 	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
 		return (0);
 	return (-1);
+}
+
+void	child(t_data *data, int pipefd[2])
+{
+	char	*cmd_path;
+	char	**envp;
+
+	cmd_path = NULL;
+	envp = list_to_tab(data->env);
+	if (data->in != 0)
+		if (dup2(data->in, STDIN_FILENO) == -1)
+			error("dup2 in");
+	if (close(pipefd[0]) == -1)
+		error("close pipefd[0]");
+	if (data->out != 1)
+		if (dup2(data->out, STDOUT_FILENO) == -1)
+			error("dup2 out");
+	if (data->in != -1 && data->out != -1)
+	{
+		if (builtins(data) == -1)
+		{
+			cmd_path = found_cmd(data->argv[0], data->env);
+			if (!cmd_path || data->argv[0][0] == '\0')
+				exit(1);
+			if (execve(cmd_path, data->argv, envp) != 0)
+				error("execve");
+		}
+	}
+	exit(0);
+}
+
+int	create_process(t_data *data, int pipefd[2], int *fd_in)
+{
+	pid_t	f_pid;
+
+	transform_fds(data, *fd_in, pipefd[1]);
+	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
+	dprintf(2, "%d, %d\n", pipefd[1], pipefd[0]);
+	f_pid = fork();
+	if (f_pid == -1)
+		error("fork");
+	if (f_pid == 0)
+		child(data, pipefd);
+	if (close(pipefd[1]) == -1)
+		error("close pipefd[1]");
+	if (data->in != 0)
+		if (close(data->in) == -1)
+			error("close in");
+	if (data->out != 1 && data->out != pipefd[1])
+		if (close(data->out) == -1)
+			error("close out");
+	*fd_in = pipefd[0];
+	return (f_pid);
 }
 
 pid_t	*exec_cmd(t_data *data, char *line_read, int *i)
