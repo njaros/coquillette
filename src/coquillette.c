@@ -12,7 +12,7 @@
 
 #include "coquillette.h"
 
-int	main(int argc, char ** argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	struct sigaction	act;
 	char				*line_read;
@@ -32,7 +32,6 @@ int	main(int argc, char ** argv, char **envp)
 		if (line_read)
 			execution(line_read, &data);
 	}
-	feel_free(env_list);
-	ft_lstclear(&env_list, del);
+	ft_lstclear(&env_list, feel_free);
 	return (0);
 }

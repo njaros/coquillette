@@ -7,6 +7,7 @@ SRCS = 	ft_isalnum.c \
 		ft_strlen.c \
 		ft_strrchr.c \
 		ft_toupper.c \
+		ft_switch.c \
 		ft_atoi.c \
 		ft_atol.c	\
 		ft_itoa.c \

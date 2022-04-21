@@ -30,43 +30,6 @@ int	print_err(char *str, int err)
 	return (1);
 }
 
-int	count_pipe(char *str)
-{
-	int	count;
-	int	i;
-	int	quote;
-	int dquote;
-
-	i = 0;
-	count = 0;
-	quote = 0;
-	dquote = 0;
-	while (str[i])
-	{
-		quote_switcher(&quote, &dquote, str[i]);
-		if (str[i] == '|' && !quote && !dquote)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-void init_data(t_data *data, int i, char *str)
-{
-	if (!i)
-	{
-		data->nb_cmd = 1 + count_pipe(str);
-		data->in = 0;
-	}
-	if (i)
-	{
-		data->in = -2;
-		ft_free(data->argv);
-	}
-	data->out = -2;
-	data->argv = NULL;
-}
-
 t_env	*create_struct(char *env)
 {
 	t_env	*new;
@@ -99,35 +62,11 @@ t_list	*init_envp(char **envp)
 		tmp = ft_lstnew(create_struct(envp[i]));
 		if (!tmp)
 		{
-			ft_lstclear(&env, del); // a vérifier !!
+			ft_lstclear(&env, del);
 			return (NULL);
 		}
 		ft_lstadd_back(&env, tmp);
 		i++;
 	}
 	return (env);
-}
-
-char	*rl_get(char *line_read, t_data *data)
-{
-	char	*prompt;
-
-	prompt = prompt_builder(data);
-	if (line_read)
-		free(line_read);
-	line_read = readline(prompt);
-	free(prompt);
-	if (!line_read)
-	{
-		terminal_handler(1);
-		ft_putendl_fd("exit", 1);
-		exit(WEXITSTATUS(data->last_return));
-	}
-	line_read = check_quote_end(line_read);
-	if (line_read && *line_read)
-	{
-		add_history(line_read);
-		line_read = heredoc_handler(line_read);
-	}
-	return (line_read);
 }

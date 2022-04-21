@@ -103,7 +103,7 @@ int		error2(int err);
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
 int	    print_err(char *str, int err);
-void	feel_free(t_list *env);
+void	feel_free(void *env);
 void	print_error(char *cmd, char *msg);
 
 // EXECUTION //
