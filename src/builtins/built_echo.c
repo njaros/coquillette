@@ -6,37 +6,43 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/11 12:53:07 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/21 16:17:09 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-int	built_echo(char **cmd_arg, int fd)
+static void	print(t_data *data, int i)
+{
+	ft_putstr_fd(data->argv[i], data->out);
+	if (data->argv[i][0] && data->argv[i + 1])
+		ft_putchar_fd(' ', data->out);
+}
+
+void	built_echo(t_data *data)
 {
 	int		nl;
 	int		i;
 	char	*new;
 
-	
+	data->last_return = 0;
+	kill(0, SIGUSR1);
+	if (data->out == -1)
+	{
+		data->last_return = 1;
+		exit(data->last_return);
+	}
 	nl = 1;
 	i = 1;
-	kill(0, SIGUSR1);
-	while (cmd_arg[i])
+	while (data->argv[i])
 	{
-		if (cmd_arg[i][0] == '-' && cmd_arg[i][1] == 'n')
+		if (data->argv[i][0] == '-' && data->argv[i][1] == 'n')
 			nl = 0;
 		else
-		{
-			//new = dollar_searcher(cmd_arg[i]);
-			ft_putstr_fd(cmd_arg[i], fd);
-			if (cmd_arg[i][0] && cmd_arg[i + 1])
-				ft_putchar_fd(' ', fd);
-			//free(new);
-		}
+			print(data, i);
 		i++;
 	}
 	if (nl)
-		ft_putchar_fd('\n', fd);
-	return (0);
+		ft_putchar_fd('\n', data->out);
+	exit(data->last_return);
 }

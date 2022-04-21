@@ -53,8 +53,6 @@ typedef struct s_data
 	t_list	*env;
 }	            t_data;
 
-long	g_cmd_ret;
-
 // Gestion initiales de l'entrée utilisateur
 
 void	terminal_handler(int end);
@@ -128,27 +126,34 @@ int		is_a_directory(char *entry);
 char    *get_path(char *cmd, char **path);
 
 // BUILTINS //
-//
-int	    built_cd(char **cmd_arg, t_list *env, int fd);
-int	    to_home(char c, t_list *env);
-int 	change_pwd_oldpwd(char *oldpwd, t_list *env);
-int 	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
+//builtins_utils
 t_env	*find_env_var(t_list *env, char *to_search);
+int 	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
+void	adding_value(char *tmp, t_env *var, char *path);
+void	init_rank(t_list *env, int *size);
 //
-int 	built_echo(char **cmd_arg, int fd);
-//
-int	    built_env(t_list *env, char **cmd_arg, int fd);
+int		built_cd(char **cmd_arg, t_list *env, int fd);
+int		to_home(t_data *data, char c);
+int		change_pwd_oldpwd(char *oldpwd, t_list *env);
+//built_echo
+void	built_echo(t_data *data);
+static void	print(t_data *data, int i);
+//built_env
+void	built_env(t_data *data);
+static void	print(t_data *data, t_env *tmp);
 //
 void	built_exit(t_data *data);
 int	    check_arg(char *arg);
-//
-int	    built_export(char **cmd_arg, t_list *env, int fd);
+//built_export
+void	built_export(t_data *data);
+void	export_alone(t_data *data);
+char	*set_to_search(t_data *data);
 void	print_export(t_list *env, int size, int fd);
-void    init_rank(t_list *env, int *size);
-//
-int 	built_pwd(char **cmd_arg, int fd);
-//
-int 	built_unset(char **cmd_arg, t_list *env);
+static void	print(t_env *tmp, int fd);
+//built_pwd
+void	built_pwd(t_data *data);
+//built_unset
+void 	built_unset(t_data *data);
 t_list	*find_link(t_list *env, char *to_search);
 void	env_del(t_list *env, t_list *to_del);
 

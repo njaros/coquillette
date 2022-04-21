@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 14:09:42 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:23:57 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 int	builtins(t_data *data)
 {
 	if (!ft_strcmp(data->argv[0], "echo"))
-		return (built_echo(data->argv, data->out));
+		built_echo(data);
 	else if (!ft_strcmp(data->argv[0], "cd"))
-		return (built_cd(data->argv, data->env, data->out));
+		built_cd(data);
 	else if (!ft_strcmp(data->argv[0], "pwd"))
-		return (built_pwd(data->argv, data->out));
+		built_pwd(data);
 	else if (!ft_strcmp(data->argv[0], "export"))
-		return (built_export(data->argv, data->env, data->out));
+		built_export(data);
 	else if (!ft_strcmp(data->argv[0], "unset"))
-		return (built_unset(data->argv, data->env));
+		built_unset(data);
 	else if (!ft_strcmp(data->argv[0], "env"))
-		return (built_env(data->env, data->argv, data->out));
+		built_env(data);
 	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
 		built_exit(data);
 	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)

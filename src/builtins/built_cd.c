@@ -6,55 +6,11 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/12 16:47:18 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/21 16:37:40 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
-
-t_env	*find_env_var(t_list *env, char *to_search)
-{
-	t_env	*var;
-	
-	var = NULL;
-	while (env)
-	{
-		var = env->content;
-		if (!ft_strcmp(var->name, to_search))
-			return (var);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
-{
-	t_list	*new;
-	char	*tmp;
-
-	new = NULL;
-	if (!var)
-	{
-		new = ft_lstnew(create_struct(var_name));
-		if (!new)
-			return (print_err("lst problem", 1));
-		ft_lstadd_back(&env, new);
-	}
-	else
-	{
-		if (ft_strrchr(var_name, '+'))
-		{
-			tmp = ft_strjoin(var->value, path);
-			free(var->value);
-			var->value = ft_strdup(tmp);
-			free(tmp);
-			return (0);
-		}
-		free(var->value);
-		var->value = ft_strdup(path);
-	}
-	return (0);
-}
 
 int	change_pwd_oldpwd(char *oldpwd, t_list *env)
 {
@@ -76,7 +32,7 @@ int	change_pwd_oldpwd(char *oldpwd, t_list *env)
 	return (0);
 }
 
-int	to_home(char c, t_list *env)
+int	to_home(t_data *data, char c)
 {
 	char	*home;
 	t_env	*tmp;
@@ -86,65 +42,66 @@ int	to_home(char c, t_list *env)
 		home = getenv("HOME");
 	else
 	{
-		tmp = find_env_var(env, "HOME");
+		tmp = find_env_var(data->env, "HOME");
 		if (tmp)
-			home = ft_strdup(tmp->value);
-			
+			home = ft_strdup(tmp->value);	
 	}
 	if (!home)
-		return (print_err("cd : HOME not set", errno));
-	g_cmd_ret = chdir(home);
+	{
+		print_error("cd", "HOME not set");
+		data->last_return = 1;
+		return (1);
+	}
+	data->last_return = chdir(home);
 	return (0);
 }
 
-int	built_cd(char **cmd_arg, t_list *env, int fd)
+void	built_cd(t_data *data)
 {
 	char	oldpwd[MAXPATHLEN];
 	t_env	*tmp;
 	int		i;
 
 	i = 0;
-	g_cmd_ret = 0;
+	data->last_return = 0;
 	tmp = NULL;
 	kill(0, SIGUSR1);
-	if (!getcwd(oldpwd, MAXPATHLEN))
-		return (print_err("getcwd() error", errno));
-	if (!cmd_arg[1])
+	getcwd(oldpwd, MAXPATHLEN);
+	if (!data->argv[1])
 	{
-		if (to_home(0, env) != 0)
-			return (1);
+		to_home(data, 0);
+		exit(data->last_return);
+	}
+	if (data->argv[1][i] == '-')
+	{
+		tmp = find_env_var(env, "OLDPWD");
+		if (!tmp)
+		{
+			print_error(data->argv[0], "OLDPWD not set");
+			data->last_return = 1;
+			exit(data->last_return);
+		}
+		ft_putendl_fd(tmp->value, fd);
+		data->last_return = chdir(tmp->value);
 	}
 	else
 	{
-		if (cmd_arg[2] != NULL)
-			return (print_err("cd: too many arguments", 1));
-		if (cmd_arg[1][i] == '-')
+		if (cmd_arg[1][i] == '~')
 		{
-			tmp = find_env_var(env, "OLDPWD");
-			if (!tmp)
-				return (print_err("cd: OLDPWD not set", errno));
-			ft_putendl_fd(tmp->value, fd);
-			g_cmd_ret = chdir(tmp->value);
+			if (to_home(cmd_arg[1][i], env) != 0)
+				return (1);
+			i = 2;
 		}
-		else
+		if (cmd_arg[1][i])
 		{
-			if (cmd_arg[1][i] == '~')
-			{
-				if (to_home(cmd_arg[1][i], env) != 0)
-					return (1);
-				i = 2;
-			}
-			if (cmd_arg[1][i])
-			{
-				if (!opendir(&cmd_arg[1][i]))
-					return (print_err("cd: Permission denied", 1));
-				g_cmd_ret = chdir(&cmd_arg[1][i]);
-				if (g_cmd_ret == -1)
-					return (print_err("No such file or directory", 1));
-			}
+			if (!opendir(&cmd_arg[1][i]))
+				return (print_err("cd: Permission denied", 1));
+			data->last_return = chdir(&cmd_arg[1][i]);
+			if (data->last_return == -1)
+				return (print_err("No such file or directory", 1));
 		}
 	}
 	if (change_pwd_oldpwd(oldpwd, env) != 0)
 		return (1);
-	return (0);
+	exit(data->last_return);
 }
