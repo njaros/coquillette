@@ -1,7 +1,5 @@
 ## tri des suggestions de la plus importante a la moins important ##
 
-- faire en sorte que les historiques ne fassent pas de bug d'affichage
-
 C - recuperer le "WEXITSTATUS" du wstatus du wait - en cours
 
 C - forker tout, meme les builtins => les modifier pour qu'ils exit(last_return)
@@ -11,7 +9,7 @@ C - builtin EXIT : revoir les cas d'erreur ! ajouter une sous-fonction qui free 
 C - builtin PWD : si getcwd ne fonctionne pas (par exemple, avec le cas où je me trouve dans un dossier qui a été supprimé), je dois quand même pouvoir afficher pwd => récupérer la variable dans ma liste chainée ?? - OK à tester !!
 
 C - finir de sécuriser malloc, etc dans les builtins
-C - norminer builtins !!!!
+C - norminer builtins !!!! => reste CD et EXIT
 
 C - réorganiser fonctions et fichiers - en cours
 

@@ -7,6 +7,7 @@ SRCS = 	ft_isalnum.c \
 		ft_strlen.c \
 		ft_strrchr.c \
 		ft_toupper.c \
+		ft_switch.c \
 		ft_atoi.c \
 		ft_atol.c	\
 		ft_itoa.c \
@@ -49,14 +50,16 @@ SRCS = 	ft_isalnum.c \
 		ft_lst_reorder.c	\
 		ft_lsttake.c	\
 		ft_get_fd_rdonly.c	\
-		ft_del.c
+		ft_del.c \
+		get_next_line.c \
+		get_next_line_utils.c
 OBJS = ${SRCS:.c=.o}
 HEADERS_PATH = ../includes
 HEADERS = ../includes/libft.h
 NAME = libft.a
 RM = rm -f
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=30
 
 %.o: %.c ${HEADERS}
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${HEADERS_PATH}

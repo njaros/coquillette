@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/19 17:19:13 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/21 14:46:24 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,11 @@ int	chevron_manager(t_list **pouet, t_list *prev, t_data *data)
 		return (0);
 	if (chevron_type != 4)
 		content = quote_doll_handler(content, data);
-	else
-		content = only_quote_handler(content);
 	if (!content)
 		error("coquillette : chevron_manager :");
 	file_to_open(content, chevron_type, data);
-	free(content);
+	if (chevron_type != 4)
+		free(content);
 	reorder_lst(pouet, prev);
 	return (1);
 }
@@ -94,6 +93,7 @@ int	chevronnage(t_list **pouet, t_data *data)
 	first = NULL;
 	prev = NULL;
 	while (*pouet)
+	{
 		if (!chevron_manager(pouet, prev, data))
 		{
 			if (first == NULL)
@@ -102,6 +102,7 @@ int	chevronnage(t_list **pouet, t_data *data)
 			prev = *pouet;
 			*pouet = (*pouet)->next;
 		}
+	}
 	*pouet = first;
 	return (lg);
 }

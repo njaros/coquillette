@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 09:58:06 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/19 11:50:14 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/21 14:45:32 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	end_parsing(char *str, int *i, t_data *data)
 	}
 	if (data->out == -2)
 		data->out = 1;
-	return (0);	
+	return (0);
 }
 
 int	organiser(t_list **pouet, int *i, char *str, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 13:24:45 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/19 17:57:12 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/21 14:47:09 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@ void	heredoc_fork(int fd, char *eof)
 	}
 	free(line_read);
 	free(noqeof);
-	close(fd);
 	exit(0);
 }
 
-char*	ft_heredoc(char *eof)
+char	*ft_heredoc(char *eof)
 {
-	int 	fd[2];
+	int		fd[2];
 	int		ret;
 	int		pid_fork;
 	char	*itoa_fd;
@@ -58,6 +57,7 @@ char*	ft_heredoc(char *eof)
 		close(fd[1]);
 		return (NULL);
 	}
+	close(fd[1]);
 	return (itoa_fd);
 }
 

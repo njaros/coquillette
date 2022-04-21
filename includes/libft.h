@@ -40,6 +40,7 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size);
 int		ft_toupper(int c);
 int		ft_tolower(int c);
 char	*ft_strchr(const char *s, int c);
+int		ft_switch(int n);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strmchr(char *s, char *charset);
 int		ft_strcmp(char *s1, char *s2);
@@ -75,5 +76,10 @@ void	reorder_lst(t_list **lst, t_list *prev);
 t_list	*ft_lsttake(t_list **alst);
 int		get_fd_rdonly(char *entry);
 void	del(void *content);
+int		contain_return(char *s);
+char	*ft_substr_free(char *s, unsigned int start, size_t len);
+char	*get_next_line(int fd);
+char	*ft_strjoin_free(char *s1, char *s2, int del);
+char	*ft_return_and_keep(char **temp, char *line, int n);
 
 #endif
