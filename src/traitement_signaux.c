@@ -55,7 +55,7 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 		exit(siginfo->si_signo);
 	}
 	else if (sig == SIGINT)
-		write(1, "\n", 1);
+		write(1, "^C\n", 3);
 }
 
 void	init(struct sigaction *act, t_data *data, t_list *env_list)
