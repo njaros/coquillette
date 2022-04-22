@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:10:44 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 14:30:13 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:56:48 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,6 @@ void	error(char *msg)
 {
 	perror(msg);
 	// exit(EXIT_FAILURE);
-}
-
-void	ft_free(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-	tab = NULL;
 }
 
 char	**list_to_tab(t_list *env)
@@ -81,6 +70,27 @@ int	check_is_builtin(t_data *data)
 		return (0);
 	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
 		return (0);
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
+		return (0);
+	return (-1);
+}
+
+int	do_builtins(t_data *data)
+{
+	if (!ft_strcmp(data->argv[0], "echo"))
+		return (built_echo(data));
+	else if (!ft_strcmp(data->argv[0], "cd"))
+		return (built_cd(data));
+	else if (!ft_strcmp(data->argv[0], "pwd"))
+		return (built_pwd(data));
+	else if (!ft_strcmp(data->argv[0], "export"))
+		return (built_export(data));
+	else if (!ft_strcmp(data->argv[0], "unset"))
+		return (built_unset(data));
+	else if (!ft_strcmp(data->argv[0], "env"))
+		return (built_env(data));
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
+		return (built_exit(data));
 	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
 		return (0);
 	return (-1);

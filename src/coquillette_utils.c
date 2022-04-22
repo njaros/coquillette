@@ -12,6 +12,17 @@
 
 #include "coquillette.h"
 
+void	ft_free(char **tab)
+{
+	int	i;
+
+	i = -1;
+	while (tab[++i])
+		free(tab[i]);
+	free(tab);
+	tab = NULL;
+}
+
 void	print_error(t_data *data, char *arg, char *msg, int err)
 {
 	data->last_return = err;

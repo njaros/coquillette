@@ -6,13 +6,13 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:15:41 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:49:24 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-static void	print_echo(t_data *data, int i)
+void	print_echo(t_data *data, int i)
 {
 	ft_putstr_fd(data->argv[i], data->out);
 	if (data->argv[i][0] && data->argv[i + 1])

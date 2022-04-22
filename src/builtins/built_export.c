@@ -6,13 +6,13 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:15:51 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:49:37 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-static void	print(t_env *tmp, int fd)
+void	print(t_env *tmp, int fd)
 {
 	ft_putstr_fd("declare -x ", fd);
 	ft_putstr_fd(tmp->name, fd);
