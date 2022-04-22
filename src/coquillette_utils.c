@@ -12,22 +12,21 @@
 
 #include "coquillette.h"
 
-void	print_error(char *cmd, char *msg)
+void	print_error(t_data *data, char *arg, char *msg, int err)
 {
+	data->last_return = err;
 	ft_putstr_fd("coquillette: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(data->argv[0], STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
+	if (arg)
+	{
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+	}
 	if (msg)
 		ft_putendl_fd(msg, STDERR_FILENO);
 	else
 		perror(NULL);
-}
-
-int	print_err(char *str, int err)
-{
-	ft_putendl_fd(str, STDERR_FILENO);
-	g_cmd_ret = err;
-	return (1);
 }
 
 t_env	*create_struct(char *env)

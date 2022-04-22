@@ -1,0 +1,2 @@
+- echo $? >b | echo $? >>b => last_return est le meme,
+le deuxieme echo n'attend pas que last return soit mis a jour

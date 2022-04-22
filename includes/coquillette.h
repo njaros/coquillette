@@ -53,8 +53,6 @@ typedef struct s_data
 	t_list	*env;
 }	            t_data;
 
-long	g_cmd_ret;
-
 // Gestion initiales de l'entrée utilisateur
 
 void	terminal_handler(int end);
@@ -99,12 +97,11 @@ int		law_to_print(char a, char q, char b);
 int		free_lst_analyse(t_list **to_free);
 int		error2(int err);
 
-//coquilette_utils1
+//coquilette_utils
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
-int	    print_err(char *str, int err);
 void	feel_free(void *env);
-void	print_error(char *cmd, char *msg);
+void	print_error(t_data *data, char *arg, char *msg, int err);
 
 // EXECUTION //
 // execution
@@ -112,40 +109,50 @@ void	execution(char *line_read, t_data *data);
 pid_t	*exec_cmd(t_data *data, char *line_read, int *i);
 int		create_process(t_data *data, int pipefd[2], int *fd_in);
 void	child(t_data *data, int pipefd[2]);
-int	    builtins(t_data *data);
+int	    do_builtins(t_data *data);
 // exec_utils
+int		check_is_builtin(t_data *data);
 void	transform_fds(t_data *data, int fd_in, int fd_out);
 char    **list_to_tab(t_list *env);
 void	ft_free(char **tab);
 void	error(char *msg);
 // found_cmd
-char	*found_cmd(char *entry, t_list *env);
-int		check_absolute_path(char *entry);
-int		is_a_directory(char *entry);
+char	*found_cmd(t_data *data, char *entry, t_list *env);
+int		check_absolute_path(t_data *data, char *entry);
+int		is_a_directory(t_data *data, char *entry);
 char    *get_path(char *cmd, char **path);
 
 // BUILTINS //
-//
-int	    built_cd(char **cmd_arg, t_list *env, int fd);
-int	    to_home(char c, t_list *env);
-int 	change_pwd_oldpwd(char *oldpwd, t_list *env);
-int 	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
+//builtins_utils
 t_env	*find_env_var(t_list *env, char *to_search);
-//
-int 	built_echo(char **cmd_arg, int fd);
-//
-int	    built_env(t_list *env, char **cmd_arg, int fd);
-//
-void	built_exit(t_data *data);
+int 	replace_or_create(t_list *env, t_env *var, char *var_name, char *path);
+void	adding_value(char *tmp, t_env *var, char *path);
+void	init_rank(t_list *env, int *size);
+//built_cd
+int		built_cd(t_data *data);
+int		to_home(t_data *data, char c);
+int		dash(t_data *data);
+int		move_to(t_data *data);
+void	change_pwd_oldpwd(char *oldpwd, t_list *env);
+//built_echo
+int		built_echo(t_data *data);
+static void	print_echo(t_data *data, int i);
+//built_env
+int		built_env(t_data *data);
+static void	print_env(t_data *data, t_env *tmp);
+//built_exit
+int		built_exit(t_data *data);
 int	    check_arg(char *arg);
-//
-int	    built_export(char **cmd_arg, t_list *env, int fd);
+//built_export
+int		built_export(t_data *data);
+int		export_alone(t_data *data);
+char	*set_to_search(t_data *data, int i);
 void	print_export(t_list *env, int size, int fd);
-void    init_rank(t_list *env, int *size);
-//
-int 	built_pwd(char **cmd_arg, int fd);
-//
-int 	built_unset(char **cmd_arg, t_list *env);
+static void	print(t_env *tmp, int fd);
+//built_pwd
+int		built_pwd(t_data *data);
+//built_unset
+int 	built_unset(t_data *data);
 t_list	*find_link(t_list *env, char *to_search);
 void	env_del(t_list *env, t_list *to_del);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freeteuse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:00:25 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/21 15:39:45 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/22 12:07:59 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	feel_free(void *env)
 		var = envv->content;
 		free(var->name);
 		free(var->value);
-		free(var);
+		// free(var);
 		envv = envv->next;
 	}
 }
