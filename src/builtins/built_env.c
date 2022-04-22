@@ -6,20 +6,20 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 16:17:18 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 13:51:04 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-static void	print(t_data *data, t_env *tmp)
+static void	print_env(t_data *data, t_env *tmp)
 {
 	ft_putstr_fd(tmp->name, data->out);
 	ft_putchar_fd('=', data->out);
 	ft_putendl_fd(tmp->value, data->out);
 }
 
-void	built_env(t_data *data)
+int	built_env(t_data *data)
 {
 	t_env	*tmp;
 
@@ -28,19 +28,16 @@ void	built_env(t_data *data)
 	if (data->out == -1)
 		data->last_return = 1;
 	else if (data->argv[1] != NULL)
-	{
-		data->last_return = 127;
-		print_error(data->argv[0], "too many arguments");
-	}
+		print_error(data, NULL, "too many arguments", 127);
 	else
 	{
 		while (data->env)
 		{
 			tmp = data->env->content;
 			if (tmp->eg == '=')
-				print(data, tmp);
+				print_env(data, tmp);
 			data->env = data->env->next;
 		}	
 	}
-	exit(data->last_return);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:44:27 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/21 15:45:17 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/22 13:01:30 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ char	*rl_get(char *line_read, t_data *data)
 	if (!line_read)
 	{
 		terminal_handler(1);
-		ft_lstclear(&(data->env), feel_free);
+		feel_free(data->env);
+		ft_lstclear(&(data->env), del);
 		ft_putendl_fd("exit", 1);
 		exit(WEXITSTATUS(data->last_return));
 	}

@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 11:27:45 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 13:50:32 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	check_arg(char *arg)
 	sign = 0;
 	while (arg[i])
 	{
-		if (!ft_isdigit(arg[i]) && arg[i] != '-' && arg[i] != '+' && arg[i] != ' ')
+		if (!ft_isdigit(arg[i]) && arg[i] != '-'
+			&& arg[i] != '+' && arg[i] != ' ')
 			return (1);
 		if (arg[i] == '-' || arg[i] == '+')
 			sign = 1;
@@ -32,31 +33,28 @@ int	check_arg(char *arg)
 	return (0);
 }
 
-void	built_exit(t_data *data, int *close)
+int	built_exit(t_data *data)
 {
 	t_env	*tmp;
 	char	*var_name;
-	
+
 	kill(0, SIGUSR1);
+	ft_putendl_fd("exit", STDERR_FILENO);
 	if (data->argv[1])
 	{
 		if (check_arg(data->argv[1]))
+			print_error(data, data->argv[1], "numeric argument required", 255);
+		else if (data->argv[2] != NULL)
 		{
-			print_error(data->argv[0], "numeric argument required");
-			data->last_return = 255;
-			exit(data->last_return);
+			print_error(data, NULL, "too many arguments", 1);
+			return (1);
 		}
-		if (data->argv[2] != NULL)
-		{
-			print_error(data->argv[0], "too many arguments");
-			exit(EXIT_FAILURE);
-		}
-		data->last_return = ft_atol(data->argv[1]);
+		else
+			data->last_return = ft_atol(data->argv[1]);
 	}
-	feel_free(data->env); // a intégrer dans une autre fonction hors du fork !!!
-	ft_lstclear(&(data->env), del); // ok ?
-	ft_putendl_fd("exit", STDERR_FILENO);
+	feel_free(data->env);
+	ft_lstclear(&(data->env), del);
+	ft_free(data->argv);
 	terminal_handler(1);
-	*close = 1;
 	exit(data->last_return);
 }

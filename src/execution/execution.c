@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/04/21 14:23:57 by ccartet          ###   ########.fr       */
-=======
-/*   Updated: 2022/04/21 14:40:03 by njaros           ###   ########lyon.fr   */
->>>>>>> ed36d6ddc8146ce400a6f55b931a5e09643cf083
+/*   Updated: 2022/04/22 12:00:36 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +15,19 @@
 int	builtins(t_data *data)
 {
 	if (!ft_strcmp(data->argv[0], "echo"))
-		built_echo(data);
+		return (built_echo(data));
 	else if (!ft_strcmp(data->argv[0], "cd"))
-		built_cd(data);
+		return (built_cd(data));
 	else if (!ft_strcmp(data->argv[0], "pwd"))
-		built_pwd(data);
+		return (built_pwd(data));
 	else if (!ft_strcmp(data->argv[0], "export"))
-		built_export(data);
+		return (built_export(data));
 	else if (!ft_strcmp(data->argv[0], "unset"))
-		built_unset(data);
+		return (built_unset(data));
 	else if (!ft_strcmp(data->argv[0], "env"))
-		built_env(data);
+		return (built_env(data));
 	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
-		built_exit(data);
+		return (built_exit(data));
 	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
 		return (0);
 	return (-1);
@@ -47,8 +43,9 @@ void	child(t_data *data, int pipefd[2])
 	if (data->in != 0)
 		if (dup2(data->in, STDIN_FILENO) == -1)
 			error("dup2 in");
-	if (close(pipefd[0]) == -1)
-		error("close pipefd[0]");
+	if (data->nb_cmd != 1)
+		if (close(pipefd[0]) == -1)
+			error("close pipefd[0]");
 	if (data->out != 1)
 		if (dup2(data->out, STDOUT_FILENO) == -1)
 			error("dup2 out");
@@ -56,14 +53,14 @@ void	child(t_data *data, int pipefd[2])
 	{
 		if (builtins(data) == -1)
 		{
-			cmd_path = found_cmd(data->argv[0], data->env);
+			cmd_path = found_cmd(data, data->argv[0], data->env);
 			if (!cmd_path || data->argv[0][0] == '\0')
-				exit(1);
+				exit(data->last_return);
 			if (execve(cmd_path, data->argv, envp) != 0)
 				error("execve");
 		}
 	}
-	exit(0);
+	exit(data->last_return);
 }
 
 int	create_process(t_data *data, int pipefd[2], int *fd_in)
@@ -71,15 +68,16 @@ int	create_process(t_data *data, int pipefd[2], int *fd_in)
 	pid_t	f_pid;
 
 	transform_fds(data, *fd_in, pipefd[1]);
-	dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
-	dprintf(2, "%d, %d\n", pipefd[1], pipefd[0]);
+	// dprintf(2, "%s, %d, %d\n", data->argv[0], data->in, data->out);
+	// dprintf(2, "%d, %d\n", pipefd[1], pipefd[0]);
 	f_pid = fork();
 	if (f_pid == -1)
 		error("fork");
 	if (f_pid == 0)
 		child(data, pipefd);
-	if (close(pipefd[1]) == -1)
-		error("close pipefd[1]");
+	if (data->nb_cmd != 1)
+		if (close(pipefd[1]) == -1)
+			error("close pipefd[1]");
 	if (data->in != 0)
 		if (close(data->in) == -1)
 			error("close in");

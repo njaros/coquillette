@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 16:17:39 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 10:35:57 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	env_del(t_list *env, t_list *to_del)
 	free(var);
 }
 
-void	built_unset(t_data *data)
+int	built_unset(t_data *data)
 {
 	t_list	*tmp;
 	int		i;
@@ -64,5 +64,5 @@ void	built_unset(t_data *data)
 			env_del(data->env, tmp);
 		i++;
 	}
-	exit(data->last_return);
+	return (0);
 }

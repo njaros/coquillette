@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 16:17:26 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 13:49:01 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	print_export(t_list *env, int size, int fd)
 	}
 }
 
-char	*set_to_search(t_data *data)
+char	*set_to_search(t_data *data, int i)
 {
 	int		a;
 	char	*to_search;
@@ -63,23 +63,21 @@ char	*set_to_search(t_data *data)
 		to_search = ft_strdup(data->argv[i]); // à vérifier ?
 	if (to_search[0] == '\0')
 	{
-		print_error(data->argv[0], "not a valid identifier");
-		data->last_return = 1;
+		print_error(data, data->argv[1], "not a valid identifier", 1);
 		return (NULL);
 	}
 	while (to_search[a++])
 	{
 		if (!ft_isdigit(to_search[a]))
 		{
-			print_error(data->argv[0], "not a valid identifier");
-			data->last_return = 1;
+			print_error(data, data->argv[1], "not a valid identifier", 1);
 			return (NULL);
 		}
 	}
 	return (to_search);
 }
 
-void	export_alone(t_data *data)
+int	export_alone(t_data *data)
 {
 	int	size_env;
 
@@ -87,16 +85,17 @@ void	export_alone(t_data *data)
 	if (data->out == -1)
 	{
 		data->last_return = 1;
-		exit(data->last_return);
+		return (1);
 	}
 	if (!data->argv[1])
 	{
 		init_rank(data->env, &size_env);
-		print_export(data->env, size_env, data->fd);
+		print_export(data->env, size_env, data->out);
 	}
+	return (0);
 }
 
-void	built_export(t_data *data)
+int	built_export(t_data *data)
 {
 	int		i;
 	t_env	*tmp;
@@ -108,12 +107,13 @@ void	built_export(t_data *data)
 	i = 1;
 	size = 0;
 	kill(0, SIGUSR1);
-	export_alone(data);
+	if (export_alone(data))
+		return (1);
 	while (data->argv[i])
 	{
-		to_search = set_to_search(data);
+		to_search = set_to_search(data, i);
 		if (!to_search)
-			exit(data->last_return);
+			return (1);
 		tmp = find_env_var(data->env, to_search);
 		free(to_search);
 		size = ft_strlen(data->argv[i]);
@@ -121,5 +121,5 @@ void	built_export(t_data *data)
 		replace_or_create(data->env, tmp, data->argv[i], value);
 		i++;
 	}
-	exit(data->last_return);
+	return (0);
 }

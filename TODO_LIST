@@ -1,19 +1,14 @@
 ## tri des suggestions de la plus importante a la moins important ##
 
-C - recuperer le "WEXITSTATUS" du wstatus du wait - en cours
+C - recuperer le "WEXITSTATUS" du wstatus du wait - vérifier avec ctrl c 
 
-C - forker tout, meme les builtins => les modifier pour qu'ils exit(last_return)
+C - builtin EXIT : revoir les cas d'erreur !
 
-C - builtin EXIT : revoir les cas d'erreur ! ajouter une sous-fonction qui free data, etc
+C - vérifier sur bash ce qu'il se passe quand on a un fd = -1, ajouter cette
+condition dans les builtins (echo, env, etc), et si je close un fd = -1, que
+se passe-t-il ? -  à vérifier
 
-C - builtin PWD : si getcwd ne fonctionne pas (par exemple, avec le cas où je me trouve dans un dossier qui a été supprimé), je dois quand même pouvoir afficher pwd => récupérer la variable dans ma liste chainée ?? - OK à tester !!
-
-C - finir de sécuriser malloc, etc dans les builtins
-C - norminer builtins !!!! => reste CD et EXIT
-
-C - réorganiser fonctions et fichiers - en cours
-
-C - vérifier sur bash ce qu'il se passe quand on a un fd = -1, ajouter cette condition dans les builtins (echo, env, etc), et si je close un fd = -1, que se passe-t-il ?
+- echo $? >b | echo $? >>b 127 et 0 => piper les builtins
 
 - bonus ? ou la flemme ?
 

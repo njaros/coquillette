@@ -6,13 +6,13 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:09:38 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 16:17:32 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 12:05:51 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-void	built_pwd(t_data *data)
+int	built_pwd(t_data *data)
 {
 	char	pwd[MAXPATHLEN];
 	t_env	*tmp;
@@ -22,16 +22,16 @@ void	built_pwd(t_data *data)
 	if (data->out == -1)
 	{
 		data->last_return = 1;
-		exit(data->last_return);
+		return (1);
 	}
 	if (!getcwd(pwd, MAXPATHLEN))
 	{
-		tmp = find_env_var(env, "PWD");
+		tmp = find_env_var(data->env, "PWD");
 		ft_putendl_fd(tmp->value, data->out);
 	}
 	else
 		ft_putendl_fd(pwd, data->out);
-	exit(data->last_return);
+	return (0);
 }
 
-// attention vérifier erreur d'ecriture permission denied
+// attention vérifier erreur d'ecriture sur fichier permission denied

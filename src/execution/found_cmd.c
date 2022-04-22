@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 13:42:40 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 13:43:37 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 14:01:01 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_path(char *cmd, char **path)
 	return (cmd_path);
 }
 
-int	is_a_directory(char *entry)
+int	is_a_directory(t_data *data, char *entry)
 {
 	char	**path_tab;
 	int		j;
@@ -55,7 +55,7 @@ int	is_a_directory(char *entry)
 			error("malloc");
 		if (!ft_strcmp(blop, entry))
 		{
-			print_error(entry, "is a directory");
+			print_error(data, NULL, "is a directory", 126);
 			free(path_tab);
 			free(blop);
 			return (-1);
@@ -67,9 +67,9 @@ int	is_a_directory(char *entry)
 	return (0);
 }
 
-int	check_absolute_path(char *entry)
+int	check_absolute_path(t_data *data, char *entry)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (entry[++i])
@@ -78,28 +78,28 @@ int	check_absolute_path(char *entry)
 		{
 			if (!opendir(entry) && errno == ENOENT)
 			{
-				print_error(entry, NULL);
+				print_error(data, NULL, NULL, 127);
 				return (-1);
 			}
-			if (is_a_directory(entry) == -1)
+			if (is_a_directory(data, entry) == -1)
 				return (-1);
 			if (access(entry, X_OK) == 0)
 				return (1);
-			print_error(entry, NULL);
+			print_error(data, NULL, NULL, 126);
 			return (-1);
 		}
 	}
 	return (0);
 }
 
-char	*found_cmd(char *entry, t_list *env)
+char	*found_cmd(t_data *data, char *entry, t_list *env)
 {
 	char	*cmd;
 	char	**path_tab;
 	int		ck;
 	t_env	*tmp;
 
-	ck = check_absolute_path(entry);
+	ck = check_absolute_path(data, entry);
 	if (ck == 1)
 		return (entry);
 	if (ck == -1)
@@ -107,7 +107,7 @@ char	*found_cmd(char *entry, t_list *env)
 	tmp = find_env_var(env, "PATH");
 	if (!tmp)
 	{
-		print_error(entry, "command not found");
+		print_error(data, NULL, "command not found", 127);
 		return (NULL);
 	}
 	path_tab = ft_split(tmp->value, ':');
@@ -115,7 +115,7 @@ char	*found_cmd(char *entry, t_list *env)
 		error("malloc");
 	cmd = get_path(entry, path_tab);
 	if (!cmd)
-		print_error(entry, "command not found");
+		print_error(data, NULL, "command not found", 127); // et permission ?
 	ft_free(path_tab);
 	return (cmd);
 }

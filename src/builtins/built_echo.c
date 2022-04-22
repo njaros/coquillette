@@ -6,20 +6,20 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 16:17:09 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 13:35:36 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-static void	print(t_data *data, int i)
+static void	print_echo(t_data *data, int i)
 {
 	ft_putstr_fd(data->argv[i], data->out);
 	if (data->argv[i][0] && data->argv[i + 1])
 		ft_putchar_fd(' ', data->out);
 }
 
-void	built_echo(t_data *data)
+int	built_echo(t_data *data)
 {
 	int		nl;
 	int		i;
@@ -30,7 +30,7 @@ void	built_echo(t_data *data)
 	if (data->out == -1)
 	{
 		data->last_return = 1;
-		exit(data->last_return);
+		return (1);
 	}
 	nl = 1;
 	i = 1;
@@ -39,10 +39,10 @@ void	built_echo(t_data *data)
 		if (data->argv[i][0] == '-' && data->argv[i][1] == 'n')
 			nl = 0;
 		else
-			print(data, i);
+			print_echo(data, i);
 		i++;
 	}
 	if (nl)
 		ft_putchar_fd('\n', data->out);
-	exit(data->last_return);
+	return (0);
 }
