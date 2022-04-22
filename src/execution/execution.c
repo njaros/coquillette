@@ -6,31 +6,28 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:35:37 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:59:15 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-int	do_builtins(t_data *data)
+void	recover_status(t_data *data, pid_t *f_pid)
 {
-	if (!ft_strcmp(data->argv[0], "echo"))
-		return (built_echo(data));
-	else if (!ft_strcmp(data->argv[0], "cd"))
-		return (built_cd(data));
-	else if (!ft_strcmp(data->argv[0], "pwd"))
-		return (built_pwd(data));
-	else if (!ft_strcmp(data->argv[0], "export"))
-		return (built_export(data));
-	else if (!ft_strcmp(data->argv[0], "unset"))
-		return (built_unset(data));
-	else if (!ft_strcmp(data->argv[0], "env"))
-		return (built_env(data));
-	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
-		return (built_exit(data));
-	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
-		return (0);
-	return (-1);
+	int	j;
+	int	status;
+
+	j = 0;
+	while (j < data->nb_cmd)
+	{
+		waitpid(f_pid[j], &status, 0);
+		j++;
+	}
+	if (WIFEXITED(status)) // si le child s'est terminé par un exit
+		data->last_return = WEXITSTATUS(status);
+	if (WIFSIGNALED(status)) // si le child s'est terminé grâce à un signal
+		data->last_return = 130;
+	free(f_pid);
 }
 
 void	child(t_data *data, int pipefd[2])
@@ -38,7 +35,6 @@ void	child(t_data *data, int pipefd[2])
 	char	*cmd_path;
 	char	**envp;
 
-	cmd_path = NULL;
 	envp = list_to_tab(data->env);
 	if (data->in != 0)
 		if (dup2(data->in, STDIN_FILENO) == -1)
@@ -128,17 +124,7 @@ void	execution(char *line_read, t_data *data)
 		if (!(check_is_builtin(data) != -1 && data->nb_cmd == 1))
 		{
 			f_pid = exec_cmd(data, line_read, &i);
-			j = 0;
-			while (j < data->nb_cmd)
-			{
-				waitpid(f_pid[j], &status, 0);
-				j++;
-			}
-			if (WIFEXITED(status)) // si le child s'est terminé par un exit
-				data->last_return = WEXITSTATUS(status);
-			if (WIFSIGNALED(status)) // si le child s'est terminé grâce à un signal
-				data->last_return = 130;
-			free(f_pid);
+			recover_status(data, f_pid);
 		}
 		else
 			do_builtins(data);

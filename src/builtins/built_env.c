@@ -6,13 +6,13 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:15:44 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:49:28 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-static void	print_env(t_data *data, t_env *tmp)
+void	print_env(t_data *data, t_env *tmp)
 {
 	ft_putstr_fd(tmp->name, data->out);
 	ft_putchar_fd('=', data->out);
