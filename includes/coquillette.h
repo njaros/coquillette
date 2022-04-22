@@ -62,38 +62,58 @@ char	*rl_get(char *line_read, t_data *data);
 
 // Fonctions d'initialisation
 
-void 	init_data(t_data *data, int i, char *str);
 void	init(struct sigaction *act, t_data *data, t_list *env);
 
 // ICI ON PARSE
-void	do_nothing(void *let_him_alive);
+
+// check_quote
 char	*check_quote_end(char *str);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
+char	*guilty_searcher(char *str, int *quote, int *dquote);
+// check_quote2
+void	le_coupable_est(char *c);
 int		first_char_is_pipe(char *str, int *i);
 int		last_char_is_pipe(char *str);
-char	*guilty_searcher(char *str, int *quote, int *dquote);
-void	le_coupable_est(char *c);
-int		analyse(char *str, int *i, t_data *data);
+int		ft_tokenchar(int c);
+int		ft_metachar(int c);
+// analyse
+void	do_nothing(void *let_him_alive);
 int		ajout_block(t_list **pouet, int *i, int *ptr, char *str);
+int		analyse(char *str, int *i, t_data *data);
+// analyse2
+int		lst_dequotage(t_list *lst, t_data *data);
+int		end_parsing(char *str, int *i, t_data *data);
+int		organiser(t_list **pouet, int *i, char *str, t_data *data);
+// analyse_utils
+int		count_pipe(char *str);
+void 	init_data(t_data *data, int i, char *str);
+void	init_analyse(char *str, int *i, int *ptr);
+void	quote_switcher(int *quote, int *dquote, char c);
+int		analyse_sep(char *str, int *i, int context);
+// chevron
 int		chevronnage(t_list **pouet, t_data *data);
 int		chevron_manager(t_list **pouet, t_list *prev, t_data *data);
 int		manip_chevron_str(char **str);
 void	file_to_open(char *file, int chev, t_data *data);
+// heredoc
 char	*heredoc_handler(char *str);
 void	heredoc_fork(int fd, char *end);
-int		analyse_sep(char *str, int *i, int context);
-void	init_analyse(char *str, int *i, int *ptr);
-void	quote_switcher(int *quote, int *dquote, char c);
-int		organiser(t_list **pouet, int *i, char *str, t_data *data);
-int		ft_tokenchar(int c);
-int		ft_metachar(int c);
-int		ft_switch(int n);
+char	*parse_heredoc(char *str, int *i);
+int		is_heredoc(char *str, int quote, int dquote);
+char	*ft_heredoc(char *eof);
+// quote_doll_handler
 char	*quote_doll_handler(char *str, t_data *data);
-char	*only_quote_handler(char *str);
+char	*handler_doller(char *ret, char *str, int *ind, t_data *data);
 int		handler_switcher(char c, char q);
+char	*is_str_dollz(char *ret, char *str, int *ind, t_data *data);
+char	*is_num_dollz(char *ret, char *str, int *ind, t_data *data);
+// quote_doll_handler2
+char	*only_quote_handler(char *str);
 int		law_to_print(char a, char q, char b);
+int		trap_dollz(char b);
 
-//
+//EN DESSOUS ON NE PARSE PAS
+
 int		free_lst_analyse(t_list **to_free);
 int		error2(int err);
 
