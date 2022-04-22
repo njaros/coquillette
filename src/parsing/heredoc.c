@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 13:24:45 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/21 14:47:09 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/22 16:31:08 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*ft_heredoc(char *eof)
 	{
 		close(fd[0]);
 		close(fd[1]);
+		kill(0, SIGUSR2);
 		return (NULL);
 	}
 	close(fd[1]);

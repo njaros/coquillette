@@ -57,19 +57,16 @@ typedef struct s_data
 
 void	terminal_handler(int end);
 void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext);
+void	reset_readline(void);
 char	*prompt_builder(t_data *data);
 char	*rl_get(char *line_read, t_data *data);
 
 // Fonctions d'initialisation
 
-<<<<<<< HEAD
-=======
 void	init_data(t_data *data, int i, char *str);
->>>>>>> 40f7b8e0901ba815543c04405f988e774998690a
 void	init(struct sigaction *act, t_data *data, t_list *env);
 
 // ICI ON PARSE
-
 // check_quote
 char	*check_quote_end(char *str);
 int		double_token_char(char *str, int *quote, int *dquote, int *i);
@@ -90,7 +87,7 @@ int		end_parsing(char *str, int *i, t_data *data);
 int		organiser(t_list **pouet, int *i, char *str, t_data *data);
 // analyse_utils
 int		count_pipe(char *str);
-void 	init_data(t_data *data, int i, char *str);
+void	init_data(t_data *data, int i, char *str);
 void	init_analyse(char *str, int *i, int *ptr);
 void	quote_switcher(int *quote, int *dquote, char c);
 int		analyse_sep(char *str, int *i, int context);
