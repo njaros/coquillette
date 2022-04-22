@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:10:44 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 14:03:25 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 14:30:13 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,25 @@ void	transform_fds(t_data *data, int fd_in, int fd_out)
 		data->in = fd_in;
 	if (data->out == -2)
 		data->out = fd_out;
+}
+
+int	check_is_builtin(t_data *data)
+{
+	if (!ft_strcmp(data->argv[0], "echo"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "cd"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "pwd"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "export"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "unset"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "env"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
+		return (0);
+	return (-1);
 }

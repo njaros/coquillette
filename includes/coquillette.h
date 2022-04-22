@@ -109,8 +109,9 @@ void	execution(char *line_read, t_data *data);
 pid_t	*exec_cmd(t_data *data, char *line_read, int *i);
 int		create_process(t_data *data, int pipefd[2], int *fd_in);
 void	child(t_data *data, int pipefd[2]);
-int	    builtins(t_data *data);
+int	    do_builtins(t_data *data);
 // exec_utils
+int		check_is_builtin(t_data *data);
 void	transform_fds(t_data *data, int fd_in, int fd_out);
 char    **list_to_tab(t_list *env);
 void	ft_free(char **tab);

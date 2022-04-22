@@ -52,7 +52,7 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 	else if (sig == SIGINT && siginfo->si_pid == pid_fork)
 	{
 		pid_fork = -1;
-		exit(siginfo->si_signo);
+		exit(130);
 	}
 	else if (sig == SIGINT)
 		write(1, "\n", 1);
