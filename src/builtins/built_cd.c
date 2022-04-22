@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 13:58:22 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:15:37 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	built_cd(t_data *data)
 	char	oldpwd[MAXPATHLEN];
 
 	data->last_return = 0;
-	kill(0, SIGUSR1);
 	getcwd(oldpwd, MAXPATHLEN);
 	if (!data->argv[1])
 	{

@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 13:49:01 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:15:51 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ int	built_export(t_data *data)
 	data->last_return = 0;
 	i = 1;
 	size = 0;
-	kill(0, SIGUSR1);
 	if (export_alone(data))
 		return (1);
 	while (data->argv[i])

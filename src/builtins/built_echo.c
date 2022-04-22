@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 13:35:36 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:15:41 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	built_echo(t_data *data)
 	char	*new;
 
 	data->last_return = 0;
-	kill(0, SIGUSR1);
 	if (data->out == -1)
 	{
 		data->last_return = 1;

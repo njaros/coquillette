@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:45:10 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 13:50:32 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:15:47 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	built_exit(t_data *data)
 	t_env	*tmp;
 	char	*var_name;
 
-	kill(0, SIGUSR1);
 	ft_putendl_fd("exit", STDERR_FILENO);
 	if (data->argv[1])
 	{

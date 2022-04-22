@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 14:47:14 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:35:37 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ pid_t	*exec_cmd(t_data *data, char *line_read, int *i)
 	f_pid = malloc(sizeof(int) * data->nb_cmd);
 	if (!f_pid)
 		error("malloc");
-	while (j < data->nb_cmd && data->argv)
+	while (j < data->nb_cmd)
 	{
 		if (j < data->nb_cmd - 1)
 			if (pipe(pipefd) == -1)
@@ -123,21 +123,24 @@ void	execution(char *line_read, t_data *data)
 
 	i = 0;
 	analyse(line_read, &i, data);
-	if (!(check_is_builtin(data) != -1 && data->nb_cmd == 1))
+	if (data->argv)
 	{
-		f_pid = exec_cmd(data, line_read, &i);
-		j = 0;
-		while (j < data->nb_cmd)
+		if (!(check_is_builtin(data) != -1 && data->nb_cmd == 1))
 		{
-			waitpid(f_pid[j], &status, 0);
-			j++;
+			f_pid = exec_cmd(data, line_read, &i);
+			j = 0;
+			while (j < data->nb_cmd)
+			{
+				waitpid(f_pid[j], &status, 0);
+				j++;
+			}
+			if (WIFEXITED(status)) // si le child s'est terminé par un exit
+				data->last_return = WEXITSTATUS(status);
+			if (WIFSIGNALED(status)) // si le child s'est terminé grâce à un signal
+				data->last_return = 130;
+			free(f_pid);
 		}
-		if (WIFEXITED(status)) // si le child s'est terminé par un exit
-			data->last_return = WEXITSTATUS(status);
-		if (WIFSIGNALED(status)) // si le child s'est terminé grâce à un signal
-			data->last_return = 130;
-		free(f_pid);
+		else
+			do_builtins(data);
 	}
-	else
-		do_builtins(data);
 }

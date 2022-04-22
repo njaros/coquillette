@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 13:51:04 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:15:44 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	built_env(t_data *data)
 	t_env	*tmp;
 
 	data->last_return = 0;
-	kill(0, SIGUSR1);
 	if (data->out == -1)
 		data->last_return = 1;
 	else if (data->argv[1] != NULL)

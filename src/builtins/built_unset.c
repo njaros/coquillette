@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 10:35:57 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:16:02 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	built_unset(t_data *data)
 
 	data->last_return = 0;
 	i = 1;
-	kill(0, SIGUSR1);
 	while (data->argv[i])
 	{
 		tmp = find_link(data->env, data->argv[i]);
