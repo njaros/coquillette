@@ -37,7 +37,6 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 	static int	pid_father = 0;
 	static int	pid_fork = -1;
 
-	fprintf (stderr, "signal recu de %d qui est %d\n", siginfo->si_pid, siginfo->si_signo);
 	if (sig == SIGUSR2 && !pid_father)
 		pid_father = siginfo->si_pid;
 	else if (sig == SIGUSR1 && siginfo->si_pid != pid_father)
