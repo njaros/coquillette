@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_switch.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 12:12:36 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 15:43:06 by njaros           ###   ########lyon.fr   */
+/*   Created: 2022/04/21 15:35:48 by njaros            #+#    #+#             */
+/*   Updated: 2022/04/21 15:43:34 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int	ft_strcmp(char *s1, char *s2)
+int	ft_switch(int n)
 {
-	int	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (!(s1[i] == s2[i]))
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (0);
+	if (n)
+		return (0);
+	return (1);
 }

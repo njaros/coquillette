@@ -12,66 +12,32 @@
 
 #include "coquillette.h"
 
-void	print_error(char *cmd, char *msg)
+void	ft_free(char **tab)
 {
+	int	i;
+
+	i = -1;
+	while (tab[++i])
+		free(tab[i]);
+	free(tab);
+	tab = NULL;
+}
+
+void	print_error(t_data *data, char *arg, char *msg, int err)
+{
+	data->last_return = err;
 	ft_putstr_fd("coquillette: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(data->argv[0], STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
+	if (arg)
+	{
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+	}
 	if (msg)
 		ft_putendl_fd(msg, STDERR_FILENO);
 	else
 		perror(NULL);
-}
-
-int	print_err(char *str, int err)
-{
-	ft_putendl_fd(str, STDERR_FILENO);
-	g_cmd_ret = err;
-	return (1);
-}
-
-int	count_pipe(char *str)
-{
-	int	count;
-	int	i;
-	int	quote;
-	int dquote;
-
-	i = 0;
-	count = 0;
-	quote = 0;
-	dquote = 0;
-	while (str[i])
-	{
-		quote_switcher(&quote, &dquote, str[i]);
-		if (str[i] == '|' && !quote && !dquote)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-void init_data(t_data *data, int i, char *str)
-{
-	static int	first_init = 1;
-
-	if (first_init)
-	{
-		data->last_return = 0;
-		first_init = 0;
-	}
-	if (!i)
-	{
-		data->nb_cmd = 1 + count_pipe(str);
-		data->in = 0;
-	}
-	if (i)
-	{
-		data->in = -2;
-		ft_free(data->argv);
-	}
-	data->out = -2;
-	data->argv = NULL;
 }
 
 t_env	*create_struct(char *env)
@@ -106,35 +72,11 @@ t_list	*init_envp(char **envp)
 		tmp = ft_lstnew(create_struct(envp[i]));
 		if (!tmp)
 		{
-			ft_lstclear(&env, del); // a vérifier !!
+			ft_lstclear(&env, del);
 			return (NULL);
 		}
 		ft_lstadd_back(&env, tmp);
 		i++;
 	}
 	return (env);
-}
-
-char	*rl_get(char *line_read, t_data *data)
-{
-	char	*prompt;
-
-	prompt = prompt_builder(data);
-	if (line_read)
-		free(line_read);
-	line_read = readline(prompt);
-	free(prompt);
-	if (!line_read)
-	{
-		terminal_handler(1);
-		ft_putendl_fd("\nexit", 1);
-		exit(WEXITSTATUS(data->last_return));
-	}
-	line_read = check_quote_end(line_read);
-	if (line_read && *line_read)
-	{
-		add_history(line_read);
-		line_read = heredoc_handler(line_read);
-	}
-	return (line_read);
 }

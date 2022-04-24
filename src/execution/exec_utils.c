@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:10:44 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/19 11:38:13 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:56:48 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,7 @@
 void	error(char *msg)
 {
 	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_free(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-	tab = NULL;
+	// exit(EXIT_FAILURE);
 }
 
 char	**list_to_tab(t_list *env)
@@ -46,10 +35,8 @@ char	**list_to_tab(t_list *env)
 	{
 		tmp = env->content;
 		first = ft_strjoin(tmp->name, "=");
-		if (!first)
-			error("malloc");
 		envp[i] = ft_strjoin(first, tmp->value);
-		if (!envp[i])
+		if (!first || !envp[i])
 			error("malloc");
 		free(first);
 		i++;
@@ -59,87 +46,52 @@ char	**list_to_tab(t_list *env)
 	return (envp);
 }
 
-char	*get_path(char *cmd, char **path)
+void	transform_fds(t_data *data, int fd_in, int fd_out)
 {
-	char	*cmd_path;
-	char	*tmp;
-	int		i;
-
-	cmd_path = NULL;
-	i = 0;
-	while (path[i])
-	{
-		tmp = ft_strjoin(path[i], "/");
-		if (!tmp)
-			error("malloc");
-		cmd_path = ft_strjoin(tmp, cmd);
-		if (!cmd_path)
-			error("malloc");
-		free(tmp);
-		if (access(cmd_path, X_OK) == 0)
-			break ;
-		free(cmd_path);
-		cmd_path = NULL;
-		i++;
-	}
-	return (cmd_path);
+	if (data->in == -2)
+		data->in = fd_in;
+	if (data->out == -2)
+		data->out = fd_out;
 }
 
-int	check_path(char *entry)
+int	check_is_builtin(t_data *data)
 {
-	int	i;
-
-	i = -1;
-	// gérer Is a directory ?!
-	while (entry[++i])
-	{
-		if (entry[i] == '/')
-		{
-			if (!opendir(entry) && errno == ENOENT)
-			{
-				print_error(entry, NULL);
-				return (-1);
-			}
-			else
-			{
-				if (access(entry, X_OK) == 0)
-					return (1);
-				else
-				{
-					print_error(entry, NULL);
-					return (-1);
-				}
-			}
-		}
-	}
-	return (0);
+	if (!ft_strcmp(data->argv[0], "echo"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "cd"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "pwd"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "export"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "unset"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "env"))
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
+		return (0);
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
+		return (0);
+	return (-1);
 }
 
-char	*found_cmd(char *entry, t_list *env)
+int	do_builtins(t_data *data)
 {
-	char	*cmd;
-	char	**path_tab;
-	int		ck;
-	t_env	*tmp;
-
-	ck = check_path(entry);
-	if (ck == 1)
-		return (entry);
-	if (ck == -1)
-		return (NULL);
-	tmp = find_env_var(env, "PATH");
-	if (!tmp)
-	{
-		print_error(entry, "command not found"); // vérifier message si path unset
-		return (NULL);
-	}
-	path_tab = ft_split(tmp->value, ':');
-	if (!path_tab)
-		error("malloc");
-	cmd = get_path(entry, path_tab);
-	if (!cmd)
-		print_error(entry, "command not found");
-	ft_free(path_tab);
-	dprintf(2, "%s\n", cmd);
-	return (cmd);
+	if (!ft_strcmp(data->argv[0], "echo"))
+		return (built_echo(data));
+	else if (!ft_strcmp(data->argv[0], "cd"))
+		return (built_cd(data));
+	else if (!ft_strcmp(data->argv[0], "pwd"))
+		return (built_pwd(data));
+	else if (!ft_strcmp(data->argv[0], "export"))
+		return (built_export(data));
+	else if (!ft_strcmp(data->argv[0], "unset"))
+		return (built_unset(data));
+	else if (!ft_strcmp(data->argv[0], "env"))
+		return (built_env(data));
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
+		return (built_exit(data));
+	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
+		return (0);
+	return (-1);
 }

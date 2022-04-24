@@ -6,17 +6,47 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:40:11 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/07 14:59:20 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/21 15:37:44 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-int	ft_switch(int n)
+int	count_pipe(char *str)
 {
-	if (n)
-		return (0);
-	return (1);
+	int	count;
+	int	i;
+	int	quote;
+	int	dquote;
+
+	i = 0;
+	count = 0;
+	quote = 0;
+	dquote = 0;
+	while (str[i])
+	{
+		quote_switcher(&quote, &dquote, str[i]);
+		if (str[i] == '|' && !quote && !dquote)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+void	init_data(t_data *data, int i, char *str)
+{
+	if (!i)
+	{
+		data->nb_cmd = 1 + count_pipe(str);
+		data->in = 0;
+	}
+	if (i)
+	{
+		data->in = -2;
+		ft_free(data->argv);
+	}
+	data->out = -2;
+	data->argv = NULL;
 }
 
 void	quote_switcher(int *quote, int *dquote, char c)

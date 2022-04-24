@@ -33,12 +33,11 @@ LIB =	libft/libft.a
 ## LES SOURCES, OBJETS et INCLUDES ##
 
 LST_SRCS =	coquillette.c	\
-			coquillette_utils1.c	\
+			coquillette_utils.c	\
 			prompt.c \
 			traitement_signaux.c \
-			parsing/quote_dollars.c	\
-			parsing/quote_dollars2.c	\
-			parsing/quote_dollars3.c	\
+			parsing/check_quote.c	\
+			parsing/check_quote2.c	\
 			parsing/analyse.c	\
 			parsing/analyse2.c	\
 			parsing/quote_doll_handler.c \
@@ -49,6 +48,8 @@ LST_SRCS =	coquillette.c	\
 			parsing/freeteuse.c	\
 			execution/execution.c	\
 			execution/exec_utils.c	\
+			execution/found_cmd.c	\
+			builtins/builtins_utils.c	\
 			builtins/built_cd.c	\
 			builtins/built_echo.c	\
 			builtins/built_env.c	\

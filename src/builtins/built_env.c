@@ -6,30 +6,37 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 14:35:12 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/22 15:49:28 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-int	built_env(t_list *env, char **cmd_arg, int fd)
+void	print_env(t_data *data, t_env *tmp)
+{
+	ft_putstr_fd(tmp->name, data->out);
+	ft_putchar_fd('=', data->out);
+	ft_putendl_fd(tmp->value, data->out);
+}
+
+int	built_env(t_data *data)
 {
 	t_env	*tmp;
 
-	g_cmd_ret = 0;
-	kill(0, SIGUSR1);
-	if (cmd_arg[1] != NULL)
-		return (print_err("env : too many arguments", 1));
-	while (env)
+	data->last_return = 0;
+	if (data->out == -1)
+		data->last_return = 1;
+	else if (data->argv[1] != NULL)
+		print_error(data, NULL, "too many arguments", 127);
+	else
 	{
-		tmp = env->content;
-		if (tmp->eg == '=')
+		while (data->env)
 		{
-			ft_putstr_fd(tmp->name, fd);
-			ft_putchar_fd('=', fd);
-			ft_putendl_fd(tmp->value, fd);
-		}
-		env = env->next;
+			tmp = data->env->content;
+			if (tmp->eg == '=')
+				print_env(data, tmp);
+			data->env = data->env->next;
+		}	
 	}
 	return (0);
 }
