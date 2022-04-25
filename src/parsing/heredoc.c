@@ -28,6 +28,7 @@ void	heredoc_fork(int fd, char *eof)
 		free(line_read);
 		line_read = readline(">");
 	}
+	kill (0, SIGUSR1);
 	free(line_read);
 	free(noqeof);
 	exit(0);
