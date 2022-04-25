@@ -18,7 +18,7 @@ PATH_RL = $(shell brew --prefix readline)
 
 NAME = minishell
 CC = gcc
-FLAGS = ##-Werror -Wextra -Wall
+FLAGS = -Werror -Wextra -Wall
 
 ## LES CHEMINS ##
 

@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:49:28 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 10:35:51 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	print_env(t_data *data, t_env *tmp)
 int	built_env(t_data *data)
 {
 	t_env	*tmp;
+	t_list	*move;
 
+	move = data->env;
+	tmp = NULL;
 	data->last_return = 0;
 	if (data->out == -1)
 		data->last_return = 1;
@@ -30,12 +33,12 @@ int	built_env(t_data *data)
 		print_error(data, NULL, "too many arguments", 127);
 	else
 	{
-		while (data->env)
+		while (move)
 		{
-			tmp = data->env->content;
+			tmp = move->content;
 			if (tmp->eg == '=')
 				print_env(data, tmp);
-			data->env = data->env->next;
+			move = move->next;
 		}	
 	}
 	return (0);

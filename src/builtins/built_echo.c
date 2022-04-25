@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:49:24 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 10:37:16 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,15 @@ int	built_echo(t_data *data)
 {
 	int		nl;
 	int		i;
-	char	*new;
 
 	data->last_return = 0;
+	nl = 1;
+	i = 1;
 	if (data->out == -1)
 	{
 		data->last_return = 1;
 		return (1);
 	}
-	nl = 1;
-	i = 1;
 	while (data->argv[i])
 	{
 		if (data->argv[i][0] == '-' && data->argv[i][1] == 'n')

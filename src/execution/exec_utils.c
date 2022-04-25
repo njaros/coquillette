@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:10:44 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:56:48 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 14:42:42 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	error(char *msg)
 {
 	perror(msg);
-	// exit(EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
 
 char	**list_to_tab(t_list *env)

@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:49:37 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 14:40:56 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,24 @@ char	*set_to_search(t_data *data, int i)
 	char	*to_search;
 	int		len;
 
-	a = -1;
+	a = 0;
 	len = ft_strmchr(data->argv[i], "=+") - data->argv[i];
 	to_search = ft_substr(data->argv[i], 0, len);
 	if (!to_search)
-		to_search = ft_strdup(data->argv[i]); // à vérifier ?
-	if (to_search[0] == '\0')
+		to_search = ft_strdup(data->argv[i]);
+	if (!ft_isalpha(to_search[a]))
 	{
 		print_error(data, data->argv[1], "not a valid identifier", 1);
 		return (NULL);
-	}
-	while (to_search[a++])
+	}	
+	while (to_search[a])
 	{
-		if (!ft_isdigit(to_search[a]))
+		if (!ft_isalpha(to_search[a]) && !ft_isdigit(to_search[a]))
 		{
 			print_error(data, data->argv[1], "not a valid identifier", 1);
 			return (NULL);
 		}
+		a++;
 	}
 	return (to_search);
 }
@@ -82,15 +83,16 @@ int	export_alone(t_data *data)
 	int	size_env;
 
 	size_env = 0;
-	if (data->out == -1)
+	if (!data->argv[1] || data->argv[1][0] == '\0')
 	{
-		data->last_return = 1;
-		return (1);
-	}
-	if (!data->argv[1])
-	{
+		if (data->out == -1)
+		{
+			data->last_return = 1;
+			return (1);
+		}
 		init_rank(data->env, &size_env);
 		print_export(data->env, size_env, data->out);
+		return (1);
 	}
 	return (0);
 }
@@ -104,11 +106,10 @@ int	built_export(t_data *data)
 	int		size;
 
 	data->last_return = 0;
-	i = 1;
-	size = 0;
+	i = 0;
 	if (export_alone(data))
 		return (1);
-	while (data->argv[i])
+	while (data->argv[++i])
 	{
 		to_search = set_to_search(data, i);
 		if (!to_search)
@@ -117,8 +118,10 @@ int	built_export(t_data *data)
 		free(to_search);
 		size = ft_strlen(data->argv[i]);
 		value = ft_substr(ft_strchr(data->argv[i], '='), 1, size);
+		if (tmp && !value)
+			return (0);
 		replace_or_create(data->env, tmp, data->argv[i], value);
-		i++;
+		free(value);
 	}
 	return (0);
 }

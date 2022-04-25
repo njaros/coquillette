@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:40:11 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/21 15:37:44 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/25 10:46:37 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	count_pipe(char *str)
 
 void	init_data(t_data *data, int i, char *str)
 {
+	if (data->argv)
+		ft_free(data->argv);
 	if (!i)
 	{
 		data->nb_cmd = 1 + count_pipe(str);
@@ -43,7 +45,7 @@ void	init_data(t_data *data, int i, char *str)
 	if (i)
 	{
 		data->in = -2;
-		ft_free(data->argv);
+		//ft_free(data->argv);
 	}
 	data->out = -2;
 	data->argv = NULL;

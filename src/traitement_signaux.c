@@ -45,6 +45,7 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 	static int	pid_father = 0;
 	static int	pid_fork = -1;
 
+	(void)ucontext;
 	if (sig == SIGUSR2)
 	{
 		pid_father = siginfo->si_pid;
@@ -71,6 +72,7 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 void	init(struct sigaction *act, t_data *data, t_list *env_list)
 {
 	data->env = env_list;
+	data->argv = NULL;
 	data->last_return = 0;
 	terminal_handler(0);
 	act->sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;

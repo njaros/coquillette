@@ -3,25 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   quote_doll_handler.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:30:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/19 11:58:16 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/25 13:20:36 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "coquillette.h"
 
-char	*is_num_dollz(char *ret, char *str, int *ind, t_data *data)
+char	*is_num_dollz(char *ret, int *ind, t_data *data)
 {
 	char	*number;
 	char	*new;
 	int		lg_nbr;
 
-	if (str[ind[0] + 1] == '$')
-		number = ft_itoa(getpid());
-	else
-		number = ft_itoa(data->last_return);
+	number = ft_itoa(data->last_return);
 	if (!number)
 		error("coquillette: analyse: is_num_dollz");
 	lg_nbr = ft_strlen(number);
@@ -81,8 +78,8 @@ char	*handler_doller(char *ret, char *str, int *ind, t_data *data)
 	int	end;
 
 	end = ind[0] + 1;
-	if (str[ind[0] + 1] == '?' || str[ind[0] + 1] == '$')
-		return (is_num_dollz(ret, str, ind, data));
+	if (str[ind[0] + 1] == '?')
+		return (is_num_dollz(ret, ind, data));
 	while (str[end] && !ft_metachar(str[end]))
 		end++;
 	ind[2] = end;

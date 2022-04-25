@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:16:02 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 10:15:11 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 t_list	*find_link(t_list *env, char *to_search)
 {
-	t_list	*link;
 	t_env	*var;
 
 	var = NULL;

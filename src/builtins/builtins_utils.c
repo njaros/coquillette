@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:08:13 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/21 16:10:03 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 14:29:46 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,12 @@ void	init_rank(t_list *env, int *size)
 	}
 }
 
-void	adding_value(char *tmp, t_env *var, char *path)
+void	adding_value(t_env *var, char *value_bis)
 {
-	tmp = ft_strjoin(var->value, path);
+	char	*tmp;
+	
+	tmp = NULL;
+	tmp = ft_strjoin(var->value, value_bis);
 	if (!tmp)
 		error("malloc");
 	free(var->value);
@@ -51,28 +54,29 @@ void	adding_value(char *tmp, t_env *var, char *path)
 	free(tmp);
 }
 
-int	replace_or_create(t_list *env, t_env *var, char *var_name, char *path)
+int	replace_or_create(t_list *env, t_env *var, char *name, char *value)
 {
 	t_list	*new;
-	char	*tmp;
 
 	new = NULL;
 	if (!var)
 	{
-		new = ft_lstnew(create_struct(var_name));
+		new = ft_lstnew(create_struct(name));
 		if (!new)
 			error("lst problem");
 		ft_lstadd_back(&env, new);
 	}
 	else
 	{
-		if (ft_strrchr(var_name, '+'))
+		if (ft_strrchr(name, '+'))
 		{
-			adding_value(tmp, var, path);
+			adding_value(var, value);
 			return (0);
 		}
+		if (ft_strrchr(name, '='))
+			var->eg = '=';
 		free(var->value);
-		var->value = ft_strdup(path);
+		var->value = ft_strdup(value);
 		if (!var->value)
 			error("malloc");
 	}

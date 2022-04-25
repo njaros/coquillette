@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:15:37 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 10:13:13 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	change_pwd_oldpwd(char *oldpwd, t_list *env)
 {
 	t_env	*tmp;
-	t_list	*new;
 	char	pwd[MAXPATHLEN];
 	char	*var_name;
 
