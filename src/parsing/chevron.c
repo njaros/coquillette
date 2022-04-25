@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/25 09:57:08 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:38:05 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	file_to_open(char *file, int chev, t_data *data)
 	if (fd == -1)
 	{
 		ft_putstr_fd("coquillette: ", 2);
+		data->last_return = 1;
 		perror(file);
 	}
 }
