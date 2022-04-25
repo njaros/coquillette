@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 14:39:31 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:32:43 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ void	child(t_data *data, int pipefd[2])
 	char	**envp;
 
 	envp = list_to_tab(data->env);
-	if (data->in != 0)
+	if (data->in != 0 && data->in != -1)
 		if (dup2(data->in, STDIN_FILENO) == -1)
 			error("dup2 in");
 	if (data->nb_cmd != 1)
 		if (close(pipefd[0]) == -1)
 			error("close pipefd[0]");
-	if (data->out != 1)
+	if (data->out != 1 && data->out != -1)
 		if (dup2(data->out, STDOUT_FILENO) == -1)
 			error("dup2 out");
 	if (data->in != -1 && data->out != -1)
@@ -72,10 +72,10 @@ int	create_process(t_data *data, int pipefd[2], int *fd_in, int j)
 	if (j < data->nb_cmd - 1)
 		if (close(pipefd[1]) == -1)
 			error("close pipefd[1]");
-	if (data->in != 0)
+	if (data->in != 0 && data->in != -1)
 		if (close(data->in) == -1)
 			error("close in");
-	if (data->out != 1 && data->out != pipefd[1])
+	if (data->out != 1 && data->out != pipefd[1] && data->out != -1)
 		if (close(data->out) == -1)
 			error("close out");
 	*fd_in = pipefd[0];
