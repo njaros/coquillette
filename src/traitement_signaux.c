@@ -27,8 +27,7 @@ void	terminal_handler(int end)
 	tcgetattr(fd_term, &term_before);
 	term_minishell = term_before;
 	term_minishell.c_cc[VQUIT] = 0;
-	term_minishell.c_iflag |= INLCR;
-	term_minishell.c_lflag &= ~(ICANON | ECHOCTL);
+	term_minishell.c_lflag &= ~ECHOCTL;
 	tcsetattr(fd_term, TCSANOW, &term_minishell);
 }
 
