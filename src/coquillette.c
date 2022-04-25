@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!env_list)
 		error("malloc");
 	init(&act, &data, env_list);
-	// kill(0, SIGUSR2);
+	kill(0, SIGUSR2);
 	line_read = NULL;
 	while (1)
 	{

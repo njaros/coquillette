@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   found_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 13:42:40 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 14:01:01 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:25:12 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	*found_cmd(t_data *data, char *entry, t_list *env)
 		error("malloc");
 	cmd = get_path(entry, path_tab);
 	if (!cmd)
-		print_error(data, NULL, "command not found", 127); // et permission ?
+		print_error(data, NULL, "command not found", 127);
 	ft_free(path_tab);
 	return (cmd);
 }

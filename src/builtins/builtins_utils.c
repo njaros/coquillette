@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:08:13 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 14:29:46 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:24:21 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	init_rank(t_list *env, int *size)
 void	adding_value(t_env *var, char *value_bis)
 {
 	char	*tmp;
-	
+
 	tmp = NULL;
 	tmp = ft_strjoin(var->value, value_bis);
 	if (!tmp)

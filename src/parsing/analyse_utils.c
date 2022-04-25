@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyse_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:40:11 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/25 10:46:37 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:25:36 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ void	init_data(t_data *data, int i, char *str)
 		data->in = 0;
 	}
 	if (i)
-	{
 		data->in = -2;
-		//ft_free(data->argv);
-	}
 	data->out = -2;
 	data->argv = NULL;
 }
