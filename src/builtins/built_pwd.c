@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:09:38 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/22 15:15:53 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 14:17:39 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	built_pwd(t_data *data)
 	t_env	*tmp;
 
 	data->last_return = 0;
-	if (data->out == -1)
+	if (data->out == -1 || data->in == -1)
 	{
 		data->last_return = 1;
 		return (1);

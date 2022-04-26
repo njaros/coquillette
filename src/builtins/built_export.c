@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 14:40:56 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 14:17:32 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	export_alone(t_data *data)
 	size_env = 0;
 	if (!data->argv[1] || data->argv[1][0] == '\0')
 	{
-		if (data->out == -1)
+		if (data->out == -1 || data->in == -1)
 		{
 			data->last_return = 1;
 			return (1);
