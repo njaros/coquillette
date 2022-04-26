@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/26 14:19:30 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/26 14:26:11 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	file_to_open(char *file, int chev, t_data *data)
 		ft_putstr_fd("coquillette: ", 2);
 		perror(file);
 	}
-	else
-		data->last_return = 0;
 }
 
 int	manip_chevron_str(char **str)
