@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:58:18 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 10:37:16 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 14:16:55 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	built_echo(t_data *data)
 	data->last_return = 0;
 	nl = 1;
 	i = 1;
-	if (data->out == -1)
+	if (data->out == -1 || data->in == -1)
 	{
 		data->last_return = 1;
 		return (1);

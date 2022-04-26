@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:37:27 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 10:35:51 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 14:17:10 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	built_env(t_data *data)
 	move = data->env;
 	tmp = NULL;
 	data->last_return = 0;
-	if (data->out == -1)
+	if (data->out == -1 || data->in == -1)
 		data->last_return = 1;
 	else if (data->argv[1] != NULL)
 		print_error(data, NULL, "too many arguments", 127);
