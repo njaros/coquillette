@@ -116,9 +116,6 @@ int		trap_dollz(char b);
 
 //EN DESSOUS ON NE PARSE PAS
 
-int		free_lst_analyse(t_list **to_free);
-int		error2(int err);
-
 // coquilette_utils
 t_list	*init_envp(char **envp);
 t_env	*create_struct(char *envp);
@@ -165,6 +162,7 @@ int		built_env(t_data *data);
 void	print_env(t_data *data, t_env *tmp);
 // built_exit
 int		built_exit(t_data *data);
+void	exit_minishell(t_data *data);
 int		check_arg(char *arg);
 // built_export
 int		built_export(t_data *data);

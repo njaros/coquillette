@@ -6,18 +6,11 @@ le deuxieme echo n'attend pas que last return soit mis a jour
 
 ## EXIT ##
 
-exit 9223372036854775808 bash: exit: 9223372036854775808: numeric argument required 255
-Long long overflow?
-
-exit -9223372036854775809 bash: exit: -9223372036854775809: numeric argument required 255 => ok
-
 exit -- 42 attention pas too many arguments, checker si le premier argue contient des chiffres ?
 
-exit -- -- 42 numeric argument required et non pas too many arguments... + exit
-
-exit + bash: exit: +: numeric argument required 255
-exit - bash: exit: +: numeric argument required 255
 exit "          " bash: exit:           : numeric argument required 255
 
-exit 0 0 | echo hello doit quand même écrire bash: exit: too many arguments
-
+blop
+blop: command not found
+echo $? > blop
+127 alors qu'on a 0

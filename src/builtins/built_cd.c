@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 10:13:13 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 11:40:42 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	change_pwd_oldpwd(char *oldpwd, t_list *env)
 	tmp = find_env_var(env, "PWD");
 	var_name = ft_strjoin("PWD=", pwd);
 	if (!var_name)
-		error("malloc");
+		error("built_cd: change_pwd_oldpwd: var_name");
 	replace_or_create(env, tmp, var_name, pwd);
 	free(var_name);
 	tmp = find_env_var(env, "OLDPWD");
 	var_name = ft_strjoin("OLDPWD=", oldpwd);
 	if (!var_name)
-		error("malloc");
+		error("built_cd: change_pwd_oldpwd: var_name");
 	replace_or_create(env, tmp, var_name, oldpwd);
 	free(var_name);
 }

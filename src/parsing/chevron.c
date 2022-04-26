@@ -6,7 +6,11 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 10:32:07 by njaros            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/04/25 15:55:29 by njaros           ###   ########lyon.fr   */
+=======
+/*   Updated: 2022/04/26 14:06:45 by ccartet          ###   ########.fr       */
+>>>>>>> 39e608940326ad251c00c6901700838e359736e7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +37,8 @@ void	file_to_open(char *file, int chev, t_data *data)
 		ft_putstr_fd("coquillette: ", 2);
 		perror(file);
 	}
+	else
+		data->last_return = 0;
 }
 
 int	manip_chevron_str(char **str)
