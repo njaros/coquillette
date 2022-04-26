@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	env_list = init_envp(envp);
 	if (!env_list)
-		error("malloc");
+		error("main: env_list");
 	init(&act, &data, env_list);
 	kill(0, SIGUSR2);
 	line_read = NULL;

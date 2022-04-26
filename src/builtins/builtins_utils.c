@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:08:13 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 15:24:21 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/26 11:42:14 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void	adding_value(t_env *var, char *value_bis)
 	tmp = NULL;
 	tmp = ft_strjoin(var->value, value_bis);
 	if (!tmp)
-		error("malloc");
+		error("builtins_utils: adding_value: tmp");
 	free(var->value);
 	var->value = ft_strdup(tmp);
 	if (!var->value)
-		error("malloc");
+		error("builtins_utils: adding_value: value");
 	free(tmp);
 }
 
@@ -63,7 +63,7 @@ int	replace_or_create(t_list *env, t_env *var, char *name, char *value)
 	{
 		new = ft_lstnew(create_struct(name));
 		if (!new)
-			error("lst problem");
+			error("builtins_utils: replace_or_create: lst problem");
 		ft_lstadd_back(&env, new);
 	}
 	else
@@ -78,7 +78,7 @@ int	replace_or_create(t_list *env, t_env *var, char *name, char *value)
 		free(var->value);
 		var->value = ft_strdup(value);
 		if (!var->value)
-			error("malloc");
+			error("builtins_utils: replace_or_create: value");
 	}
 	return (0);
 }

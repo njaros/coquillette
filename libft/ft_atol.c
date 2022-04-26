@@ -6,21 +6,20 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 10:21:15 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/07 10:21:38 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 13:29:46 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long	ft_atol(const char *str)
+int	ft_atol(const char *str, long long *nb)
 {
-	int		num;
-	int		i;
-	long	resultat;
+	int			num;
+	int			i;
 
 	num = 1;
 	i = 0;
-	resultat = 0;
+	*nb = 0;
 	if (str[i] == '\0')
 		return (0);
 	while (str[i] && (str[i] == 32 || (str[i] >= 9 && str[i] <= 13)))
@@ -33,8 +32,10 @@ long	ft_atol(const char *str)
 	}
 	while (str[i] >= 48 && str[i] <= 57)
 	{
-		resultat = resultat * 10 + (str[i] - '0');
+		*nb = *nb * 10 + (str[i] - '0') * num;
+		if ((num == -1 && *nb > 0) || (num == 1 && *nb < 0))
+			return (1);
 		i++;
 	}
-	return (resultat * num);
+	return (0);
 }

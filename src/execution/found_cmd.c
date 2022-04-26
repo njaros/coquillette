@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   found_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 13:42:40 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 15:25:12 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/26 11:50:04 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	*get_path(char *cmd, char **path)
 	{
 		tmp = ft_strjoin(path[i], "/");
 		if (!tmp)
-			error("malloc");
+			error("found_cmd: get_path: tmp");
 		cmd_path = ft_strjoin(tmp, cmd);
 		if (!cmd_path)
-			error("malloc");
+			error("found_cmd: get_path: cmd_path");
 		free(tmp);
 		if (access(cmd_path, X_OK) == 0)
 			break ;
@@ -46,13 +46,13 @@ int	is_a_directory(t_data *data, char *entry)
 
 	path_tab = ft_split(getenv("PATH"), ':');
 	if (!path_tab)
-		error("malloc");
+		error("found_cmd: is_a_directory: path_tab");
 	j = 0;
 	while (path_tab[j])
 	{
 		blop = ft_strjoin(path_tab[j], "/");
 		if (!blop)
-			error("malloc");
+			error("found_cmd: is_a_directory: blop");
 		if (!ft_strcmp(blop, entry))
 		{
 			print_error(data, NULL, "is a directory", 126);
@@ -112,7 +112,7 @@ char	*found_cmd(t_data *data, char *entry, t_list *env)
 	}
 	path_tab = ft_split(tmp->value, ':');
 	if (!path_tab)
-		error("malloc");
+		error("found_cmd: path_tab");
 	cmd = get_path(entry, path_tab);
 	if (!cmd)
 		print_error(data, NULL, "command not found", 127);

@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 11:10:44 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 14:42:42 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 13:40:31 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**list_to_tab(t_list *env)
 	size = ft_lstsize(env);
 	envp = malloc(sizeof(char *) * (size + 1));
 	if (!envp)
-		error("malloc");
+		error("exec_utils: list_to_tab: envp");
 	i = 0;
 	while (env)
 	{
@@ -37,7 +37,7 @@ char	**list_to_tab(t_list *env)
 		first = ft_strjoin(tmp->name, "=");
 		envp[i] = ft_strjoin(first, tmp->value);
 		if (!first || !envp[i])
-			error("malloc");
+			error("exec_utils: list_to_tab: envp[i]");
 		free(first);
 		i++;
 		env = env->next;
@@ -89,9 +89,7 @@ int	do_builtins(t_data *data)
 		return (built_unset(data));
 	else if (!ft_strcmp(data->argv[0], "env"))
 		return (built_env(data));
-	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd == 1)
+	else if (!ft_strcmp(data->argv[0], "exit"))
 		return (built_exit(data));
-	else if (!ft_strcmp(data->argv[0], "exit") && data->nb_cmd != 1)
-		return (0);
 	return (-1);
 }
