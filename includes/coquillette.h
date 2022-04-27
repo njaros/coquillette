@@ -138,7 +138,7 @@ char	**list_to_tab(t_list *env);
 void	error(char *msg);
 // found_cmd
 char	*found_cmd(t_data *data, char *entry, t_list *env);
-int		check_absolute_path(t_data *data, char *entry);
+int		check_absolute_path(t_data *data, char *entry, DIR *dir);
 int		is_a_directory(t_data *data, char *entry);
 char	*get_path(char *cmd, char **path);
 
@@ -175,6 +175,6 @@ int		built_pwd(t_data *data);
 // built_unset
 int		built_unset(t_data *data);
 t_list	*find_link(t_list *env, char *to_search);
-void	env_del(t_list *env, t_list *to_del);
+void	env_del(t_list **env, t_list *to_del);
 
 #endif

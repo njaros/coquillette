@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_unset.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/25 10:15:11 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/27 11:22:10 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,24 @@ t_list	*find_link(t_list *env, char *to_search)
 	return (NULL);
 }
 
-void	env_del(t_list *env, t_list *to_del)
+void	env_del(t_list **env, t_list *to_del)
 {
 	t_list	*current;
 	t_env	*var;
 
-	current = env;
-	while (current)
+	current = NULL;
+	if (*env == to_del)
+		*env = (*env)->next;
+	else
 	{
-		if (current->next == to_del)
-		{
-			current->next = to_del->next;
-			break ;
-		}
-		current = current->next;
+		current = (*env);
+		while (current->next && current->next != to_del)
+			current = current->next;
 	}
+	if (current)
+		current->next = to_del->next;
 	var = to_del->content;
+	free(to_del);
 	free(var->name);
 	free(var->value);
 	free(var);
@@ -59,7 +61,7 @@ int	built_unset(t_data *data)
 	{
 		tmp = find_link(data->env, data->argv[i]);
 		if (tmp)
-			env_del(data->env, tmp);
+			env_del(&(data->env), tmp);
 		i++;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_cd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/26 11:40:42 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/27 11:23:24 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,23 @@ void	change_pwd_oldpwd(char *oldpwd, t_list *env)
 int	move_to(t_data *data)
 {
 	int		i;
+	DIR		*dir;
 
 	i = 0;
+	dir = NULL;
 	if (data->argv[1][i] == '~')
 	{
 		if (to_home(data, data->argv[1][i]))
 			return (1);
 		i = 2;
 	}
-	if (!opendir(&data->argv[1][i]))
+	dir = opendir(&data->argv[1][i]);
+	if (!dir)
 	{
 		print_error(data, data->argv[1], NULL, 1);
 		return (1);
 	}
+	closedir(dir);
 	data->last_return = chdir(&data->argv[1][i]);
 	if (data->last_return == -1)
 	{
@@ -98,6 +102,7 @@ int	to_home(t_data *data, char c)
 		return (1);
 	}
 	data->last_return = chdir(home);
+	free(home);
 	return (0);
 }
 

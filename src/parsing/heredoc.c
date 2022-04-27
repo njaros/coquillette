@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 13:24:45 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/25 15:54:16 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/27 11:19:42 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	heredoc_fork(int fd, char *eof)
 	char	*noqeof;
 
 	noqeof = only_quote_handler(eof);
-	if (!eof)
+	if (!noqeof)
 		error("coquillette: heredoc: only_quote_handler: malloc");
 	kill (0, SIGUSR1);
 	line_read = readline(">");
@@ -52,6 +52,7 @@ char	*ft_heredoc(char *eof)
 	if (pid_fork == 0)
 		heredoc_fork(fd[1], eof);
 	waitpid(pid_fork, &ret, 0);
+	free(eof);
 	if (ret)
 		return (signaled_heredoc(fd[0], fd[1]));
 	close(fd[1]);

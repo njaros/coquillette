@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:44:27 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/22 13:01:30 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/27 09:54:13 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ char	*prompt_builder(t_data *data)
 	int		size;
 
 	env = find_env_var(data->env, "PWD");
-	size = ft_strlen("\e[34mcoquillette:> \e[0m") + ft_strlen(env->value) + 1;
+	size = ft_strlen("\e[34mcoquillette:> \e[0m") + 1;
+	if (env)
+		size += ft_strlen(env->value);
 	prompt = ft_calloc(size, 1);
 	ft_strcat(prompt, "\e[34mcoquillette: ");
-	ft_strcat(prompt, env->value);
+	if (env)
+		ft_strcat(prompt, env->value);
 	ft_strcat(prompt, ">\e[0m");
 	return (prompt);
 }

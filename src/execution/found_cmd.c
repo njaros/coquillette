@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   found_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 13:42:40 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/26 11:50:04 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/27 11:25:22 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	is_a_directory(t_data *data, char *entry)
 	return (0);
 }
 
-int	check_absolute_path(t_data *data, char *entry)
+int	check_absolute_path(t_data *data, char *entry, DIR *dir)
 {
 	int	i;
 
@@ -76,7 +76,8 @@ int	check_absolute_path(t_data *data, char *entry)
 	{
 		if (entry[i] == '/')
 		{
-			if (!opendir(entry) && errno == ENOENT)
+			dir = opendir(entry);
+			if (!dir && errno == ENOENT)
 			{
 				print_error(data, NULL, NULL, 127);
 				return (-1);
@@ -98,10 +99,13 @@ char	*found_cmd(t_data *data, char *entry, t_list *env)
 	char	**path_tab;
 	int		ck;
 	t_env	*tmp;
+	DIR		*dir;
 
-	ck = check_absolute_path(data, entry);
+	dir = NULL;
+	ck = check_absolute_path(data, entry, dir);
 	if (ck == 1)
 		return (entry);
+	closedir(dir);
 	if (ck == -1)
 		return (NULL);
 	tmp = find_env_var(env, "PATH");
