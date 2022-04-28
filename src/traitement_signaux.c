@@ -37,6 +37,7 @@ void	reset_readline(void)
 	rl_replace_line("", 0);
 	write(0, "\n", 1);
 	rl_redisplay();
+	*g_return_ptr = 1;
 }
 
 void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
@@ -73,6 +74,7 @@ void	init(struct sigaction *act, t_data *data, t_list *env_list)
 	data->env = env_list;
 	data->argv = NULL;
 	data->last_return = 0;
+	g_return_ptr = &data->last_return;
 	terminal_handler(0);
 	act->sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;
 	act->sa_sigaction = signal_handler;

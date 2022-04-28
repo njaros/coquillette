@@ -35,6 +35,8 @@
 
 // Toutes les structures utilisées par coquillette
 
+int *g_return_ptr;
+
 typedef struct s_env
 {
 	char	*name;

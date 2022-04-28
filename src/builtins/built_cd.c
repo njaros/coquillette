@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_cd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 12:15:00 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/27 11:23:24 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 15:43:02 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	move_to(t_data *data)
 	{
 		if (to_home(data, data->argv[1][i]))
 			return (1);
+		if (!data->argv[1][1])
+			return (0);
 		i = 2;
 	}
 	dir = opendir(&data->argv[1][i]);
@@ -102,7 +104,8 @@ int	to_home(t_data *data, char c)
 		return (1);
 	}
 	data->last_return = chdir(home);
-	free(home);
+	if (c == 0)
+		free(home);
 	return (0);
 }
 
