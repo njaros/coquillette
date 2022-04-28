@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:44:27 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/27 17:24:56 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/28 12:25:47 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ char	*rl_get(char *line_read, t_data *data)
 	if (line_read)
 		free(line_read);
 	line_read = readline(prompt);
+	while (line_read && ft_strcmp(line_read, "es-tu parfait ?") == 0)
+	{
+		ft_putendl_fd("OUUUII je suis parfait 😘", 1);
+		free(line_read);
+		line_read = readline(prompt);
+	}
 	free(prompt);
 	if (!line_read)
 	{
