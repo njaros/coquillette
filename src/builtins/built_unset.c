@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_unset.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 16:03:39 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/27 11:22:10 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 15:55:24 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,28 @@ void	env_del(t_list **env, t_list *to_del)
 	free(var);
 }
 
+int	check_var_name(t_data *data, char *to_search)
+{
+	int	a;
+	
+	a = 0;
+	if (!ft_isalpha(to_search[a]))
+	{
+		print_error(data, data->argv[1], "not a valid identifier", 1);
+		return (1);
+	}	
+	while (to_search[a])
+	{
+		if (!ft_isalpha(to_search[a]) && !ft_isdigit(to_search[a]))
+		{
+			print_error(data, data->argv[1], "not a valid identifier", 1);
+			return (1);
+		}
+		a++;
+	}
+	return (0);
+}
+
 int	built_unset(t_data *data)
 {
 	t_list	*tmp;
@@ -59,9 +81,12 @@ int	built_unset(t_data *data)
 	i = 1;
 	while (data->argv[i])
 	{
-		tmp = find_link(data->env, data->argv[i]);
-		if (tmp)
-			env_del(&(data->env), tmp);
+		if (!check_var_name(data, data->argv[i]))
+		{
+			tmp = find_link(data->env, data->argv[i]);
+			if (tmp)
+				env_del(&(data->env), tmp);
+		}
 		i++;
 	}
 	return (0);

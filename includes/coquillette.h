@@ -177,6 +177,7 @@ void	print(t_env *tmp, int fd);
 int		built_pwd(t_data *data);
 // built_unset
 int		built_unset(t_data *data);
+int		check_var_name(t_data *data, char *to_search);
 t_list	*find_link(t_list *env, char *to_search);
 void	env_del(t_list **env, t_list *to_del);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/28 12:03:40 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 15:56:49 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,15 @@ void	print_export(t_list *env, int size, int fd)
 
 char	*set_to_search(t_data *data, int i)
 {
-	int		a;
 	char	*to_search;
 	int		len;
 
-	a = 0;
 	len = ft_strmchr(data->argv[i], "=+") - data->argv[i];
 	to_search = ft_substr(data->argv[i], 0, len);
 	if (!to_search)
 		to_search = ft_strdup(data->argv[i]);
-	if (!ft_isalpha(to_search[a]))
-	{
-		print_error(data, data->argv[1], "not a valid identifier", 1);
+	if (check_var_name(data, to_search))
 		return (NULL);
-	}	
-	while (to_search[a])
-	{
-		if (!ft_isalpha(to_search[a]) && !ft_isdigit(to_search[a]))
-		{
-			print_error(data, data->argv[1], "not a valid identifier", 1);
-			return (NULL);
-		}
-		a++;
-	}
 	return (to_search);
 }
 
@@ -112,15 +98,16 @@ int	built_export(t_data *data)
 	while (data->argv[++i])
 	{
 		to_search = set_to_search(data, i);
-		if (!to_search)
-			return (1);
-		tmp = find_env_var(data->env, to_search);
-		free(to_search);
-		size = ft_strlen(data->argv[i]);
-		value = ft_substr(ft_strchr(data->argv[i], '='), 1, size);
-		if (!(tmp && !value))
-			replace_or_create(data->env, tmp, data->argv[i], value);
-		free(value);
+		if (to_search)
+		{
+			tmp = find_env_var(data->env, to_search);
+			free(to_search);
+			size = ft_strlen(data->argv[i]);
+			value = ft_substr(ft_strchr(data->argv[i], '='), 1, size);
+			if (!(tmp && !value))
+				replace_or_create(data->env, tmp, data->argv[i], value);
+			free(value);
+		}
 	}
 	return (0);
 }
