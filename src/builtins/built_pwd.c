@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:09:38 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/26 14:17:39 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/27 11:36:59 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ int	built_pwd(t_data *data)
 	if (!getcwd(pwd, MAXPATHLEN))
 	{
 		tmp = find_env_var(data->env, "PWD");
+		if (!tmp)
+		{
+			print_error(data, NULL, "PWD not set", 1);
+			return (1);	
+		}
 		ft_putendl_fd(tmp->value, data->out);
 	}
 	else

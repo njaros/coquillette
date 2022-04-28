@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 14:17:08 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/28 12:02:58 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 12:03:40 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,8 @@ int	built_export(t_data *data)
 		free(to_search);
 		size = ft_strlen(data->argv[i]);
 		value = ft_substr(ft_strchr(data->argv[i], '='), 1, size);
-		if (tmp && !value)
-			return (0);
-		replace_or_create(data->env, tmp, data->argv[i], value);
+		if (!(tmp && !value))
+			replace_or_create(data->env, tmp, data->argv[i], value);
 		free(value);
 	}
 	return (0);
