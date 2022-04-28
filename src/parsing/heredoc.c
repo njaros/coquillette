@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 13:24:45 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/27 11:19:42 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 12:13:03 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_heredoc(char *eof)
 	waitpid(pid_fork, &ret, 0);
 	free(eof);
 	if (ret)
-		return (signaled_heredoc(fd[0], fd[1]));
+		return (signaled_heredoc(fd[0], fd[1], itoa_fd));
 	close(fd[1]);
 	return (itoa_fd);
 }
@@ -82,7 +82,10 @@ char	*parse_heredoc(char *str, int *i)
 		error("coquillette: parsing: heredoc: malloc");
 	eof = ft_heredoc(eof);
 	if (!eof)
+	{
+		free(str);
 		return (NULL);
+	}
 	new = ft_calloc(ft_strlen(str) - (*i - j) + ft_strlen(eof) + 1, 1);
 	if (!new)
 		error("coquillette: parsing: heredoc: ft_calloc");

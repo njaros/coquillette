@@ -103,7 +103,7 @@ void	heredoc_fork(int fd, char *end);
 char	*parse_heredoc(char *str, int *i);
 int		is_heredoc(char *str, int quote, int dquote);
 char	*ft_heredoc(char *eof);
-char	*signaled_heredoc(int fd_in, int fd_out);
+char	*signaled_heredoc(int fd_in, int fd_out, char *to_free);
 // quote_doll_handler
 char	*quote_doll_handler(char *str, t_data *data);
 char	*handler_doller(char *ret, char *str, int *ind, t_data *data);
