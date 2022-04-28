@@ -6,7 +6,7 @@
 /*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 10:47:16 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/26 13:56:40 by ccartet          ###   ########.fr       */
+/*   Updated: 2022/04/26 14:28:11 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void	execution(char *line_read, t_data *data)
 
 	i = 0;
 	analyse(line_read, &i, data);
+	if (data->argv == NULL)
+		data->last_return = 0;
 	if (data->out == -1 || data->in == -1)
 		data->last_return = 1;
 	if (data->argv)

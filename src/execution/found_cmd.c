@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   found_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ccartet <ccartet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 13:42:40 by ccartet           #+#    #+#             */
-/*   Updated: 2022/04/27 11:25:22 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 12:00:50 by ccartet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,10 @@ char	*found_cmd(t_data *data, char *entry, t_list *env)
 
 	dir = NULL;
 	ck = check_absolute_path(data, entry, dir);
+	if (dir)
+		closedir(dir);
 	if (ck == 1)
 		return (entry);
-	closedir(dir);
 	if (ck == -1)
 		return (NULL);
 	tmp = find_env_var(env, "PATH");
