@@ -65,6 +65,7 @@ char	*rl_get(char *line_read, t_data *data);
 
 void	init_data(t_data *data, int i, char *str);
 void	init(struct sigaction *act, t_data *data, t_list *env);
+t_list  *create_backup_list(void);
 
 // ICI ON PARSE
 // check_quote
