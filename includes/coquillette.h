@@ -102,7 +102,7 @@ void	file_to_open(char *file, int chev, t_data *data);
 // heredoc
 char	*heredoc_handler(char *str);
 void	heredoc_fork(int fd, char *end);
-char	*parse_heredoc(char *str, int *i);
+char	*parse_heredoc(char *str, int *i, int quote, int dquote);
 int		is_heredoc(char *str, int quote, int dquote);
 char	*ft_heredoc(char *eof);
 char	*signaled_heredoc(int fd_in, int fd_out, char *to_free);

@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 13:24:45 by njaros            #+#    #+#             */
-/*   Updated: 2022/04/28 12:13:03 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 15:43:58 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,18 @@ int	is_heredoc(char *str, int quote, int dquote)
 	return (0);
 }
 
-char	*parse_heredoc(char *str, int *i)
+char	*parse_heredoc(char *str, int *i, int quote, int dquote)
 {
 	char	*new;
 	char	*eof;
 	int		j;
 
 	j = *i;
-	while (!ft_tokenchar(str[*i]) && str[*i] != ' ')
+	while (!ft_tokenchar((str[*i]) && str[*i] != ' ') || (quote || dquote))
+	{
+		quote_switcher(&quote, &dquote, str[*i]);
 		*i += 1;
+	}
 	eof = ft_substr(str, j, *i - j);
 	if (!eof)
 		error("coquillette: parsing: heredoc: malloc");
@@ -115,7 +118,7 @@ char	*heredoc_handler(char *str)
 			i += 2;
 			while (str[i] == ' ')
 				i++;
-			str = parse_heredoc(str, &i);
+			str = parse_heredoc(str, &i, quote, dquote);
 			if (!str)
 				return (NULL);
 		}
