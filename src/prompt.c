@@ -12,18 +12,50 @@
 
 #include "coquillette.h"
 
+char	*set_color(char *str)
+{
+	char	*color;
+
+	if (ft_strcmp(str, "ROUGE") == 0)
+		color = ft_strdup("\e[31mcoquillette: ");
+	else if (ft_strcmp(str, "VERT") == 0)
+		color = ft_strdup("\e[32mcoquillette: ");
+	else if (ft_strcmp(str, "JAUNE") == 0)
+		color = ft_strdup("\e[33mcoquillette: ");
+	else if (ft_strcmp(str, "BLEU") == 0)
+		color = ft_strdup("\e[34mcoquillette: ");
+	else if (ft_strcmp(str, "MAGENTA") == 0)
+		color = ft_strdup("\e[35mcoquillette: ");
+	else if (ft_strcmp(str, "CYAN") == 0)
+		color = ft_strdup("\e[36mcoquillette: ");
+	else if (ft_strcmp(str, "BLANC") == 0)
+		color = ft_strdup("\e[37mcoquillette: ");
+	else
+		color = ft_strdup("\e[34mcoquillette: ");
+	return (color);
+}
+
 char	*prompt_builder(t_data *data)
 {
 	char	*prompt;
 	char	pwd[MAXPATHLEN];
+	char	*color;
 	int		size;
-	
+	t_env	*env;
+
+	color = NULL;
+	env = find_env_var(data->env, "COLOR");
+	if (env)
+		color = set_color(env->value);
+	else
+		color = ft_strdup("\e[34mcoquillette: ");
 	(void)data;
 	getcwd(pwd, MAXPATHLEN);
 	size = ft_strlen("\e[34mcoquillette:> \e[0m") + 1;
 	size += ft_strlen(pwd);
 	prompt = ft_calloc(size, 1);
-	ft_strcat(prompt, "\e[34mcoquillette: ");
+	ft_strcat(prompt, color);
+	free(color);
 	ft_strcat(prompt, pwd);
 	ft_strcat(prompt, ">\e[0m");
 	return (prompt);
