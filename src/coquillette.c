@@ -49,7 +49,9 @@ int	main(int argc, char **argv, char **envp)
 	line_read = NULL;
 	while (1)
 	{
+		terminal_handler(0);
 		line_read = rl_get(line_read, &data);
+		terminal_handler(1);
 		if (line_read)
 			execution(line_read, &data);
 	}

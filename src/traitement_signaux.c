@@ -67,6 +67,8 @@ void	signal_handler(int sig, siginfo_t *siginfo, void *ucontext)
 		exit(siginfo->si_signo);
 	else if (sig == SIGINT && pid_fork == -1)
 		write(1, "^C\n", 3);
+	else if (sig == SIGQUIT && siginfo->si_pid != pid_father)
+		write(1, "Quit\n", 5);
 }
 
 void	init(struct sigaction *act, t_data *data, t_list *env_list)
@@ -75,9 +77,9 @@ void	init(struct sigaction *act, t_data *data, t_list *env_list)
 	data->argv = NULL;
 	data->last_return = 0;
 	g_return_ptr = &data->last_return;
-	terminal_handler(0);
 	act->sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;
 	act->sa_sigaction = signal_handler;
+	sigaction(SIGQUIT, act, NULL);
 	sigaction(SIGINT, act, NULL);
 	sigaction(SIGUSR2, act, NULL);
 	sigaction(SIGUSR1, act, NULL);
